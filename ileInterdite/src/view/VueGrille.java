@@ -1,7 +1,14 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.HashMap;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -9,13 +16,15 @@ public class VueGrille extends JPanel {
 
     private HashMap<Integer, VueTuile> tuile = new HashMap<>();
 
+    private Image img;
     private JPanel panelGlobale;
     private GridLayout gl = new GridLayout(6, 6);
 
-    public VueGrille() {
-        
-        gl.setVgap(5);
-        gl.setHgap(5);
+    public VueGrille(Image img) {
+        this.img = img;
+        this.setPreferredSize(new Dimension(600, 600));
+        gl.setVgap(10);
+        gl.setHgap(10);
         panelGlobale = new JPanel(gl);
 
         for (int i = 1; i <= 24; i++) {
@@ -24,7 +33,11 @@ public class VueGrille extends JPanel {
         }
         affichePlateau(panelGlobale);
         this.add(panelGlobale);
+    }
 
+    //dessin le fond
+    public void paintComponent(Graphics g) {
+        g.drawImage(img, 100, 0, null);
     }
 
     public void affichePlateau(JPanel panel) {
@@ -44,7 +57,7 @@ public class VueGrille extends JPanel {
                 }
             }
         }
+        panel.setOpaque(false);
 
     }
-
 }

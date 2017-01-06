@@ -32,10 +32,10 @@ public class VueInterface extends Observable{
           window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
           window.setSize(360, 430);
           window.setLocation(470, 100);
-          panelGlobale = new JPanel();
+          panelGlobale = new JPanel(new BorderLayout());
           //***haut***
           titre= new JLabel(new ImageIcon(getClass().getResource("/images/titre.png")));
-          panelGlobale.add(titre, BorderLayout.CENTER);
+          panelGlobale.add(titre, BorderLayout.NORTH);
           //***panel centre***
           gl.setVgap(15);
           panelCentre = new JPanel(gl);

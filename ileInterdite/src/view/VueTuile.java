@@ -12,14 +12,15 @@ public class VueTuile extends JPanel {
     
     private ImageIcon img;
     private JLabel tuile;
-    private EtatTuile etatTuile=EtatTuile.ASSECHEE;
+    private EtatTuile etatTuile = EtatTuile.ASSECHEE;
+    
     public VueTuile(){
         setLigne(ligne);
         setColone(colone);
         
-        this.setPreferredSize(new Dimension(50, 50));
+        this.setPreferredSize(new Dimension(120, 120));
         img = new ImageIcon(new ImageIcon(getClass().getResource("/images/titre.png"))
-                .getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
+                .getImage().getScaledInstance(130, 130, Image.SCALE_DEFAULT));
         tuile = new JLabel(img);
         this.add(tuile);
     }

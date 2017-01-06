@@ -20,13 +20,15 @@ import util.Utils.Tresor;
  * @author IUT2-Dept Info
  */
 public class Controleur implements Observer {
+    private VuePlateau vuePlateau;
+    private VueInscription vueInscription;
     private Tuile tuile[];
     private ArrayList<Tresor> tresors;
     private CarteTresor carteTresor;
     
     public Controleur() {
-        
-        
+        vuePlateau = new VuePlateau();
+        //vueInscription = new VueInscription();
     }
 
     
@@ -41,14 +43,7 @@ public class Controleur implements Observer {
     
     public void AjoutTuilesAdjacentes(Tuile avTuile, Tuile tuile){
         
-      if ((tuile.get(c)==avTuile.getC() && tuile.getL()== avTuile.getL()-1){
-          
-          
-      }
-              
-              
-              
-              ||(tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()) || (tuile.getC()==avTuile.getC() && tuile.getL()==avTuile.getL()+1) || (tuile.getC()==avTuile.getC()-1 && tuile.getL()==avTuile.getL()));
+       ((tuile.get(c)==avTuile.getC() && tuile.getL()== avTuile.getL()-1) ||(tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()) || (tuile.getC()==avTuile.getC() && tuile.getL()==avTuile.getL()+1) || (tuile.getC()==avTuile.getC()-1 && tuile.getL()==avTuile.getL()));
     }
    
     public Boolean PeutPrendreTresor(ArrayList<Carte> main, Tuile tuile){
