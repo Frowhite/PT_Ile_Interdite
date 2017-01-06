@@ -26,12 +26,12 @@ public class Controleur implements Observer {
         Pion capacite;
         capacite= av.getCapacite();
         
-         if (tuile.getEtat()== EtatTuile.ASSECHEE && tuileAdjacente()){
-             
-             
-         }
-         
-        
+//         //if (tuile.getEtat()== EtatTuile.ASSECHEE && tuileAdjacente()){
+//             
+//             
+//         }
+//         
+//        
         
          
          
