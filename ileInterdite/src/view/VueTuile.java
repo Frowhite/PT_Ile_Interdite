@@ -12,7 +12,7 @@ public class VueTuile extends JPanel {
     private ImageIcon img;
     private JLabel tuile;
     private EtatTuile etatTuile=EtatTuile.ASSECHEE;
-    public VueTuile(int idTuile){
+    public VueTuile(){
         setLigne(ligne);
         setColone(colone);
         
