@@ -32,7 +32,7 @@ public class Grille {
                         tuiles[l][c] = tuile[i];
                         tuile[i].setLigne(l);
                         tuile[i].setColonnes(c);
-                        System.out.println("Nom : " + tuile[i].getNomTuile() + ", Ligne : " + tuile[i].getLigne() + ", Colonne : " + tuile[i].getColonnes());
+//                        System.out.println("Nom : " + tuile[i].getNomTuile() + ", Ligne : " + tuile[i].getLigne() + ", Colonne : " + tuile[i].getColonnes());
                         i++;
                     }
             }
