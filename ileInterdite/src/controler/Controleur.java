@@ -4,16 +4,22 @@ package controler;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import model.aventuriers.Aventurier;
 import model.cartes.Carte;
+import model.cartes.CarteInondation;
 import model.cartes.CarteTirage;
 import model.cartes.CarteTresor;
+import model.cases.Grille;
 import model.cases.Tuile;
 import util.Utils;
 import util.Utils.EtatTuile;
 import static util.Utils.EtatTuile.ASSECHEE;
 import util.Utils.Pion;
 import util.Utils.Tresor;
+import view.VueInscription;
+import view.VuePlateau;
 
 /**
  *
@@ -25,6 +31,9 @@ public class Controleur implements Observer {
     private Tuile tuile[];
     private ArrayList<Tresor> tresors;
     private CarteTresor carteTresor;
+    private Grille grille; 
+    private ArrayList<CarteTirage> défausseTirage;
+    private ArrayList<CarteInondation> defausseInondation;
     
     public Controleur() {
         vuePlateau = new VuePlateau();
@@ -32,19 +41,10 @@ public class Controleur implements Observer {
     }
 
     
-        public void EstSurLaCase(Tuile avTuile, Tuile tuile) {
-            return (tuile.getC()== avTuile.getC() && tuile.getL()== avTuile.getL());
-        }
-    
-       public void tuileEstDiagonale(Tuile avTuile, Tuile tuile) {
-      return ((tuile.getC()== avTuile.getC()-1 && tuile.getL()==avTuile.getL()-1) || (tuile.getC()== avTuile.getC()+1 && tuile.getL()== avTuile.getL()-1) || (tuile.getL()+1== avTuile.getL()+1 && tuile.getC()== avTuile.getC()-1) || (tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()+1));
-          
-    }
-    
-    public void AjoutTuilesAdjacentes(Tuile avTuile, Tuile tuile){
         
-       ((tuile.get(c)==avTuile.getC() && tuile.getL()== avTuile.getL()-1) ||(tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()) || (tuile.getC()==avTuile.getC() && tuile.getL()==avTuile.getL()+1) || (tuile.getC()==avTuile.getC()-1 && tuile.getL()==avTuile.getL()));
-    }
+    
+    
+    
    
     public Boolean PeutPrendreTresor(ArrayList<Carte> main, Tuile tuile){
         
@@ -79,33 +79,34 @@ public class Controleur implements Observer {
     
     
     
-    public void Assecher(Aventurier av, Tuile tuile){
-        
-        if (tuile.getEtat()== EtatTuile.INONDEE && tuileEstAdjacente(av.getPositionCourante(), tuile)){
-             
-             tuile.setEtat(ASSECHEE);
-        }
-             
-             
-        else if (tuile.getEtat()== EtatTuile.INONDEE && tuileEstDiagonale(av.getPositionCourante(), tuile) && av.getCapacite()== Pion.VERT) {    
-             
-             tuile.setEtat(ASSECHEE);
-         }
-        
-        // dans les autres cas l'aventurier ne pourra pas assécher les tuiles.
+    public void Assecher(Tuile tuile){
+            tuile.setEtat(ASSECHEE);
     }
     
  
     
     public void obtenirTresor(Aventurier av, Tuile tuile){
-        if(EstSurLaCase(av.getPositionCourante(), tuile) && tuile.getTresor()!= null && PeutPrendreTresor(av.getMain(),tuile)){
-                tresors.add(tuile.getTresor());
-                tuile.setTresor(null);
-              //supprimer la deuxieme tuile associée au même trésor
+        if(av.getPositionCourante().getTresor() != null){
+            if(PeutPrendreTresor(av.getMain(), av.getPositionCourante()))
+                av.addTresor(av.getPositionCourante().getTresor());
+                Tuile secondeTuile = rechercherTresor(av);
+                av.getPositionCourante().setTresor(null);
+                secondeTuile.setTresor(null);
         }
         
     }
     
+    public Tuile rechercherTresor(Aventurier av){
+        Tuile t = null;
+        for(int i = 0;i < 24;i++){
+            if(tuile[i].getTresor() == av.getPositionCourante().getTresor()){
+                if(tuile[i] != av.getPositionCourante()){
+                    t = tuile[i];
+                }
+            }
+        }
+        return t;
+    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -143,7 +144,7 @@ public class Controleur implements Observer {
 
         melangerTuile(tuile);
 
-        Grille grille = new Grille(tuile);
+        this.grille = new Grille(tuile);
 
     }
 
@@ -162,4 +163,33 @@ public class Controleur implements Observer {
     }
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

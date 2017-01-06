@@ -1,6 +1,8 @@
 package model.cases;
 
 import model.aventuriers.Aventurier;
+import util.Utils;
+import util.Utils.Pion;
 
 /**
  * Classe permettant de gérer la grille des tuiles du jeu Elle gère un unique
@@ -22,8 +24,17 @@ public class Grille {
     }
     
     public void TuilesPossibles (Aventurier av){
-        
-        
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes()-1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()-1][av.getPositionCourante().getColonnes()]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes()+1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()+1][av.getPositionCourante().getColonnes()]);
+       
+       if(av.getCapacite() == Pion.VERT){
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()-1][av.getPositionCourante().getColonnes()-1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()-1][av.getPositionCourante().getColonnes()+1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()+1][av.getPositionCourante().getColonnes()+1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()+1][av.getPositionCourante().getColonnes()-1]);
+       }
     }
    
 

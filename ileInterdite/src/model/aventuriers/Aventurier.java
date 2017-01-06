@@ -34,10 +34,17 @@ public abstract class Aventurier extends ObjetIdentifie {
         
     }
 
-
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////METHODES/////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     
+    public void addTuilesPossibles(Tuile t){
+        getTuilesPossibles().add(t);
+    }
     
-    
+    public void addTresor(Tresor t){
+        getTresors().add(t);
+    }
     
     
     ////////////////////////////////////////////////////////////////////////////
@@ -82,14 +89,6 @@ public abstract class Aventurier extends ObjetIdentifie {
 
     public void setControleur(Controleur controleur) {
         this.controleur = controleur;
-    }
-
-    public ArrayList<Tresor> getTresor() {
-        return tresors;
-    }
-
-    public void setTresor(ArrayList<Tresor> tresors) {
-        this.tresors = tresors;
     }
 
     public ArrayList<Tresor> getTresors() {
