@@ -8,9 +8,10 @@ import java.util.Observer;
  * @author IUT2-Dept Info
  */
 public class Controleur implements Observer {
-    
     //fezfzefzefz
-
+    //tygifrio
+    
+    
     public Controleur() {
     }
 
