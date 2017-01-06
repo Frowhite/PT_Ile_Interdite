@@ -17,7 +17,7 @@ public class VueTuile extends JPanel {
         setColone(colone);
         
         this.setPreferredSize(new Dimension(50, 50));
-        img = new ImageIcon("images/titre.png");
+        img = new ImageIcon(getClass().getResource("/images/titre.png"));
         tuile = new JLabel(img);
         this.add(tuile);
     }
