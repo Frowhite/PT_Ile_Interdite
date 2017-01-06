@@ -40,7 +40,7 @@ public class VueInscription extends Observable {
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         window.setSize(300, 430);
         window.setLocation(870, 100);
-        panelGlobale = new JPanel();
+        panelGlobale = new JPanel(new BorderLayout());
 
         //***haut***
         titre = new JLabel("L'île Interdite");
@@ -51,21 +51,13 @@ public class VueInscription extends Observable {
         panelCentre = new JPanel();
         //***panel centre 1 (haut du panel centre)***
         panelCentre1 = new JPanel();
-        //texte "nombre de joueur"
-        textNbJ = new JLabel("Nombre de joueur");
+        //texte "Rentrer les joueurs"
+        textNbJ = new JLabel("Rentrer les joueurs :");
         textNbJ.setFont(font2);
-        //JComboBox du nombre de joueur
-        nbJoueur = new JComboBox();
-        nbJoueur.addItem("2");
-        nbJoueur.addItem("3");
-        nbJoueur.addItem("4");
-        //boutton "OK" qui valide le nombre de joueur
-        bOk = new JButton("OK");
-        bOk.setFont(font2);
+        
 
-        panelCentre1.add(textNbJ, BorderLayout.WEST);
-        panelCentre1.add(nbJoueur, BorderLayout.CENTER);
-        panelCentre1.add(bOk, BorderLayout.EAST);
+        panelCentre1.add(textNbJ, BorderLayout.CENTER);
+
 
         panelCentre.add(panelCentre1, BorderLayout.NORTH);
         //***panel centre 2 (bas du panel centre)***

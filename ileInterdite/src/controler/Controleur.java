@@ -2,17 +2,19 @@ package controler;
 
 import java.util.Observable;
 import java.util.Observer;
+import view.VueInscription;
+import view.VuePlateau;
 
 /**
  *
  * @author IUT2-Dept Info
  */
 public class Controleur implements Observer {
-    //fezfzefzefz
-    //tygifrio
-    
-    
+    private VuePlateau vuePlateau;
+    private VueInscription vueInscription;
     public Controleur() {
+        vuePlateau = new VuePlateau();
+        //vueInscription = new VueInscription();
     }
 
 
