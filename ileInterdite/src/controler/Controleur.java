@@ -21,6 +21,9 @@ public class Controleur implements Observer {
         vuePlateau = new VuePlateau();
     }
 
+    
+    
+    
 
     @Override
     public void update(Observable o, Object arg) {
