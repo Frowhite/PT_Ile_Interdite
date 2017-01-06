@@ -15,10 +15,11 @@ public class Tuile extends ObjetIdentifie {
     private Tresor tresor;
     private EtatTuile etat;
     private ArrayList<Aventurier> aventuriers;
+    private int ligne;
+    private int colonnes;
 
     public Tuile( String nomTuile,Tresor tresor) {
         super();
-     
         this.nomTuile = nomTuile;
         this.tresor = tresor;
         etat = EtatTuile.ASSECHEE;
@@ -82,7 +83,27 @@ public class Tuile extends ObjetIdentifie {
         this.aventuriers = aventuriers;
     }
 
-    
+    public int getLigne() {
+        return ligne;
+    }
+
+    public void setLigne(int ligne) {
+        this.ligne = ligne;
+    }
+
+    public int getColonnes() {
+        return colonnes;
+    }
+
+    public void setColonnes(int colonnes) {
+        this.colonnes = colonnes;
+    }
+
+
+    @Override
+    public Integer getId() {
+        return this.id ;
+    }
     
     
     
