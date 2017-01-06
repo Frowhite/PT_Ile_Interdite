@@ -1,33 +1,53 @@
 package model.cases;
 
+import java.util.*;
 import model.ObjetIdentifie;
+import model.aventuriers.Aventurier;
+import util.Utils.*;
 
 /**
  *
  * @author IUT2-Dept Info
  */
 public class Tuile extends ObjetIdentifie {
-    private int numero;
+   
     private String nomTuile;
-    private int l;
-    private int c;
-    
+    private Tresor tresor;
+    private EtatTuile etat;
+    private ArrayList<Aventurier> aventuriers;
 
-    public Tuile(int numero, String nomTuile, int l, int c) {
-        this.numero = numero;
+    public Tuile( String nomTuile,Tresor tresor) {
+        super();
+     
         this.nomTuile = nomTuile;
-        this.l= l;
-        this.c=c;
+        this.tresor = tresor;
+        etat = EtatTuile.ASSECHEE;
+        aventuriers = new ArrayList();
     }
     
     
-     public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////GETTEURS&SETTEURS////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+ 
 
     public String getNomTuile() {
         return nomTuile;
@@ -37,21 +57,31 @@ public class Tuile extends ObjetIdentifie {
         this.nomTuile= nomTuile;
     }
 
-    public int getL() {
-        return l;
+
+    public Tresor getTresor() {
+        return tresor;
     }
 
-    public void setL(int l) {
-        this.l = l;
+    public void setTresor(Tresor tresor) {
+        this.tresor = tresor;
     }
 
-    public int getC() {
-        return c;
+    public EtatTuile getEtat() {
+        return etat;
     }
 
-    public void setC(int c) {
-        this.c = c;
+    public void setEtat(EtatTuile etat) {
+        this.etat = etat;
     }
+
+    public ArrayList<Aventurier> getAventuriers() {
+        return aventuriers;
+    }
+
+    public void setAventuriers(ArrayList<Aventurier> aventuriers) {
+        this.aventuriers = aventuriers;
+    }
+
     
     
     
