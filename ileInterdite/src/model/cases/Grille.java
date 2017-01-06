@@ -1,5 +1,7 @@
 package model.cases;
 
+import model.aventuriers.Aventurier;
+
 /**
  * Classe permettant de gérer la grille des tuiles du jeu
  Elle gère un unique attribut : un tableau de 6 x 6 tuiles
@@ -24,6 +26,9 @@ public class Grille {
         this.tuiles = new Tuile[6][6];
     }
     
-    
+    public void TuilesPossibles (Aventurier av){
+        
+        
+    }
    
 }

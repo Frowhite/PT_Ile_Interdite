@@ -16,18 +16,27 @@ public abstract class Aventurier extends ObjetIdentifie {
     private String nom;
     private Pion capacite;
     private ArrayList<Carte> main;
+    private ArrayList<Tresor> tresors;
+    private ArrayList<Tuile> tuilesPossibles;
     private Tuile positionCourante;
     private Controleur controleur;
+    
 
     public Aventurier(String nom, Pion capacite, Tuile positionCourante, Controleur controleur) {
         super();
         this.nom = nom;
         this.capacite = capacite;
         main = new ArrayList();
+        tresors = new ArrayList();
+        tuilesPossibles = new ArrayList();
         this.positionCourante = positionCourante;
         this.controleur = controleur;
+        
     }
 
+
+    
+    
     
     
     
@@ -74,7 +83,34 @@ public abstract class Aventurier extends ObjetIdentifie {
     public void setControleur(Controleur controleur) {
         this.controleur = controleur;
     }
+
+    public ArrayList<Tresor> getTresor() {
+        return tresors;
+    }
+
+    public void setTresor(ArrayList<Tresor> tresors) {
+        this.tresors = tresors;
+    }
+
+    public ArrayList<Tresor> getTresors() {
+        return tresors;
+    }
+
+    public void setTresors(ArrayList<Tresor> tresors) {
+        this.tresors = tresors;
+    }
+
+    public ArrayList<Tuile> getTuilesPossibles() {
+        return tuilesPossibles;
+    }
+
+    public void setTuilesPossibles(ArrayList<Tuile> tuilesPossibles) {
+        this.tuilesPossibles = tuilesPossibles;
+    }
     
-     
+    
+    
+    
+    
     
 }

@@ -1,14 +1,19 @@
 package controler;
 
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import model.aventuriers.Aventurier;
+import model.cartes.Carte;
+import model.cartes.CarteTirage;
+import model.cartes.CarteTresor;
 import model.cases.Tuile;
 import util.Utils;
 import util.Utils.EtatTuile;
 import static util.Utils.EtatTuile.ASSECHEE;
 import util.Utils.Pion;
+import util.Utils.Tresor;
 
 /**
  *
@@ -16,6 +21,8 @@ import util.Utils.Pion;
  */
 public class Controleur implements Observer {
     private Tuile tuile[];
+    private ArrayList<Tresor> tresors;
+    private CarteTresor carteTresor;
     
     public Controleur() {
         
@@ -23,34 +30,86 @@ public class Controleur implements Observer {
     }
 
     
-       private boolean tuileEstDiagonale(Tuile avTuile, Tuile tuile) {
+        public void EstSurLaCase(Tuile avTuile, Tuile tuile) {
+            return (tuile.getC()== avTuile.getC() && tuile.getL()== avTuile.getL());
+        }
+    
+       public void tuileEstDiagonale(Tuile avTuile, Tuile tuile) {
       return ((tuile.getC()== avTuile.getC()-1 && tuile.getL()==avTuile.getL()-1) || (tuile.getC()== avTuile.getC()+1 && tuile.getL()== avTuile.getL()-1) || (tuile.getL()+1== avTuile.getL()+1 && tuile.getC()== avTuile.getC()-1) || (tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()+1));
           
     }
     
-    private boolean tuileEstAdjacente(Tuile avTuile, Tuile tuile){
+    public void AjoutTuilesAdjacentes(Tuile avTuile, Tuile tuile){
         
-       return ((tuile.getC()==avTuile.getC() && tuile.getL()== avTuile.getL()-1) ||(tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()) || (tuile.getC()==avTuile.getC() && tuile.getL()==avTuile.getL()+1) || (tuile.getC()==avTuile.getC()-1 && tuile.getL()==avTuile.getL()));
+      if ((tuile.get(c)==avTuile.getC() && tuile.getL()== avTuile.getL()-1){
+          
+          
+      }
+              
+              
+              
+              ||(tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()) || (tuile.getC()==avTuile.getC() && tuile.getL()==avTuile.getL()+1) || (tuile.getC()==avTuile.getC()-1 && tuile.getL()==avTuile.getL()));
     }
    
+    public Boolean PeutPrendreTresor(ArrayList<Carte> main, Tuile tuile){
+        
+        int calice=0;
+        int cristal=0;
+        int pierre=0;
+        int zephyr=0;
+        
+       for(int i=0; i<main.size() ; i++){
+           if (main.get(i)== carteTresor){
+               if(carteTresor.getTresor()== Tresor.CALICE){
+                   calice=calice+1;
+               }
+                   
+               if(carteTresor.getTresor()== Tresor.CRISTAL){
+                  cristal=cristal+1;
+               }
+               
+               if(carteTresor.getTresor()== Tresor.PIERRE){
+                   pierre=pierre+1;
+               }
+               
+               if(carteTresor.getTresor()== Tresor.ZEPHYR){
+                   zephyr=zephyr+1;
+               }
+               
+           }
+       }
+        return (tuile.getTresor()== Tresor.CALICE && calice>=4) || (tuile.getTresor()== Tresor.CRISTAL && cristal>=4) || (tuile.getTresor()== Tresor.PIERRE && pierre>=4) || (tuile.getTresor()== Tresor.ZEPHYR && zephyr>=4);
+       
+    }
+    
+    
     
     public void Assecher(Aventurier av, Tuile tuile){
         
         if (tuile.getEtat()== EtatTuile.INONDEE && tuileEstAdjacente(av.getPositionCourante(), tuile)){
              
              tuile.setEtat(ASSECHEE);
+        }
              
              
-             
-        if (tuile.getEtat()== EtatTuile.INONDEE && tuileEstDiagonale(av.getPositionCourante(), tuile) && av.getCapacite()== Pion.VERT)     
+        else if (tuile.getEtat()== EtatTuile.INONDEE && tuileEstDiagonale(av.getPositionCourante(), tuile) && av.getCapacite()== Pion.VERT) {    
              
              tuile.setEtat(ASSECHEE);
          }
-         
-         
+        
+        // dans les autres cas l'aventurier ne pourra pas assécher les tuiles.
     }
     
  
+    
+    public void obtenirTresor(Aventurier av, Tuile tuile){
+        if(EstSurLaCase(av.getPositionCourante(), tuile) && tuile.getTresor()!= null && PeutPrendreTresor(av.getMain(),tuile)){
+                tresors.add(tuile.getTresor());
+                tuile.setTresor(null);
+              //supprimer la deuxieme tuile associée au même trésor
+        }
+        
+    }
     
 
     @Override
