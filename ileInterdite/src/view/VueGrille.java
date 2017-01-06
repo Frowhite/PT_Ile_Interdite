@@ -20,7 +20,7 @@ public class VueGrille extends JPanel {
     public VueGrille(Image img) {
         this.img = img;
         this.setPreferredSize(new Dimension(600, 600));
-        gl.setVgap(10);
+        gl.setVgap(10);//espace entre les tuiles
         gl.setHgap(10);
         panelGlobale = new JPanel(gl);
 
@@ -37,7 +37,7 @@ public class VueGrille extends JPanel {
         
         Toolkit kit =  Toolkit.getDefaultToolkit(); 
         Dimension dim = kit.getScreenSize();
-        g.drawImage(img, dim.width/2-400, 0, null);
+        g.drawImage(img, 0, 0, null);
     }
 
     public void affichePlateau(JPanel panel) {
