@@ -1,6 +1,7 @@
 package view;
  
 import java.awt.Dimension;
+import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,7 +18,8 @@ public class VueTuile extends JPanel {
         setColone(colone);
         
         this.setPreferredSize(new Dimension(50, 50));
-        img = new ImageIcon(getClass().getResource("/images/titre.png"));
+        img = new ImageIcon(new ImageIcon(getClass().getResource("/images/titre.png"))
+                .getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT));
         tuile = new JLabel(img);
         this.add(tuile);
     }
@@ -25,7 +27,7 @@ public class VueTuile extends JPanel {
     public void setLigne(int ligne) {
         this.ligne = ligne;
     }
-
+    
     public void setColone(int colone) {
         this.colone = colone;
     }

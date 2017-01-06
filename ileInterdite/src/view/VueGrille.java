@@ -13,6 +13,7 @@ public class VueGrille extends JPanel {
     private GridLayout gl = new GridLayout(6, 6);
 
     public VueGrille() {
+        
         gl.setVgap(5);
         gl.setHgap(5);
         panelGlobale = new JPanel(gl);
