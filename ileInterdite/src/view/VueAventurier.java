@@ -1,33 +1,45 @@
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
- 
+
 public class VueAventurier extends JPanel {
-    private JLabel donnerNomJoueur, carte;
+
     private String nomJoueur;
-    private JPanel panelGlobale,panelCentre;
-    private GridLayout gl = new GridLayout(3, 3);
-    
-    public VueAventurier(){
+    private ArrayList<Integer> cartePossede;
+    private JLabel donnerNomJoueur, carte;
+
+    private JPanel panelGlobale;
+
+    public VueAventurier() {
+        cartePossede = new ArrayList<>();
+
         //***haut***
-        donnerNomJoueur=new JLabel("Information " + nomJoueur);
-        panelGlobale.add(donnerNomJoueur);
-        //***panel centre***
-        panelCentre=new JPanel(gl);
-        
-        panelGlobale.add(panelCentre);
-        
-        
-        
+        panelGlobale = new JPanel(new BorderLayout());
+        donnerNomJoueur = new JLabel("Information " + nomJoueur);
+        panelGlobale.add(donnerNomJoueur, BorderLayout.NORTH);
+    }
+
+    public void ajouterCarte(int carte) {
+        cartePossede.add(carte);
+        this.repaint();
+    }
+
+    public void paint(Graphics g) {
+
+        //***centre***
+        for (int i = 1; i <= cartePossede.size(); i++) {
+            g.drawImage(new ImageIcon(getClass().getResource("/images/titre.png")).getImage(), i * 100, 0, this);
+        }
         this.add(panelGlobale);
+        this.setBackground(Color.red);
+
     }
-    
-    public void ajouterCarte(int carte){
-        panelCentre.add(new JLabel(new ImageIcon(getClass().getResource("/images/titre.png"))));
-    
-    
-    }
+
 }

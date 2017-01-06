@@ -20,8 +20,12 @@ public class Controleur implements Observer {
     private VueInscription vueInscription;
     private Tuile tuile[];
     public Controleur() {
-        vuePlateau = new VuePlateau();
-        //vueInscription = new VueInscription();
+        /*vuePlateau = new VuePlateau(3);
+        vuePlateau.getAventurier1().ajouterCarte(0);
+        vuePlateau.getAventurier1().ajouterCarte(0);
+        vuePlateau.getAventurier1().ajouterCarte(0);
+        vuePlateau.getAventurier1().ajouterCarte(0);
+        vueInscription = new VueInscription();*/
     }
 
     
@@ -94,4 +98,5 @@ public class Controleur implements Observer {
 //      return ((tuile.getC()== avTuile.getC()-1 && tuile.getL()==avTuile.getL()-1) || (tuile.getC()== avTuile.getC()+1 && tuile.getL()== avTuile.getL()-1) || (tuile.getL()+1== avTuile.getL()+1 && tuile.getC()== avTuile.getC()-1) || (tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()+1));
 //          
 //    }
+
 }

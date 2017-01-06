@@ -1,14 +1,11 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.HashMap;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -37,7 +34,10 @@ public class VueGrille extends JPanel {
 
     //dessin le fond
     public void paintComponent(Graphics g) {
-        g.drawImage(img, 100, 0, null);
+        
+        Toolkit kit =  Toolkit.getDefaultToolkit(); 
+        Dimension dim = kit.getScreenSize();
+        g.drawImage(img, dim.width/2-400, 0, null);
     }
 
     public void affichePlateau(JPanel panel) {
