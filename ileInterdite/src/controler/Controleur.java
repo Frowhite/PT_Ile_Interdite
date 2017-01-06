@@ -1,60 +1,113 @@
 package controler;
 
-import java.util.*;
-import model.aventuriers.Aventurier;
-import model.cases.*;
-import util.Utils;
-import util.Utils.*;
-import view.*;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import model.aventuriers.Aventurier;
+import model.cartes.Carte;
+import model.cartes.CarteInondation;
+import model.cartes.CarteTirage;
+import model.cartes.CarteTresor;
+import model.cases.Grille;
+import model.cases.Tuile;
+import util.Utils;
+import util.Utils.EtatTuile;
+import static util.Utils.EtatTuile.ASSECHEE;
+import util.Utils.Pion;
+import util.Utils.Tresor;
+import view.VueInscription;
+import view.VuePlateau;
 
 /**
  *
  * @author IUT2-Dept Info
  */
 public class Controleur implements Observer {
-
     private VuePlateau vuePlateau;
     private VueInscription vueInscription;
-    private Tuile tuile[] = new Tuile[24];
-
+    private Tuile tuile[];
+    private ArrayList<Tresor> tresors;
+    private CarteTresor carteTresor;
+    private Grille grille; 
+    private ArrayList<CarteTirage> défausseTirage;
+    private ArrayList<CarteInondation> defausseInondation;
+    
     public Controleur() {
-       // vuePlateau = new VuePlateau();
+        vuePlateau = new VuePlateau();
         //vueInscription = new VueInscription();
-        initialiserPartie();
-        
     }
 
-    /*     private boolean tuileEstDiagonale(Tuile avTuile, Tuile tuile) {
-      return ((tuile.getC()== avTuile.getC()-1 && tuile.getL()==avTuile.getL()-1) || (tuile.getC()== avTuile.getC()+1 && tuile.getL()== avTuile.getL()-1) || (tuile.getL()+1== avTuile.getL()+1 && tuile.getC()== avTuile.getC()-1) || (tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()+1));
-          
-    }
     
-    private boolean tuileEstAdjacente(Tuile avTuile, Tuile tuile){
         
-       return ((tuile.getC()==avTuile.getC() && tuile.getL()== avTuile.getL()-1) ||(tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()) || (tuile.getC()==avTuile.getC() && tuile.getL()==avTuile.getL()+1) || (tuile.getC()==avTuile.getC()-1 && tuile.getL()==avTuile.getL()));
-    }
+    
+    
+    
    
-    
-    public void Assecher(Aventurier av, Tuile tuile){
+    public Boolean PeutPrendreTresor(ArrayList<Carte> main, Tuile tuile){
         
-        if (tuile.getEtat()== EtatTuile.INONDEE && tuileEstAdjacente(av.getPositionCourante(), tuile)){
-             
-             tuile.setEtat(ASSECHEE);
-             
-             
-             
-        if (tuile.getEtat()== EtatTuile.INONDEE && tuileEstDiagonale(av.getPositionCourante(), tuile) && av.getCapacite()== Pion.VERT)     
-             
-             tuile.setEtat(ASSECHEE);
-         }
-         
-         
+        int calice=0;
+        int cristal=0;
+        int pierre=0;
+        int zephyr=0;
+        
+       for(int i=0; i<main.size() ; i++){
+           if (main.get(i)== carteTresor){
+               if(carteTresor.getTresor()== Tresor.CALICE){
+                   calice=calice+1;
+               }
+                   
+               if(carteTresor.getTresor()== Tresor.CRISTAL){
+                  cristal=cristal+1;
+               }
+               
+               if(carteTresor.getTresor()== Tresor.PIERRE){
+                   pierre=pierre+1;
+               }
+               
+               if(carteTresor.getTresor()== Tresor.ZEPHYR){
+                   zephyr=zephyr+1;
+               }
+               
+           }
+       }
+        return (tuile.getTresor()== Tresor.CALICE && calice>=4) || (tuile.getTresor()== Tresor.CRISTAL && cristal>=4) || (tuile.getTresor()== Tresor.PIERRE && pierre>=4) || (tuile.getTresor()== Tresor.ZEPHYR && zephyr>=4);
+       
+    }
+    
+    
+    
+    public void Assecher(Tuile tuile){
+            tuile.setEtat(ASSECHEE);
     }
     
  
-     */
+    
+    public void obtenirTresor(Aventurier av, Tuile tuile){
+        if(av.getPositionCourante().getTresor() != null){
+            if(PeutPrendreTresor(av.getMain(), av.getPositionCourante()))
+                av.addTresor(av.getPositionCourante().getTresor());
+                Tuile secondeTuile = rechercherTresor(av);
+                av.getPositionCourante().setTresor(null);
+                secondeTuile.setTresor(null);
+        }
+        
+    }
+    
+    public Tuile rechercherTresor(Aventurier av){
+        Tuile t = null;
+        for(int i = 0;i < 24;i++){
+            if(tuile[i].getTresor() == av.getPositionCourante().getTresor()){
+                if(tuile[i] != av.getPositionCourante()){
+                    t = tuile[i];
+                }
+            }
+        }
+        return t;
+    }
+
     @Override
     public void update(Observable o, Object arg) {
     }
@@ -91,7 +144,7 @@ public class Controleur implements Observer {
 
         melangerTuile(tuile);
 
-        Grille grille = new Grille(tuile);
+        this.grille = new Grille(tuile);
 
     }
 
@@ -110,4 +163,33 @@ public class Controleur implements Observer {
     }
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

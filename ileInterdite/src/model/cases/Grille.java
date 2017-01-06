@@ -1,5 +1,9 @@
 package model.cases;
 
+import model.aventuriers.Aventurier;
+import util.Utils;
+import util.Utils.Pion;
+
 /**
  * Classe permettant de gérer la grille des tuiles du jeu Elle gère un unique
  * attribut : un tableau de 6 x 6 tuiles Il y a 12 tuiles null et 24 tuiles
@@ -18,6 +22,21 @@ public class Grille {
         this.tuiles = new Tuile[6][6];
         remplirGrille(tuile);
     }
+    
+    public void TuilesPossibles (Aventurier av){
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes()-1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()-1][av.getPositionCourante().getColonnes()]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes()+1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()+1][av.getPositionCourante().getColonnes()]);
+       
+       if(av.getCapacite() == Pion.VERT){
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()-1][av.getPositionCourante().getColonnes()-1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()-1][av.getPositionCourante().getColonnes()+1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()+1][av.getPositionCourante().getColonnes()+1]);
+       av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()+1][av.getPositionCourante().getColonnes()-1]);
+       }
+    }
+   
 
     public void remplirGrille(Tuile[] tuile) {
         int i = 0;
