@@ -1,5 +1,6 @@
 package controler;
 
+
 import java.util.Observable;
 import java.util.Observer;
 import model.cases.*;
@@ -14,10 +15,28 @@ public class Controleur implements Observer {
     private Tuile tuile[];
     
     public Controleur() {
+        
+        
     }
 
+//    public void Assecher(Aventurier av, Tuile tuile){
+//        Pion capacite;
+//        capacite= av.getCapacite();
+//        
+//         //if (tuile.getEtat()== EtatTuile.ASSECHEE && tuileAdjacente()){
+//             
+//             
+//         }
+//         
+//        
+        
+         
+         
+        
+        
     
     
+   
     
 
     @Override
@@ -55,4 +74,8 @@ public class Controleur implements Observer {
         tuile[23] = new Tuile("Observatoire",null);
         
     }
+//      private boolean TuileEstDiagonale(Tuile avTuile, Tuile tuile) {
+//      return ((tuile.getC()== avTuile.getC()-1 && tuile.getL()==avTuile.getL()-1) || (tuile.getC()== avTuile.getC()+1 && tuile.getL()== avTuile.getL()-1) || (tuile.getL()+1== avTuile.getL()+1 && tuile.getC()== avTuile.getC()-1) || (tuile.getC()==avTuile.getC()+1 && tuile.getL()==avTuile.getL()+1));
+//          
+//    }
 }
