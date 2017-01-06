@@ -46,6 +46,9 @@ public abstract class Aventurier extends ObjetIdentifie {
         getTresors().add(t);
     }
     
+    public void removeMain(Carte c){
+        getMain().remove(c);
+    }
     
     ////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////GETTERS&SETTERS///////////////////////

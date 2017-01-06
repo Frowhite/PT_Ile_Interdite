@@ -90,6 +90,7 @@ public class Controleur implements Observer {
             if(PeutPrendreTresor(av.getMain(), av.getPositionCourante()))
                 av.addTresor(av.getPositionCourante().getTresor());
                 Tuile secondeTuile = rechercherTresor(av);
+            //    defausseCarteTresor(av,av.getPositionCourante().getTresor());
                 av.getPositionCourante().setTresor(null);
                 secondeTuile.setTresor(null);
         }
@@ -107,6 +108,12 @@ public class Controleur implements Observer {
         }
         return t;
     }
+    
+//    public void defausseCarteTresor(Aventurier av,Tresor tresor){
+//        for(int i = 0 ;i<4;i++){
+//            av.removeMain();
+//        }
+//    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -162,11 +169,83 @@ public class Controleur implements Observer {
       ar[i] = a;
     }
   }
-}
-
-////////////////////////////////////////////////////////////////////////////////
+  
+  
+  ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+
+    public VuePlateau getVuePlateau() {
+        return vuePlateau;
+    }
+
+    public void setVuePlateau(VuePlateau vuePlateau) {
+        this.vuePlateau = vuePlateau;
+    }
+
+    public VueInscription getVueInscription() {
+        return vueInscription;
+    }
+
+    public void setVueInscription(VueInscription vueInscription) {
+        this.vueInscription = vueInscription;
+    }
+
+    public Tuile[] getTuile() {
+        return tuile;
+    }
+
+    public void setTuile(Tuile[] tuile) {
+        this.tuile = tuile;
+    }
+
+    public ArrayList<Tresor> getTresors() {
+        return tresors;
+    }
+
+    public void setTresors(ArrayList<Tresor> tresors) {
+        this.tresors = tresors;
+    }
+
+    public CarteTresor getCarteTresor() {
+        return carteTresor;
+    }
+
+    public void setCarteTresor(CarteTresor carteTresor) {
+        this.carteTresor = carteTresor;
+    }
+
+    public Grille getGrille() {
+        return grille;
+    }
+
+    public void setGrille(Grille grille) {
+        this.grille = grille;
+    }
+
+    public ArrayList<CarteTirage> getDéfausseTirage() {
+        return défausseTirage;
+    }
+
+    public void setDéfausseTirage(ArrayList<CarteTirage> défausseTirage) {
+        this.défausseTirage = défausseTirage;
+    }
+
+    public ArrayList<CarteInondation> getDefausseInondation() {
+        return defausseInondation;
+    }
+
+    public void setDefausseInondation(ArrayList<CarteInondation> defausseInondation) {
+        this.defausseInondation = defausseInondation;
+    }
+
+  
+  
+  
+  
+  
+}
+
 
 
 
