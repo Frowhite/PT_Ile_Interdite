@@ -177,7 +177,10 @@ public class Controleur implements Observer {
 
             }
         }
-        return (tuile.getTresor() == Tresor.CALICE && calice >= 4) || (tuile.getTresor() == Tresor.CRISTAL && cristal >= 4) || (tuile.getTresor() == Tresor.PIERRE && pierre >= 4) || (tuile.getTresor() == Tresor.ZEPHYR && zephyr >= 4);
+        return (tuile.getTresor() == Tresor.CALICE && calice >= 4) || 
+                (tuile.getTresor() == Tresor.CRISTAL && cristal >= 4) || 
+                (tuile.getTresor() == Tresor.PIERRE && pierre >= 4) || 
+                (tuile.getTresor() == Tresor.ZEPHYR && zephyr >= 4);
 
     }
 
@@ -194,15 +197,24 @@ public class Controleur implements Observer {
     }
 
     public void defausseCarteTresor(Aventurier av, Tresor tresor) {
+        ArrayList<CarteTresor> cartesTresor = new ArrayList();
         for (int i = 0; i < av.getMain().size(); i++) {
             if (av.getMain().get(i).estTresor()) {
-                av.removeCarte(av.getMain().get(i));
+                cartesTresor.add((CarteTresor) av.getMain().get(i));
+               
+               }
             }
+        for(int j = 0;j<cartesTresor.size();j++)
+         if(cartesTresor.get(j).getTresor() == tresor){
+                    av.removeCarte(cartesTresor.get(j));
+                }
         }
-    }
+    
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
+    
     ////////////////////////////////DONNER CARTE////////////////////////////////
+    
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////Partie IHM /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
