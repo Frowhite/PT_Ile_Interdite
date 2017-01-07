@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import model.cases.Tuile;
 import util.Utils;
 import util.Utils.EtatTuile;
 
@@ -25,26 +26,23 @@ public class VueGrille extends JPanel {
         this.setPreferredSize(new Dimension(600, 600));
         gl.setVgap(10);//espace entre les tuiles
         gl.setHgap(10);
+
         panelGlobale = new JPanel(gl);
 
-        for (int i = 0; i < 24; i++) {
-            VueTuile t = new VueTuile();
-            tuile.put(i, t);
-            assecheeInondeeOuCouleeTuile(i, EtatTuile.ASSECHEE);
-        }
-        affichePlateau(panelGlobale);
         this.add(panelGlobale);
     }
 
-    //dessin le fond
-    public void paintComponent(Graphics g) {
-
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension dim = kit.getScreenSize();
-        g.drawImage(img, 0, 0, null);
+    public void initialiserPlateau(Tuile[] tuile) {
+        for (int i = 0; i < 24; i++) {
+            VueTuile t = new VueTuile();
+            t.assecheeInondeeOuCouleeTuile(i, EtatTuile.ASSECHEE);// il calasse du plus petit au plus grand
+            this.tuile.put(tuile[i].getId(), t);
+        }
+        affichePlateau(panelGlobale);
     }
 
     public void affichePlateau(JPanel panel) {
+        System.out.println("3");
         int numTuile = 0;
         for (int j = 1; j <= 6; j++) {//parcourir les lignes
             for (int k = 1; k <= 6; k++) {//parcourir les colones
@@ -56,102 +54,33 @@ public class VueGrille extends JPanel {
                         || j == 5 && k == 6 || j == 6 && k == 5) {//on enlève les tuiles qui sont sur les cotés
                     panel.add(new JLabel(""));
                 } else {
-                    panel.add(tuile.get(numTuile));
+                    int x = 0;
+                    for (HashMap.Entry<Integer, VueTuile> e : tuile.entrySet()) {
+                        if (x == numTuile) {
+                            panel.add(e.getValue());
+                        }
+                        x++;
+                    }
+
                     numTuile += 1;
                 }
             }
         }
         panel.setOpaque(false);
-
     }
 
-    public void assecheeInondeeOuCouleeTuile(int numTuile, EtatTuile etatTuile) {
-        String img = "/images/tuiles/";
-        if (etatTuile == EtatTuile.COULEE) {
-            img = "";
-        } else {
-            switch (numTuile) {
-                case 0:
-                    img += "Heliport";
-                    break;
-                case 1:
-                    img += "LaCarverneDesOmbres";
-                    break;
-                case 2:
-                    img += "LaCarverneDuBrasier";
-                    break;
-                case 3:
-                    img += "LaForetPourpre";
-                    break;
-                case 4:
-                    img += "LaPorteDeBronze";
-                    break;
-                case 5:
-                    img += "LaPorteDeCuivre";
-                    break;
-                case 6:
-                    img += "LaPorteDeFer";
-                    break;
-                case 7:
-                    img += "LaPortedArgent";
-                    break;
-                case 8:
-                    img += "LaPortedOr";
-                    break;
-                case 9:
-                    img += "LaTourDuGuet";
-                    break;
-                case 10:
-                    img += "LeJardinDesHurlements";
-                    break;
-                case 11:
-                    img += "LeJardinDesMurmures";
-                    break;
-                case 12:
-                    img += "LeLagonPerdu";
-                    break;
-                case 13:
-                    img += "LeMaraisBrumeux";
-                    break;
-                case 14:
-                    img += "LePalaisDeCorail";
-                    break;
-                case 15:
-                    img += "LePalaisDesMarees";
-                    break;
-                case 16:
-                    img += "LePontDesAbimes";
-                    break;
-                case 17:
-                    img += "LeRocherFantome";
-                    break;
-                case 18:
-                    img += "LeTempleDeLaLune";
-                    break;
-                case 19:
-                    img += "LeTempleDuSoleil";
-                    break;
-                case 20:
-                    img += "LeValDuCrepuscule";
-                    break;
-                case 21:
-                    img += "LesDunesDeLIllusion";
-                    break;
-                case 22:
-                    img += "LesFalaisesDeLOubli";
-                    break;
-                case 23:
-                    img += "Observatoire";
-                    break;
-
-            }
-            if (etatTuile == EtatTuile.INONDEE) {
-                img += "_Inonde";
-            }
-            img += ".png";
-        }
-
-        tuile.get(numTuile).etatDeLaTuile(img);
+    public void etatTuile(int numTuile, EtatTuile etatTuile){
+        tuile.get(numTuile).assecheeInondeeOuCouleeTuile(numTuile, etatTuile);
+    
+    
     }
+    
+    
+    //dessin le fond
+    public void paintComponent(Graphics g) {
 
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension dim = kit.getScreenSize();
+        g.drawImage(img, 0, 0, null);
+    }
 }

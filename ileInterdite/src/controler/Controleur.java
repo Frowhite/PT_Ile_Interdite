@@ -2,12 +2,12 @@ package controler;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import model.ObjetIdentifie;
 import model.aventuriers.Aventurier;
 import model.cartes.*;
 import model.cases.*;
 import util.Utils.*;
 import view.*;
-import util.Utils.EtatTuile.*;
 
 /**
  *
@@ -90,6 +90,7 @@ public class Controleur implements Observer {
     }
 
     public void créerGrille() {
+        tuile = new Tuile[24];
         tuile[0] = new Tuile("Heliport", null);
         tuile[1] = new Tuile("La Caverne des Ombres", Tresor.CRISTAL);
         tuile[2] = new Tuile("La Caverne du Brasier", Tresor.CRISTAL);
@@ -260,6 +261,7 @@ public class Controleur implements Observer {
 ////////////////////Partie IHM /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void ouvrirPlateauDeJeu() {
+        initialiserPartie();
         vuePlateau = new VuePlateau(aventuriers.size());
         vuePlateau.addObserver(this);
 
@@ -280,8 +282,8 @@ public class Controleur implements Observer {
             }
 
         }
-        vuePlateau.getVueGrille().assecheeInondeeOuCouleeTuile(5, EtatTuile.INONDEE);
-        vuePlateau.getVueGrille().assecheeInondeeOuCouleeTuile(15, EtatTuile.COULEE);
+        vuePlateau.getVueGrille().initialiserPlateau(tuile);
+        vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
 
     }
 

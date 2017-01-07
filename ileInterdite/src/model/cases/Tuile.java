@@ -10,7 +10,6 @@ import util.Utils.*;
  * @author IUT2-Dept Info
  */
 public class Tuile extends ObjetIdentifie {
-   
     private String nomTuile;
     private Tresor tresor;
     private EtatTuile etat;
@@ -18,7 +17,7 @@ public class Tuile extends ObjetIdentifie {
     private int ligne;
     private int colonnes;
 
-    public Tuile( String nomTuile,Tresor tresor) {
+    public Tuile(String nomTuile,Tresor tresor) {
         super();
         this.nomTuile = nomTuile;
         this.tresor = tresor;
