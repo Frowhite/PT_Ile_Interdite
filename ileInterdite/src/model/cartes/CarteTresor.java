@@ -13,6 +13,7 @@ public class CarteTresor extends CarteTirage {
      private Tresor tresor;
 
     public CarteTresor(Tresor tresor) {
+        super();
         this.tresor = tresor;
     }
 
@@ -24,5 +25,8 @@ public class CarteTresor extends CarteTirage {
         this.tresor = tresor;
     }
     
-    
+     @Override
+    public boolean estTresor(){
+        return true;
+    }
 }
