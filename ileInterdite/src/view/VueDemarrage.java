@@ -24,7 +24,7 @@ import util.Utils.Commandes;
  *
  * @author dandelr
  */
-public class VueInterface extends Observable {
+public class VueDemarrage extends Observable {
 
     private JFrame window;
     private JPanel panelGlobale, panelCentre;
@@ -33,7 +33,7 @@ public class VueInterface extends Observable {
     private Font font = new Font("Arial", 0, 25);
     private GridLayout gl = new GridLayout(4, 1);
 
-    public VueInterface() {
+    public VueDemarrage() {
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         window.setSize(340, 430);

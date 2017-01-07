@@ -3,23 +3,39 @@ package view;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import util.Utils;
 import util.Utils.EtatTuile;
 
 public class VueTuile extends JPanel {
 
+    private VueGrille vueGrille;
     private ImageIcon img;
     private JLabel tuile;
     private EtatTuile etatTuile = EtatTuile.ASSECHEE;
+    int x=0;
 
-    public VueTuile() {
+    public VueTuile(VueGrille vueGrille) {
+        this.vueGrille=vueGrille;
         //taille des tuiles qui s'adapte à l'écran
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
         tuile = new JLabel();
+        tuile.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                vueGrille.getVuePlateau().test();
+                
+            }
+        });
         this.add(tuile);
     }
 
@@ -28,7 +44,7 @@ public class VueTuile extends JPanel {
                 .getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
         tuile.setIcon(img);
     }
-    
+
     public void assecheeInondeeOuCouleeTuile(int numTuile, EtatTuile etatTuile) {
         String img = "/images/tuiles/";
         if (etatTuile == EtatTuile.COULEE) {

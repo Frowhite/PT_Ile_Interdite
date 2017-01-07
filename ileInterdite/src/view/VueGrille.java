@@ -20,11 +20,13 @@ public class VueGrille extends JPanel {
     
     private HashMap<Integer,VueTuile> tuile = new HashMap<>();
     
+    private VuePlateau vuePlateau;
     private Image img;
     private JPanel panelGlobale;
     private GridBagConstraints gbc = new GridBagConstraints();
     
-    public VueGrille(Image img) {
+    public VueGrille(Image img, VuePlateau vuePlateau) {
+        this.vuePlateau=vuePlateau;
         this.img = img;
         this.setPreferredSize(new Dimension(600, 600));
         
@@ -36,13 +38,14 @@ public class VueGrille extends JPanel {
     
     public void initialiserPlateau(Tuile[] tuiles) {
         for (int i = 0; i < 24; i++) {
-            VueTuile t = new VueTuile();
+            VueTuile t = new VueTuile(this);
             tuile.put(tuiles[i].getId(), t);
             t.assecheeInondeeOuCouleeTuile(tuiles[i].getId(), EtatTuile.ASSECHEE);// il calasse du plus petit au plus grand
         }
         affichePlateau(panelGlobale, tuiles);
     }
     
+    //crée le plateau
     public void affichePlateau(JPanel panel, Tuile[] tuiles) {
         for (int i = 0; i < 24; i++) {
             gbc.gridx = tuiles[i].getColonnes();
@@ -52,9 +55,9 @@ public class VueGrille extends JPanel {
         panel.setOpaque(false);
     }
     
-//    public void etatTuile(int numTuile, EtatTuile etatTuile) {
-//        tuile.get(numTuile).assecheeInondeeOuCouleeTuile(numTuile, etatTuile);
-//    }
+    public void etatTuile(int numTuile, EtatTuile etatTuile) {
+        tuile.get(numTuile).assecheeInondeeOuCouleeTuile(numTuile, etatTuile);
+    }
 
     //dessin le fond
     public void paintComponent(Graphics g) {
@@ -62,4 +65,10 @@ public class VueGrille extends JPanel {
         Dimension dim = kit.getScreenSize();
         g.drawImage(img, 0, 0, null);
     }
+
+    public VuePlateau getVuePlateau() {
+        return vuePlateau;
+    }
+    
+    
 }

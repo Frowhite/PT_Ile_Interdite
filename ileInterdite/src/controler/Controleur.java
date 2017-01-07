@@ -26,7 +26,7 @@ public class Controleur implements Observer {
     private int niveauEau;
 
     private VueNiveau vueNiveau;
-    private VueInterface vueInterface;
+    private VueDemarrage vueDemarrage;
     private VueMontrerJoueur vueMontrerJoueur;
     private VuePlateau vuePlateau;
     private VueInscription vueInscription;
@@ -42,21 +42,21 @@ public class Controleur implements Observer {
 ////////////////////////////////////////////////////////////////////////////////    
     @Override
     public void update(Observable o, Object arg) {
-        if (o == vueInterface) {
+        if (o == vueDemarrage) {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
                     case COMMENCER_PARTIE:
-                        vueInterface.fermerFenetre();
+                        vueDemarrage.fermerFenetre();
                         vueMontrerJoueur.fermerFenetre();//pour vueMontrerJoueur:met en setVisible(false)
                         ouvrirPlateauDeJeu();
                         break;
                     case INSCRIRE_JOUEUR:
-                        vueInterface.fermerFenetre();
+                        vueDemarrage.fermerFenetre();
                         vueMontrerJoueur.fermerFenetre();//pour vueMontrerJoueur:met en setVisible(false)
                         ouvrirFenetreInscription();
                         break;
                     case QUITTER:
-                        vueInterface.quitterJeu();//arrète le programme
+                        vueDemarrage.quitterJeu();//arrète le programme
                         break;
                 }
             }
@@ -72,6 +72,15 @@ public class Controleur implements Observer {
                         vueInscription.fermerFenetre();
                         ajouteJoueur();
                         ouvrirFenetreInterface();
+                        break;
+                }
+            }
+        }
+        if (o == vuePlateau) {
+            if (arg instanceof Commandes) {
+                switch ((Commandes) arg) {
+                    case VALIDER:
+                        System.out.println("salut!!!");
                         break;
                 }
             }
@@ -102,30 +111,30 @@ public class Controleur implements Observer {
     ////////////////////////////////GRILLE//////////////////////////////////////
     public void créerGrille() {
         tuile = new Tuile[24];
-        tuile[0] = new Tuile(0,"Heliport", null);
-        tuile[1] = new Tuile(1,"La Caverne des Ombres", Tresor.CRISTAL);
-        tuile[2] = new Tuile(2,"La Caverne du Brasier", Tresor.CRISTAL);
-        tuile[3] = new Tuile(3,"La Foret Pourpre", null);
-        tuile[4] = new Tuile(4,"La Porte de Bronze", null);
-        tuile[5] = new Tuile(5,"La Porte de Cuivre", null);
-        tuile[6] = new Tuile(6,"La Porte de fer", null);
-        tuile[7] = new Tuile(7,"La Porte d'Argent", null);
-        tuile[8] = new Tuile(8,"La Porte d'Or ", null);
-        tuile[9] = new Tuile(9,"La Tour du Guet", null);
-        tuile[10] = new Tuile(10,"Le Jardin du Hurlement", Tresor.ZEPHYR);
-        tuile[11] = new Tuile(11,"Le Jadin des Murmures", Tresor.ZEPHYR);
-        tuile[12] = new Tuile(12,"Le Lagon Perdu", null);
-        tuile[13] = new Tuile(13,"Le Marais Brumeux", null);
-        tuile[14] = new Tuile(14,"Le Palais de Corail", Tresor.CALICE);
-        tuile[15] = new Tuile(15,"Le Palais des Marees", Tresor.CALICE);
-        tuile[16] = new Tuile(16,"Le Pont des Abimes", null);
-        tuile[17] = new Tuile(17,"Le Rocher Fantome", null);
-        tuile[18] = new Tuile(18,"Le Temple de Lune", Tresor.PIERRE);
-        tuile[19] = new Tuile(19,"Le Temple du Soleil", Tresor.PIERRE);
-        tuile[20] = new Tuile(20,"Le Val du Crépuscule", null);
-        tuile[21] = new Tuile(21,"Les Dunes de L'illusion", null);
-        tuile[22] = new Tuile(22,"Les Falaises de l'Oubli", null);
-        tuile[23] = new Tuile(23,"Observatoire", null);
+        tuile[0] = new Tuile(0, "Heliport", null);
+        tuile[1] = new Tuile(1, "La Caverne des Ombres", Tresor.CRISTAL);
+        tuile[2] = new Tuile(2, "La Caverne du Brasier", Tresor.CRISTAL);
+        tuile[3] = new Tuile(3, "La Foret Pourpre", null);
+        tuile[4] = new Tuile(4, "La Porte de Bronze", null);
+        tuile[5] = new Tuile(5, "La Porte de Cuivre", null);
+        tuile[6] = new Tuile(6, "La Porte de fer", null);
+        tuile[7] = new Tuile(7, "La Porte d'Argent", null);
+        tuile[8] = new Tuile(8, "La Porte d'Or ", null);
+        tuile[9] = new Tuile(9, "La Tour du Guet", null);
+        tuile[10] = new Tuile(10, "Le Jardin du Hurlement", Tresor.ZEPHYR);
+        tuile[11] = new Tuile(11, "Le Jadin des Murmures", Tresor.ZEPHYR);
+        tuile[12] = new Tuile(12, "Le Lagon Perdu", null);
+        tuile[13] = new Tuile(13, "Le Marais Brumeux", null);
+        tuile[14] = new Tuile(14, "Le Palais de Corail", Tresor.CALICE);
+        tuile[15] = new Tuile(15, "Le Palais des Marees", Tresor.CALICE);
+        tuile[16] = new Tuile(16, "Le Pont des Abimes", null);
+        tuile[17] = new Tuile(17, "Le Rocher Fantome", null);
+        tuile[18] = new Tuile(18, "Le Temple de Lune", Tresor.PIERRE);
+        tuile[19] = new Tuile(19, "Le Temple du Soleil", Tresor.PIERRE);
+        tuile[20] = new Tuile(20, "Le Val du Crépuscule", null);
+        tuile[21] = new Tuile(21, "Les Dunes de L'illusion", null);
+        tuile[22] = new Tuile(22, "Les Falaises de l'Oubli", null);
+        tuile[23] = new Tuile(23, "Observatoire", null);
 
         melangerTuile(tuile);
 
@@ -292,40 +301,36 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
-    
     ////////////////////////////////DONNER CARTE////////////////////////////////
-    
     ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
-    public void PiocherCarteTresorDepart(Aventurier jCourant){
-       
-            CarteTirage cartePioche = getPiocheTirage().get(0);
-            remPiocheTirage(cartePioche);
-            if(!cartePioche.estMontee()){
-                jCourant.addCarteMain(cartePioche);
-            }
-            if(cartePioche.estMontee()){
-                addPiocheTirage(cartePioche);
-                setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
-                PiocherCarteTresorDepart(jCourant);
-             
+    public void PiocherCarteTresorDepart(Aventurier jCourant) {
+
+        CarteTirage cartePioche = getPiocheTirage().get(0);
+        remPiocheTirage(cartePioche);
+        if (!cartePioche.estMontee()) {
+            jCourant.addCarteMain(cartePioche);
+        }
+        if (cartePioche.estMontee()) {
+            addPiocheTirage(cartePioche);
+            setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
+            PiocherCarteTresorDepart(jCourant);
+
         }
     }
-    
-    public void PiocherCarteTresor(Aventurier av){
-            CarteTirage cartePioche = getPiocheTirage().get(0);
-            remPiocheTirage(cartePioche);
-            if(!cartePioche.estMontee()){
-                av.addCarteMain(cartePioche);
-            }
-            if(cartePioche.estMontee()){
-                addPiocheTirage(cartePioche);
-                setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
-                
-               
+
+    public void PiocherCarteTresor(Aventurier av) {
+        CarteTirage cartePioche = getPiocheTirage().get(0);
+        remPiocheTirage(cartePioche);
+        if (!cartePioche.estMontee()) {
+            av.addCarteMain(cartePioche);
+        }
+        if (cartePioche.estMontee()) {
+            addPiocheTirage(cartePioche);
+            setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
+
         }
     }
-    
-    
+
     ///////////////////////////////PIOCHER CARTE INONDATION/////////////////////
     public void PiocherCarteInondation() {
         CarteInondation tuileInonde = getPiocheInondation().get(0);
@@ -366,13 +371,13 @@ public class Controleur implements Observer {
 
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);
-        //vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
+        vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
 
     }
 
     public void ouvrirFenetreInterface() {
-        vueInterface = new VueInterface();
-        vueInterface.addObserver(this);
+        vueDemarrage = new VueDemarrage();
+        vueDemarrage.addObserver(this);
         vueMontrerJoueur.ouvrirFenetre();
     }
 
@@ -572,12 +577,12 @@ public class Controleur implements Observer {
         this.aventuriers = aventuriers;
     }
 
-    public VueInterface getVueInterface() {
-        return vueInterface;
+    public VueDemarrage getVueDemarrage() {
+        return vueDemarrage;
     }
 
-    public void setVueInterface(VueInterface vueInterface) {
-        this.vueInterface = vueInterface;
+    public void setVueDemarrage(VueDemarrage vueDemarrage) {
+        this.vueDemarrage = vueDemarrage;
     }
 
     public VueMontrerJoueur getVueMontrerJoueur() {
