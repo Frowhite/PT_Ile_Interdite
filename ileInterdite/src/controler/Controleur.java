@@ -317,9 +317,13 @@ public class Controleur implements Observer {
                 av.addCarteMain(cartePioche);
             }
             if(cartePioche.estMontee()){
-                addPiocheTirage(cartePioche);
-                setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
-                
+                setNiveauEau(getNiveauEau() +1);
+                setDefausseInondation(melangerInondation(getDefausseInondation()));
+                for(CarteInondation c : piocheInondation){
+                    addDefausseInondation(c);
+                }
+                setPiocheInondation(getDefausseInondation());
+               
                
         }
     }
