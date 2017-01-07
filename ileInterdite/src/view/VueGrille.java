@@ -6,8 +6,11 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.HashMap;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import util.Utils;
+import util.Utils.EtatTuile;
 
 public class VueGrille extends JPanel {
 
@@ -24,9 +27,10 @@ public class VueGrille extends JPanel {
         gl.setHgap(10);
         panelGlobale = new JPanel(gl);
 
-        for (int i = 1; i <= 24; i++) {
+        for (int i = 0; i < 24; i++) {
             VueTuile t = new VueTuile();
             tuile.put(i, t);
+            assecheeInondeeOuCouleeTuile(i, EtatTuile.ASSECHEE);
         }
         affichePlateau(panelGlobale);
         this.add(panelGlobale);
@@ -34,14 +38,14 @@ public class VueGrille extends JPanel {
 
     //dessin le fond
     public void paintComponent(Graphics g) {
-        
-        Toolkit kit =  Toolkit.getDefaultToolkit(); 
+
+        Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
         g.drawImage(img, 0, 0, null);
     }
 
     public void affichePlateau(JPanel panel) {
-        int numTuile = 1;
+        int numTuile = 0;
         for (int j = 1; j <= 6; j++) {//parcourir les lignes
             for (int k = 1; k <= 6; k++) {//parcourir les colones
                 if (j == 1 && k == 1 || j == 6 && k == 6
@@ -60,4 +64,94 @@ public class VueGrille extends JPanel {
         panel.setOpaque(false);
 
     }
+
+    public void assecheeInondeeOuCouleeTuile(int numTuile, EtatTuile etatTuile) {
+        String img = "/images/tuiles/";
+        if (etatTuile == EtatTuile.COULEE) {
+            img = "";
+        } else {
+            switch (numTuile) {
+                case 0:
+                    img += "Heliport";
+                    break;
+                case 1:
+                    img += "LaCarverneDesOmbres";
+                    break;
+                case 2:
+                    img += "LaCarverneDuBrasier";
+                    break;
+                case 3:
+                    img += "LaForetPourpre";
+                    break;
+                case 4:
+                    img += "LaPorteDeBronze";
+                    break;
+                case 5:
+                    img += "LaPorteDeCuivre";
+                    break;
+                case 6:
+                    img += "LaPorteDeFer";
+                    break;
+                case 7:
+                    img += "LaPortedArgent";
+                    break;
+                case 8:
+                    img += "LaPortedOr";
+                    break;
+                case 9:
+                    img += "LaTourDuGuet";
+                    break;
+                case 10:
+                    img += "LeJardinDesHurlements";
+                    break;
+                case 11:
+                    img += "LeJardinDesMurmures";
+                    break;
+                case 12:
+                    img += "LeLagonPerdu";
+                    break;
+                case 13:
+                    img += "LeMaraisBrumeux";
+                    break;
+                case 14:
+                    img += "LePalaisDeCorail";
+                    break;
+                case 15:
+                    img += "LePalaisDesMarees";
+                    break;
+                case 16:
+                    img += "LePontDesAbimes";
+                    break;
+                case 17:
+                    img += "LeRocherFantome";
+                    break;
+                case 18:
+                    img += "LeTempleDeLaLune";
+                    break;
+                case 19:
+                    img += "LeTempleDuSoleil";
+                    break;
+                case 20:
+                    img += "LeValDuCrepuscule";
+                    break;
+                case 21:
+                    img += "LesDunesDeLIllusion";
+                    break;
+                case 22:
+                    img += "LesFalaisesDeLOubli";
+                    break;
+                case 23:
+                    img += "Observatoire";
+                    break;
+
+            }
+            if (etatTuile == EtatTuile.INONDEE) {
+                img += "_Inonde";
+            }
+            img += ".png";
+        }
+
+        tuile.get(numTuile).etatDeLaTuile(img);
+    }
+
 }

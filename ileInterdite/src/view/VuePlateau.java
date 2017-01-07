@@ -78,4 +78,9 @@ public class VuePlateau extends Observable {
         return aventurier4;
     }
 
+    public VueGrille getVueGrille() {
+        return vueGrille;
+    }
+    
+    
 }

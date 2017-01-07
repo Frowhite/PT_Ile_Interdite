@@ -31,6 +31,7 @@ public class Controleur implements Observer {
     public Controleur() {
         vueMontrerJoueur = new VueMontrerJoueur();
         ouvrirFenetreInterface();
+
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -224,6 +225,8 @@ public class Controleur implements Observer {
             }
 
         }
+        vuePlateau.getVueGrille().assecheeInondeeOuCouleeTuile(5, EtatTuile.INONDEE);
+        vuePlateau.getVueGrille().assecheeInondeeOuCouleeTuile(15, EtatTuile.COULEE);
 
     }
 
@@ -319,7 +322,7 @@ public class Controleur implements Observer {
         return p;
     }
 
- ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
     public VuePlateau getVuePlateau() {
