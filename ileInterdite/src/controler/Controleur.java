@@ -1,6 +1,5 @@
 package controler;
 
-
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import model.aventuriers.Aventurier;
@@ -93,10 +92,10 @@ public class Controleur implements Observer {
         }
         return t;
     }
-    
-    public void defausseCarteTresor(Aventurier av,Tresor tresor){
-        for(int i = 0 ;i<av.getMain().size();i++){
-            if(av.getMain().get(i).estTresor()){
+
+    public void defausseCarteTresor(Aventurier av, Tresor tresor) {
+        for (int i = 0; i < av.getMain().size(); i++) {
+            if (av.getMain().get(i).estTresor()) {
                 av.removeCarte(av.getMain().get(i));
             }
         }
@@ -154,20 +153,20 @@ public class Controleur implements Observer {
     public void ouvrirPlateauDeJeu() {
         vuePlateau = new VuePlateau(aventuriers.size());
         vuePlateau.addObserver(this);
-        
+
         for (int i = 0; i < aventuriers.size(); i++) {
             switch (i) {
                 case 0:
-                    vuePlateau.getAventurier1().setNomJoueur(aventuriers.get(i).getNom(),aventuriers.get(i).getCapacite());
+                    vuePlateau.getAventurier1().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
                 case 1:
-                    vuePlateau.getAventurier2().setNomJoueur(aventuriers.get(i).getNom(),aventuriers.get(i).getCapacite());
+                    vuePlateau.getAventurier2().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
                 case 2:
-                    vuePlateau.getAventurier3().setNomJoueur(aventuriers.get(i).getNom(),aventuriers.get(i).getCapacite());
+                    vuePlateau.getAventurier3().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
                 case 3:
-                    vuePlateau.getAventurier4().setNomJoueur(aventuriers.get(i).getNom(),aventuriers.get(i).getCapacite());
+                    vuePlateau.getAventurier4().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
             }
 
@@ -228,29 +227,42 @@ public class Controleur implements Observer {
     }
 
     public Pion couleurPion() {
+        boolean personneNACePion;
         Pion p = Pion.BLEU;
         Random rand = new Random();
-        int nombreAleatoire = rand.nextInt(6 - 1 + 1) + 1;//variable aléatoire entre 1 et 6
-        switch (nombreAleatoire) {
-            case 1:
-                p = Pion.BLEU;
-                break;
-            case 2:
-                p = Pion.JAUNE;
-                break;
-            case 3:
-                p = Pion.ORANGE;
-                break;
-            case 4:
-                p = Pion.ROUGE;
-                break;
-            case 5:
-                p = Pion.VERT;
-                break;
-            case 6:
-                p = Pion.VIOLET;
-                break;
-        }
+
+        do {
+            personneNACePion = true;
+            //donne une couleur
+            int nombreAleatoire = rand.nextInt(6 - 1 + 1) + 1;//variable aléatoire entre 1 et 6
+            switch (nombreAleatoire) {
+                case 1:
+                    p = Pion.BLEU;
+                    break;
+                case 2:
+                    p = Pion.JAUNE;
+                    break;
+                case 3:
+                    p = Pion.ORANGE;
+                    break;
+                case 4:
+                    p = Pion.ROUGE;
+                    break;
+                case 5:
+                    p = Pion.VERT;
+                    break;
+                case 6:
+                    p = Pion.VIOLET;
+                    break;
+            }
+
+            //vérifie que personne n'a déjà ce pion
+            for (int i = 0; i < aventuriers.size(); i++) {
+                if (aventuriers.get(i).getCapacite() == p) {
+                    personneNACePion = false;
+                }
+            }
+        } while (!personneNACePion);
         return p;
     }
 
