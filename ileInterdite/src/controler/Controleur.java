@@ -24,7 +24,7 @@ public class Controleur implements Observer {
     private ArrayList<CarteInondation> defausseInondation;
     private ArrayList<CarteInondation> piocheInondation;
     private int niveauEau;
-    
+
     private VueNiveau vueNiveau;
     private VueInterface vueInterface;
     private VueMontrerJoueur vueMontrerJoueur;
@@ -83,11 +83,23 @@ public class Controleur implements Observer {
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
         créerGrille();
+
 //        setNiveauEau(getVueNiveau().getNiveau());
 //        initialiserCartesTirages();
 //        initialiserCartesInondation();
+//        for(int i = 0;i<6;i++){
+//            PiocherCarteInondation();
+//            if(i<2){ 
+//                for(Aventurier jCourant : aventuriers){
+//                PiocherCarteTresorDepart(jCourant);
+//                }
+//            }
+//            
+//        // LancementPartie();
+//        }
     }
 
+    ////////////////////////////////GRILLE//////////////////////////////////////
     public void créerGrille() {
         tuile = new Tuile[24];
         tuile[0] = new Tuile("Heliport", null);
@@ -132,43 +144,70 @@ public class Controleur implements Observer {
             ar[i] = a;
         }
     }
+///////////////////////////////////////CARTES TIRAGE////////////////////////////
 
-    public void initialiserCartesTirages(){
-        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
-        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
-        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
-        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
-        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
-        
-        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
-        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
-        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
-        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
-        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
-        
-        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
-        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
-        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
-        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
-        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
-        
-        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
-        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
-        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
-        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
-        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
-        
-        getPiocheTirage().add(new CarteSacsDeSable());
-        getPiocheTirage().add(new CarteSacsDeSable());
-        
-        getPiocheTirage().add(new CarteHelicoptere());
-        getPiocheTirage().add(new CarteHelicoptere());
-        getPiocheTirage().add(new CarteHelicoptere());
-        
-        getPiocheTirage().add(new CarteMonteeDesEaux());
- 
+    public void initialiserCartesTirages() {
+        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
+
+        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
+
+        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
+
+        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
+
+        addPiocheTirage(new CarteSacsDeSable());
+        addPiocheTirage(new CarteSacsDeSable());
+
+        addPiocheTirage(new CarteHelicoptere());
+        addPiocheTirage(new CarteHelicoptere());
+        addPiocheTirage(new CarteHelicoptere());
+
+        addPiocheTirage(new CarteMonteeDesEaux());
+        addPiocheTirage(new CarteMonteeDesEaux());
+
+        setPiocheTirage(melangerTirage(getPiocheTirage()));
     }
-    
+
+    public ArrayList melangerTirage(ArrayList<CarteTirage> listeDepart) {
+
+        ArrayList<Carte> nouvelle = new ArrayList(listeDepart);
+        Collections.shuffle(nouvelle);
+        return nouvelle;
+    }
+
+    ///////////////////////////////////CARTES INONDATION////////////////////////
+    public void initialiserCartesInondation() {
+        for (int i = 0; i < tuile.length; i++) {
+            addPiocheInondation(new CarteInondation(tuile[i].getNomTuile()));
+        }
+
+        setPiocheInondation(melangerInondation(getPiocheInondation()));
+    }
+
+    public ArrayList melangerInondation(ArrayList<CarteInondation> listeDepart) {
+
+        ArrayList<Carte> nouvelle = new ArrayList(listeDepart);
+        Collections.shuffle(nouvelle);
+        return nouvelle;
+
+    }
+
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////ACTION POSSIBLE/////////////////////////
     ////////////////////////////////////////////////////////////////////////////
@@ -184,7 +223,7 @@ public class Controleur implements Observer {
                 av.addTresor(av.getPositionCourante().getTresor());
             }
             Tuile secondeTuile = rechercherTresor(av);
-               defausseCarteTresor(av,av.getPositionCourante().getTresor());
+            defausseCarteTresor(av, av.getPositionCourante().getTresor());
             av.getPositionCourante().setTresor(null);
             secondeTuile.setTresor(null);
         }
@@ -218,10 +257,10 @@ public class Controleur implements Observer {
 
             }
         }
-        return (tuile.getTresor() == Tresor.CALICE && calice >= 4) || 
-                (tuile.getTresor() == Tresor.CRISTAL && cristal >= 4) || 
-                (tuile.getTresor() == Tresor.PIERRE && pierre >= 4) || 
-                (tuile.getTresor() == Tresor.ZEPHYR && zephyr >= 4);
+        return (tuile.getTresor() == Tresor.CALICE && calice >= 4)
+                || (tuile.getTresor() == Tresor.CRISTAL && cristal >= 4)
+                || (tuile.getTresor() == Tresor.PIERRE && pierre >= 4)
+                || (tuile.getTresor() == Tresor.ZEPHYR && zephyr >= 4);
 
     }
 
@@ -242,20 +281,65 @@ public class Controleur implements Observer {
         for (int i = 0; i < av.getMain().size(); i++) {
             if (av.getMain().get(i).estTresor()) {
                 cartesTresor.add((CarteTresor) av.getMain().get(i));
-               
-               }
+
             }
-        for(int j = 0;j<cartesTresor.size();j++)
-         if(cartesTresor.get(j).getTresor() == tresor){
-                    av.removeCarte(cartesTresor.get(j));
-                }
         }
-    
+        for (int j = 0; j < cartesTresor.size(); j++) {
+            if (cartesTresor.get(j).getTresor() == tresor) {
+                av.removeCarteMain(cartesTresor.get(j));
+            }
+        }
+    }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
     
     ////////////////////////////////DONNER CARTE////////////////////////////////
     
+    ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
+    public void PiocherCarteTresorDepart(Aventurier jCourant){
+       
+            CarteTirage cartePioche = getPiocheTirage().get(0);
+            remPiocheTirage(cartePioche);
+            if(!cartePioche.estMontee()){
+                jCourant.addCarteMain(cartePioche);
+            }
+            if(cartePioche.estMontee()){
+                addPiocheTirage(cartePioche);
+                setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
+                PiocherCarteTresorDepart(jCourant);
+             
+        }
+    }
+    
+    public void PiocherCarteTresor(Aventurier av){
+            CarteTirage cartePioche = getPiocheTirage().get(0);
+            remPiocheTirage(cartePioche);
+            if(!cartePioche.estMontee()){
+                av.addCarteMain(cartePioche);
+            }
+            if(cartePioche.estMontee()){
+                addPiocheTirage(cartePioche);
+                setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
+                
+               
+        }
+    }
+    
+    
+    ///////////////////////////////PIOCHER CARTE INONDATION/////////////////////
+    public void PiocherCarteInondation() {
+        CarteInondation tuileInonde = getPiocheInondation().get(0);
+        remPiocheInondation(tuileInonde);
+        for (int i = 0; i < getTuile().length; i++) {
+            if (tuileInonde.getNom() == tuile[i].getNomTuile() && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
+                tuile[i].setEtat(EtatTuile.INONDEE);
+                addDefausseInondation(tuileInonde);
+            } else if (tuileInonde.getNom() == tuile[i].getNomTuile() && tuile[i].getEtat() == EtatTuile.INONDEE) {
+                tuile[i].setEtat(EtatTuile.COULEE);
+            }
+        }
+    }
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////Partie IHM /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -378,7 +462,50 @@ public class Controleur implements Observer {
         return p;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////ADD & REMOVE//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////    
+    public void addAventurier(Aventurier av) {
+        getAventuriers().add(av);
+    }
+
+    public void remAventurier(Aventurier av) {
+        getAventuriers().remove(av);
+    }
+
+    public void addPiocheTirage(CarteTirage ct) {
+        getPiocheTirage().add(ct);
+    }
+
+    public void remPiocheTirage(CarteTirage ct) {
+        getPiocheTirage().remove(ct);
+    }
+
+    public void addPiocheInondation(CarteInondation ci) {
+        getPiocheInondation().add(ci);
+    }
+
+    public void remPiocheInondation(CarteInondation ci) {
+        getPiocheInondation().remove(ci);
+    }
+
+    public void addDefausseTirage(CarteTirage ct) {
+        getDéfausseTirage().add(ct);
+    }
+
+    public void remDefausseTirage(CarteTirage ct) {
+        getDéfausseTirage().remove(ct);
+    }
+
+    public void addDefausseInondation(CarteInondation ci) {
+        getDefausseInondation().add(ci);
+    }
+
+    public void remDefausseInondation(CarteInondation ci) {
+        getDefausseInondation().remove(ci);
+    }
+
+////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
     public VuePlateau getVuePlateau() {
@@ -403,14 +530,6 @@ public class Controleur implements Observer {
 
     public void setTuile(Tuile[] tuile) {
         this.tuile = tuile;
-    }
-
-    public ArrayList<Tresor> getTresors() {
-        return tresors;
-    }
-
-    public void setTresors(ArrayList<Tresor> tresors) {
-        this.tresors = tresors;
     }
 
     public CarteTresor getCarteTresor() {
