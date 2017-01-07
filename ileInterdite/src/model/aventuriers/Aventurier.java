@@ -12,7 +12,7 @@ import controler.Controleur;
  * @author IUT2-Dept Info
  */
 
-public abstract class Aventurier extends ObjetIdentifie {
+public class Aventurier extends ObjetIdentifie {
     private String nom;
     private Pion capacite;
     private ArrayList<CarteTirage> main;
