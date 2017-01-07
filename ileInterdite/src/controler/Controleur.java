@@ -21,8 +21,12 @@ public class Controleur implements Observer {
     private CarteTresor carteTresor;
     private Grille grille;
     private ArrayList<CarteTirage> défausseTirage;
+    private ArrayList<CarteTirage> piocheTirage;
     private ArrayList<CarteInondation> defausseInondation;
-
+    private ArrayList<CarteInondation> piocheInondation;
+    private int niveauEau;
+    
+    private VueNiveau vueNiveau;
     private VueInterface vueInterface;
     private VueMontrerJoueur vueMontrerJoueur;
     private VuePlateau vuePlateau;
@@ -31,7 +35,7 @@ public class Controleur implements Observer {
     public Controleur() {
         vueMontrerJoueur = new VueMontrerJoueur();
         ouvrirFenetreInterface();
-
+        initialiserPartie();
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -76,10 +80,13 @@ public class Controleur implements Observer {
     }
 
 ////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////CREATION DE LA GRILLE ////////////////////////////
+//////////////////////////////CREATION & MISE EN PLACE DE LA PARTIE ////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
         créerGrille();
+        setNiveauEau(getVueNiveau().getNiveau());
+        initialiserCartesTirages();
+        initialiserCartesInondation();
     }
 
     public void créerGrille() {
@@ -126,6 +133,42 @@ public class Controleur implements Observer {
         }
     }
 
+    public void initialiserCartesTirages(){
+        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
+        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
+        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
+        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
+        getPiocheTirage().add(new CarteTresor("Calice",Tresor.CALICE));
+        
+        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
+        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
+        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
+        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
+        getPiocheTirage().add(new CarteTresor("Pierre",Tresor.PIERRE));
+        
+        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
+        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
+        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
+        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
+        getPiocheTirage().add(new CarteTresor("Zephir",Tresor.ZEPHYR));
+        
+        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
+        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
+        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
+        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
+        getPiocheTirage().add(new CarteTresor("Cristal",Tresor.CRISTAL));
+        
+        getPiocheTirage().add(new CarteSacsDeSable());
+        getPiocheTirage().add(new CarteSacsDeSable());
+        
+        getPiocheTirage().add(new CarteHelicoptere());
+        getPiocheTirage().add(new CarteHelicoptere());
+        getPiocheTirage().add(new CarteHelicoptere());
+        
+        getPiocheTirage().add(new CarteMonteeDesEaux());
+ 
+    }
+    
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////ACTION POSSIBLE/////////////////////////
     ////////////////////////////////////////////////////////////////////////////
@@ -423,6 +466,38 @@ public class Controleur implements Observer {
 
     public void setVueMontrerJoueur(VueMontrerJoueur vueMontrerJoueur) {
         this.vueMontrerJoueur = vueMontrerJoueur;
+    }
+
+    public ArrayList<CarteTirage> getPiocheTirage() {
+        return piocheTirage;
+    }
+
+    public void setPiocheTirage(ArrayList<CarteTirage> piocheTirage) {
+        this.piocheTirage = piocheTirage;
+    }
+
+    public ArrayList<CarteInondation> getPiocheInondation() {
+        return piocheInondation;
+    }
+
+    public void setPiocheInondation(ArrayList<CarteInondation> piocheInondation) {
+        this.piocheInondation = piocheInondation;
+    }
+
+    public int getNiveauEau() {
+        return niveauEau;
+    }
+
+    public void setNiveauEau(int niveauEau) {
+        this.niveauEau = niveauEau;
+    }
+
+    public VueNiveau getVueNiveau() {
+        return vueNiveau;
+    }
+
+    public void setVueNiveau(VueNiveau vueNiveau) {
+        this.vueNiveau = vueNiveau;
     }
 
 }

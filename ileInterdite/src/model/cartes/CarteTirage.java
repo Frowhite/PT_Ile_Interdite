@@ -6,6 +6,9 @@ package model.cartes;
  */
 public abstract class CarteTirage extends Carte {
     
+    public CarteTirage(String nom){
+        super(nom);
+    }
     
     public boolean estTresor(){
         return false;
