@@ -1,25 +1,14 @@
 package controler;
 
 
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import model.aventuriers.Aventurier;
-import model.cartes.Carte;
-import model.cartes.CarteInondation;
-import model.cartes.CarteTirage;
-import model.cartes.CarteTresor;
-import model.cases.Grille;
-import model.cases.Tuile;
-import util.Utils;
-import util.Utils.EtatTuile;
-import static util.Utils.EtatTuile.ASSECHEE;
-import util.Utils.Pion;
-import util.Utils.Tresor;
-import view.VueInscription;
-import view.VuePlateau;
+import model.cartes.*;
+import model.cases.*;
+import util.Utils.*;
+import view.*;
+import util.Utils.EtatTuile.*;
 
 /**
  *
@@ -84,7 +73,7 @@ public class Controleur implements Observer {
     
     
     public void Assecher(Tuile tuile){
-            tuile.setEtat(ASSECHEE);
+            tuile.setEtat(EtatTuile.ASSECHEE);
     }
     
  
@@ -113,11 +102,13 @@ public class Controleur implements Observer {
         return t;
     }
     
-//    public void defausseCarteTresor(Aventurier av,Tresor tresor){
-//        for(int i = 0 ;i<4;i++){
-//            av.removeMain();
-//        }
-//    }
+    public void defausseCarteTresor(Aventurier av,Tresor tresor){
+        for(int i = 0 ;i<av.getMain().size();i++){
+            if(av.getMain().get(i).estTresor()){
+                av.removeCarte(av.getMain().get(i));
+            }
+        }
+    }
 
     @Override
     public void update(Observable o, Object arg) {

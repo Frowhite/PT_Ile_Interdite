@@ -15,7 +15,7 @@ import controler.Controleur;
 public abstract class Aventurier extends ObjetIdentifie {
     private String nom;
     private Pion capacite;
-    private ArrayList<Carte> main;
+    private ArrayList<CarteTirage> main;
     private ArrayList<Tresor> tresors;
     private ArrayList<Tuile> tuilesPossibles;
     private Tuile positionCourante;
@@ -46,9 +46,10 @@ public abstract class Aventurier extends ObjetIdentifie {
         getTresors().add(t);
     }
     
-    public void removeMain(Carte c){
+    public void removeCarte(Carte c){
         getMain().remove(c);
     }
+    
     
     ////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////GETTERS&SETTERS///////////////////////
@@ -70,11 +71,11 @@ public abstract class Aventurier extends ObjetIdentifie {
         this.capacite = capacite;
     }
 
-    public ArrayList<Carte> getMain() {
+    public ArrayList<CarteTirage> getMain() {
         return main;
     }
 
-    public void setMain(ArrayList<Carte> main) {
+    public void setMain(ArrayList<CarteTirage> main) {
         this.main = main;
     }
 
