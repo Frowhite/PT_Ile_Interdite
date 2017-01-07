@@ -28,5 +28,94 @@ public class VueTuile extends JPanel {
                 .getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
         tuile.setIcon(img);
     }
+    
+    public void assecheeInondeeOuCouleeTuile(int numTuile, EtatTuile etatTuile) {
+        String img = "/images/tuiles/";
+        if (etatTuile == EtatTuile.COULEE) {
+            img = "";
+        } else {
+            switch (numTuile) {
+                case 0:
+                    img += "Heliport";
+                    break;
+                case 1:
+                    img += "LaCarverneDesOmbres";
+                    break;
+                case 2:
+                    img += "LaCarverneDuBrasier";
+                    break;
+                case 3:
+                    img += "LaForetPourpre";
+                    break;
+                case 4:
+                    img += "LaPorteDeBronze";
+                    break;
+                case 5:
+                    img += "LaPorteDeCuivre";
+                    break;
+                case 6:
+                    img += "LaPorteDeFer";
+                    break;
+                case 7:
+                    img += "LaPortedArgent";
+                    break;
+                case 8:
+                    img += "LaPortedOr";
+                    break;
+                case 9:
+                    img += "LaTourDuGuet";
+                    break;
+                case 10:
+                    img += "LeJardinDesHurlements";
+                    break;
+                case 11:
+                    img += "LeJardinDesMurmures";
+                    break;
+                case 12:
+                    img += "LeLagonPerdu";
+                    break;
+                case 13:
+                    img += "LeMaraisBrumeux";
+                    break;
+                case 14:
+                    img += "LePalaisDeCorail";
+                    break;
+                case 15:
+                    img += "LePalaisDesMarees";
+                    break;
+                case 16:
+                    img += "LePontDesAbimes";
+                    break;
+                case 17:
+                    img += "LeRocherFantome";
+                    break;
+                case 18:
+                    img += "LeTempleDeLaLune";
+                    break;
+                case 19:
+                    img += "LeTempleDuSoleil";
+                    break;
+                case 20:
+                    img += "LeValDuCrepuscule";
+                    break;
+                case 21:
+                    img += "LesDunesDeLIllusion";
+                    break;
+                case 22:
+                    img += "LesFalaisesDeLOubli";
+                    break;
+                case 23:
+                    img += "Observatoire";
+                    break;
+
+            }
+            if (etatTuile == EtatTuile.INONDEE) {
+                img += "_Inonde";
+            }
+            img += ".png";
+        }
+
+        etatDeLaTuile(img);
+    }
 
 }
