@@ -158,6 +158,30 @@ public class Controleur implements Observer {
     }
 
 ////////////////////Partie IHM ///////////////////////////
+    public void ouvrirPlateauDeJeu() {
+        vuePlateau = new VuePlateau(aventuriers.size());
+        vuePlateau.addObserver(this);
+        
+        for (int i = 0; i < aventuriers.size(); i++) {
+            switch (i) {
+                case 0:
+                    vuePlateau.getAventurier1().setNomJoueur(aventuriers.get(i).getNom(),aventuriers.get(i).getCapacite());
+                    break;
+                case 1:
+                    vuePlateau.getAventurier2().setNomJoueur(aventuriers.get(i).getNom(),aventuriers.get(i).getCapacite());
+                    break;
+                case 2:
+                    vuePlateau.getAventurier3().setNomJoueur(aventuriers.get(i).getNom(),aventuriers.get(i).getCapacite());
+                    break;
+                case 3:
+                    vuePlateau.getAventurier4().setNomJoueur(aventuriers.get(i).getNom(),aventuriers.get(i).getCapacite());
+                    break;
+            }
+
+        }
+
+    }
+
     public void ouvrirFenetreInterface() {
         vueInterface = new VueInterface();
         vueInterface.addObserver(this);
@@ -243,11 +267,13 @@ public class Controleur implements Observer {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
                     case COMMENCER_PARTIE:
-
+                        vueInterface.fermerFenetre();
+                        vueMontrerJoueur.fermerFenetre();//pour vueMontrerJoueur:met en setVisible(false)
+                        ouvrirPlateauDeJeu();
                         break;
                     case INSCRIRE_JOUEUR:
                         vueInterface.fermerFenetre();
-                        vueMontrerJoueur.fermerFenetre();
+                        vueMontrerJoueur.fermerFenetre();//pour vueMontrerJoueur:met en setVisible(false)
                         ouvrirFenetreInscription();
                         break;
                     case QUITTER:
