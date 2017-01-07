@@ -13,4 +13,15 @@ public abstract class CarteTirage extends Carte {
     public boolean estTresor(){
         return false;
     }
+    
+    public boolean estMontee(){
+        return false;
+    }
+    
+    public boolean estHelico(){
+        return false;
+    }
+    public boolean estSac(){
+        return false;
+    }
 }

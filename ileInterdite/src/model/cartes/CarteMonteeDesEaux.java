@@ -9,4 +9,9 @@ public class CarteMonteeDesEaux extends CarteTirage {
     public CarteMonteeDesEaux(){
         super("Montee Des Eaux");
     }
+    
+    @Override
+    public boolean estMontee(){
+        return true;
+    }
 }

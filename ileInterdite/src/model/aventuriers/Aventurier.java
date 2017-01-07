@@ -46,9 +46,14 @@ public class Aventurier extends ObjetIdentifie {
         getTresors().add(t);
     }
     
-    public void removeCarte(Carte c){
+    public void removeCarteMain(Carte c){
         getMain().remove(c);
     }
+    
+    public void addCarteMain(Carte c){
+        getMain().add((CarteTirage) c);
+    }
+    
     
     
     ////////////////////////////////////////////////////////////////////////////

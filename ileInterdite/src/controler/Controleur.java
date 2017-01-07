@@ -86,6 +86,17 @@ public class Controleur implements Observer {
         setNiveauEau(getVueNiveau().getNiveau());
         initialiserCartesTirages();
         initialiserCartesInondation();
+        for(int i = 0;i<6;i++){
+            PiocherCarteInondation();
+            if(i<2){ 
+                for(Aventurier jCourant : aventuriers){
+                PiocherCarteTresorDepart(jCourant);
+                }
+            }
+            
+        // LancementPartie();
+        }
+        
     }
 
     ////////////////////////////////GRILLE//////////////////////////////////////
@@ -274,14 +285,46 @@ public class Controleur implements Observer {
         }
         for (int j = 0; j < cartesTresor.size(); j++) {
             if (cartesTresor.get(j).getTresor() == tresor) {
-                av.removeCarte(cartesTresor.get(j));
+                av.removeCarteMain(cartesTresor.get(j));
             }
         }
     }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
+    
     ////////////////////////////////DONNER CARTE////////////////////////////////
+    
     ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
+    public void PiocherCarteTresorDepart(Aventurier jCourant){
+       
+            CarteTirage cartePioche = getPiocheTirage().get(0);
+            remPiocheTirage(cartePioche);
+            if(!cartePioche.estMontee()){
+                jCourant.addCarteMain(cartePioche);
+            }
+            if(cartePioche.estMontee()){
+                addPiocheTirage(cartePioche);
+                setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
+                PiocherCarteTresorDepart(jCourant);
+             
+        }
+    }
+    
+    public void PiocherCarteTresor(Aventurier av){
+            CarteTirage cartePioche = getPiocheTirage().get(0);
+            remPiocheTirage(cartePioche);
+            if(!cartePioche.estMontee()){
+                av.addCarteMain(cartePioche);
+            }
+            if(cartePioche.estMontee()){
+                addPiocheTirage(cartePioche);
+                setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
+                
+               
+        }
+    }
+    
+    
     ///////////////////////////////PIOCHER CARTE INONDATION/////////////////////
     public void PiocherCarteInondation() {
         CarteInondation tuileInonde = getPiocheInondation().get(0);

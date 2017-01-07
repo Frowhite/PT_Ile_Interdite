@@ -9,4 +9,9 @@ public class CarteSacsDeSable extends CarteTirage {
     public CarteSacsDeSable(){
         super("Sac de Sable");
     }
+    
+    @Override
+    public boolean estSac(){
+        return true;
+    }
 }
