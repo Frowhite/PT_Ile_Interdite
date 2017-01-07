@@ -143,7 +143,7 @@ public class Controleur implements Observer {
                 av.addTresor(av.getPositionCourante().getTresor());
             }
             Tuile secondeTuile = rechercherTresor(av);
-            //    defausseCarteTresor(av,av.getPositionCourante().getTresor());
+               defausseCarteTresor(av,av.getPositionCourante().getTresor());
             av.getPositionCourante().setTresor(null);
             secondeTuile.setTresor(null);
         }
