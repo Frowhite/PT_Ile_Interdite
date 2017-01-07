@@ -2,7 +2,6 @@ package controler;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import model.ObjetIdentifie;
 import model.aventuriers.Aventurier;
 import model.cartes.*;
 import model.cases.*;
@@ -84,9 +83,9 @@ public class Controleur implements Observer {
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
         créerGrille();
-        setNiveauEau(getVueNiveau().getNiveau());
-        initialiserCartesTirages();
-        initialiserCartesInondation();
+//        setNiveauEau(getVueNiveau().getNiveau());
+//        initialiserCartesTirages();
+//        initialiserCartesInondation();
     }
 
     public void créerGrille() {
