@@ -63,25 +63,3 @@ public class VueGrille extends JPanel {
         g.drawImage(img, 0, 0, null);
     }
 }
-
-/*
-int numTuile = 0;
-        for (int j = 1; j <= 6; j++) {//parcourir les lignes
-            for (int k = 1; k <= 6; k++) {//parcourir les colones
-                if (j == 1 && k == 1 || j == 6 && k == 6
-                        || j == 2 && k == 1 || j == 1 && k == 2
-                        || j == 1 && k == 5 || j == 5 && k == 1
-                        || j == 6 && k == 1 || j == 1 && k == 6
-                        || j == 2 && k == 6 || j == 6 && k == 2
-                        || j == 5 && k == 6 || j == 6 && k == 5) {//on enlève les tuiles qui sont sur les cotés
-                    panel.add(new JLabel(""));
-                } else {
-                    
-                    panel.add(tuile.get(tuiles[numTuile].getId()));
-                    
-                    numTuile += 1;
-                }
-                
-            }
-    panel.setOpaque(false);
-*/
