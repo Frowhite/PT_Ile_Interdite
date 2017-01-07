@@ -24,7 +24,12 @@ public class Utils {
         CHOISIR_CARTE("Utiliser une carte trésor"),
         CHOISIR_TUILE("Sélectionner une tuile"), 
         DEPLACER("Déplacer un autre joueur"),
-        VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage");
+        VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage"),
+        INSCRIRE_JOUEUR("Demande l'inscription de nouveau joueur"),
+        COMMENCER_PARTIE("Commence la partie"), 
+        QUITTER("Quitte le jeu"),
+        ANNULER("Annule l'inscriptions des joueurs"),
+        VALIDER("Valider l'inscriptions des joueurs");
 
         private final String libelle ;
 

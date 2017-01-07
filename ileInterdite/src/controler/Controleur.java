@@ -1,6 +1,5 @@
 package controler;
 
-
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,115 +13,102 @@ import model.cartes.CarteTresor;
 import model.cases.Grille;
 import model.cases.Tuile;
 import util.Utils;
+import util.Utils.Commandes;
 import util.Utils.EtatTuile;
 import static util.Utils.EtatTuile.ASSECHEE;
 import util.Utils.Pion;
 import util.Utils.Tresor;
-import view.VueInscription;
-import view.VuePlateau;
+import view.*;
 
 /**
  *
  * @author IUT2-Dept Info
  */
 public class Controleur implements Observer {
-    private VuePlateau vuePlateau;
-    private VueInscription vueInscription;
+
+    private ArrayList<Aventurier> aventuriers = new ArrayList<>();
     private Tuile tuile[];
     private ArrayList<Tresor> tresors;
     private CarteTresor carteTresor;
-    private Grille grille; 
+    private Grille grille;
     private ArrayList<CarteTirage> défausseTirage;
     private ArrayList<CarteInondation> defausseInondation;
-    
+
+    private VueInterface vueInterface;
+    private VueMontrerJoueur vueMontrerJoueur;
+    private VuePlateau vuePlateau;
+    private VueInscription vueInscription;
+
     public Controleur() {
-        /*vuePlateau = new VuePlateau(3);
-        vuePlateau.getAventurier1().ajouterCarte(0);
-        vuePlateau.getAventurier1().ajouterCarte(0);
-        vuePlateau.getAventurier1().ajouterCarte(0);
-        vuePlateau.getAventurier1().ajouterCarte(0);
-        vueInscription = new VueInscription();*/
+        vueMontrerJoueur = new VueMontrerJoueur();
+        ouvrirFenetreInterface();
     }
 
-    
-        
-    
-    
-    
-   
-    public Boolean PeutPrendreTresor(ArrayList<Carte> main, Tuile tuile){
-        
-        int calice=0;
-        int cristal=0;
-        int pierre=0;
-        int zephyr=0;
-        
-       for(int i=0; i<main.size() ; i++){
-           if (main.get(i)== carteTresor){
-               if(carteTresor.getTresor()== Tresor.CALICE){
-                   calice=calice+1;
-               }
-                   
-               if(carteTresor.getTresor()== Tresor.CRISTAL){
-                  cristal=cristal+1;
-               }
-               
-               if(carteTresor.getTresor()== Tresor.PIERRE){
-                   pierre=pierre+1;
-               }
-               
-               if(carteTresor.getTresor()== Tresor.ZEPHYR){
-                   zephyr=zephyr+1;
-               }
-               
-           }
-       }
-        return (tuile.getTresor()== Tresor.CALICE && calice>=4) || (tuile.getTresor()== Tresor.CRISTAL && cristal>=4) || (tuile.getTresor()== Tresor.PIERRE && pierre>=4) || (tuile.getTresor()== Tresor.ZEPHYR && zephyr>=4);
-       
-    }
-    
-    
-    
-    public void Assecher(Tuile tuile){
-            tuile.setEtat(ASSECHEE);
-    }
-    
- 
-    
-    public void obtenirTresor(Aventurier av, Tuile tuile){
-        if(av.getPositionCourante().getTresor() != null){
-            if(PeutPrendreTresor(av.getMain(), av.getPositionCourante()))
-                av.addTresor(av.getPositionCourante().getTresor());
-                Tuile secondeTuile = rechercherTresor(av);
-            //    defausseCarteTresor(av,av.getPositionCourante().getTresor());
-                av.getPositionCourante().setTresor(null);
-                secondeTuile.setTresor(null);
+    public Boolean PeutPrendreTresor(ArrayList<Carte> main, Tuile tuile) {
+
+        int calice = 0;
+        int cristal = 0;
+        int pierre = 0;
+        int zephyr = 0;
+
+        for (int i = 0; i < main.size(); i++) {
+            if (main.get(i) == carteTresor) {
+                if (carteTresor.getTresor() == Tresor.CALICE) {
+                    calice = calice + 1;
+                }
+
+                if (carteTresor.getTresor() == Tresor.CRISTAL) {
+                    cristal = cristal + 1;
+                }
+
+                if (carteTresor.getTresor() == Tresor.PIERRE) {
+                    pierre = pierre + 1;
+                }
+
+                if (carteTresor.getTresor() == Tresor.ZEPHYR) {
+                    zephyr = zephyr + 1;
+                }
+
+            }
         }
-        
+        return (tuile.getTresor() == Tresor.CALICE && calice >= 4) || (tuile.getTresor() == Tresor.CRISTAL && cristal >= 4) || (tuile.getTresor() == Tresor.PIERRE && pierre >= 4) || (tuile.getTresor() == Tresor.ZEPHYR && zephyr >= 4);
+
     }
-    
-    public Tuile rechercherTresor(Aventurier av){
+
+    public void Assecher(Tuile tuile) {
+        tuile.setEtat(ASSECHEE);
+    }
+
+    public void obtenirTresor(Aventurier av, Tuile tuile) {
+        if (av.getPositionCourante().getTresor() != null) {
+            if (PeutPrendreTresor(av.getMain(), av.getPositionCourante())) {
+                av.addTresor(av.getPositionCourante().getTresor());
+            }
+            Tuile secondeTuile = rechercherTresor(av);
+            //    defausseCarteTresor(av,av.getPositionCourante().getTresor());
+            av.getPositionCourante().setTresor(null);
+            secondeTuile.setTresor(null);
+        }
+
+    }
+
+    public Tuile rechercherTresor(Aventurier av) {
         Tuile t = null;
-        for(int i = 0;i < 24;i++){
-            if(tuile[i].getTresor() == av.getPositionCourante().getTresor()){
-                if(tuile[i] != av.getPositionCourante()){
+        for (int i = 0; i < 24; i++) {
+            if (tuile[i].getTresor() == av.getPositionCourante().getTresor()) {
+                if (tuile[i] != av.getPositionCourante()) {
                     t = tuile[i];
                 }
             }
         }
         return t;
     }
-    
+
 //    public void defausseCarteTresor(Aventurier av,Tresor tresor){
 //        for(int i = 0 ;i<4;i++){
 //            av.removeMain();
 //        }
 //    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-    }
-
     public void initialiserPartie() {
         créerGrille();
     }
@@ -159,26 +145,146 @@ public class Controleur implements Observer {
 
     }
 
-  
-  public void melangerTuile(Tuile[] ar)
-  {
-   
-    Random rnd = ThreadLocalRandom.current();
-    for (int i = ar.length - 1; i > 0; i--)
-    {
-        
-      int index = rnd.nextInt(i + 1);
-      Tuile a = ar[index];
-      ar[index] = ar[i];
-      ar[i] = a;
+    public void melangerTuile(Tuile[] ar) {
+
+        Random rnd = ThreadLocalRandom.current();
+        for (int i = ar.length - 1; i > 0; i--) {
+
+            int index = rnd.nextInt(i + 1);
+            Tuile a = ar[index];
+            ar[index] = ar[i];
+            ar[i] = a;
+        }
     }
-  }
-  
-  
-  ////////////////////////////////////////////////////////////////////////////////
+
+////////////////////Partie IHM ///////////////////////////
+    public void ouvrirFenetreInterface() {
+        vueInterface = new VueInterface();
+        vueInterface.addObserver(this);
+        vueMontrerJoueur.ouvrirFenetre();
+    }
+
+    public void ouvrirFenetreInscription() {
+        vueInscription = new VueInscription();
+        vueInscription.addObserver(this);
+        if (aventuriers != null) {
+            for (int i = 0; i < aventuriers.size(); i++) {
+                switch (i) {
+                    case 0:
+                        vueInscription.donnerNomJoueur1(aventuriers.get(i).getNom());
+                        break;
+                    case 1:
+                        vueInscription.donnerNomJoueur2(aventuriers.get(i).getNom());
+                        break;
+                    case 2:
+                        vueInscription.donnerNomJoueur3(aventuriers.get(i).getNom());
+                        break;
+                    case 3:
+                        vueInscription.donnerNomJoueur4(aventuriers.get(i).getNom());
+                        break;
+                }
+
+            }
+
+        }
+
+    }
+
+    public void ajouteJoueur() {
+        aventuriers.clear();
+
+        if (!"".equals(vueInscription.nomJoueur1()) && !"Nom joueur".equals(vueInscription.nomJoueur1())) {
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur1(), couleurPion(), null, this) {
+            });
+        }
+        if (!"".equals(vueInscription.nomJoueur2()) && !"Nom joueur".equals(vueInscription.nomJoueur2())) {
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur2(), couleurPion(), null, this) {
+            });
+        }
+        if (!"".equals(vueInscription.nomJoueur3()) && !"Nom joueur".equals(vueInscription.nomJoueur3())) {
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur3(), couleurPion(), null, this) {
+            });
+        }
+        if (!"".equals(vueInscription.nomJoueur4()) && !"Nom joueur".equals(vueInscription.nomJoueur4())) {
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur4(), couleurPion(), null, this) {
+            });
+        }
+        for (int i = 0; i < aventuriers.size(); i++) {
+            vueMontrerJoueur.ecrireNom(i + 1, aventuriers.get(i).getNom());
+        }
+    }
+
+    public Pion couleurPion() {
+        Pion p = Pion.BLEU;
+        Random rand = new Random();
+        int nombreAleatoire = rand.nextInt(6 - 1 + 1) + 1;//variable aléatoire entre 1 et 6
+        switch (nombreAleatoire) {
+            case 1:
+                p = Pion.BLEU;
+                break;
+            case 2:
+                p = Pion.JAUNE;
+                break;
+            case 3:
+                p = Pion.ORANGE;
+                break;
+            case 4:
+                p = Pion.ROUGE;
+                break;
+            case 5:
+                p = Pion.VERT;
+                break;
+            case 6:
+                p = Pion.VIOLET;
+                break;
+        }
+        return p;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o == vueInterface) {
+            if (arg instanceof Commandes) {
+                switch ((Commandes) arg) {
+                    case COMMENCER_PARTIE:
+
+                        break;
+                    case INSCRIRE_JOUEUR:
+                        vueInterface.fermerFenetre();
+                        vueMontrerJoueur.fermerFenetre();
+                        ouvrirFenetreInscription();
+                        break;
+                    case QUITTER:
+                        vueInterface.quitterJeu();//arrète le programme
+                        break;
+                }
+
+            }
+
+        }
+        if (o == vueInscription) {
+            if (arg instanceof Commandes) {
+                switch ((Commandes) arg) {
+                    case ANNULER:
+                        vueInscription.fermerFenetre();
+                        ouvrirFenetreInterface();
+                        break;
+                    case VALIDER:
+                        vueInscription.fermerFenetre();
+                        ajouteJoueur();
+                        ouvrirFenetreInterface();
+                        break;
+
+                }
+            }
+
+        }
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
     public VuePlateau getVuePlateau() {
         return vuePlateau;
     }
@@ -243,36 +349,4 @@ public class Controleur implements Observer {
         this.defausseInondation = defausseInondation;
     }
 
-  
-  
-  
-  
-  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

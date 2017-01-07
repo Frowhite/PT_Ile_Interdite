@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Observable;
@@ -14,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import util.Utils;
 
 /**
  *
@@ -37,8 +41,11 @@ public class VueInscription extends Observable {
     public VueInscription() {
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        window.setSize(300, 430);
-        window.setLocation(870, 100);
+        window.setSize(300, 230);
+        window.setUndecorated(true);//enlève le cadre de ta fenêtre
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension dim = kit.getScreenSize();
+        window.setLocation(dim.width / 2 - 150, dim.height / 2 - 265);
         panelGlobale = new JPanel(new BorderLayout());
 
         //***haut***
@@ -53,10 +60,8 @@ public class VueInscription extends Observable {
         //texte "Rentrer les joueurs"
         textNbJ = new JLabel("Rentrer les joueurs :");
         textNbJ.setFont(font2);
-        
 
         panelCentre1.add(textNbJ, BorderLayout.CENTER);
-
 
         panelCentre.add(panelCentre1, BorderLayout.NORTH);
         //***panel centre 2 (bas du panel centre)***
@@ -65,25 +70,25 @@ public class VueInscription extends Observable {
         panelCentre2 = new JPanel(gl1);
 
         //JTextField joueur 1
-        joueur1 = new JTextField("Nom joueur 1");
+        joueur1 = new JTextField("Nom joueur");
         joueur1.setPreferredSize(new Dimension(120, 28));
         insiterRentrerNom(joueur1);
         panelCentre2.add(joueur1);
 
         //JTextField joueur 2
-        joueur2 = new JTextField("Nom joueur 2");
+        joueur2 = new JTextField("Nom joueur");
         joueur2.setPreferredSize(new Dimension(120, 28));
         insiterRentrerNom(joueur2);
         panelCentre2.add(joueur2);
 
         //JTextField joueur 3
-        joueur3 = new JTextField("Nom joueur 3");
+        joueur3 = new JTextField("Nom joueur");
         joueur3.setPreferredSize(new Dimension(120, 28));
         insiterRentrerNom(joueur3);
         panelCentre2.add(joueur3);
 
         //JTextField joueur 4
-        joueur4 = new JTextField("Nom joueur 4");
+        joueur4 = new JTextField("Nom joueur");
         joueur4.setPreferredSize(new Dimension(120, 28));
         insiterRentrerNom(joueur4);
         panelCentre2.add(joueur4);
@@ -97,15 +102,31 @@ public class VueInscription extends Observable {
         //boutton annuler
         bAnnuler = new JButton("Annuler");
         bAnnuler.setFont(font2);
+        bAnnuler.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(Utils.Commandes.ANNULER);
+                clearChanged();
+            }
+        });
         //boutton valider
         bValider = new JButton("Valider");
         bValider.setFont(font2);
-        
+        bValider.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(Utils.Commandes.VALIDER);
+                clearChanged();
+            }
+        });
+
         panelBas.add(bValider);
         panelBas.add(bAnnuler);
-        
+
         panelGlobale.add(panelBas, BorderLayout.SOUTH);
-        
+
         window.add(panelGlobale);
         window.setVisible(true);
     }
@@ -142,6 +163,42 @@ public class VueInscription extends Observable {
             }
         });
 
+    }
+
+    public void fermerFenetre() {
+        window.dispose();
+    }
+
+    public String nomJoueur1() {
+        return joueur1.getText();
+    }
+
+    public String nomJoueur2() {
+        return joueur2.getText();
+    }
+
+    public String nomJoueur3() {
+        return joueur3.getText();
+    }
+
+    public String nomJoueur4() {
+        return joueur4.getText();
+    }
+    
+    public void donnerNomJoueur1(String nom){
+        joueur1.setText(nom);
+    }
+    
+    public void donnerNomJoueur2(String nom){
+        joueur2.setText(nom);
+    }
+    
+    public void donnerNomJoueur3(String nom){
+        joueur3.setText(nom);
+    }
+    
+    public void donnerNomJoueur4(String nom){
+        joueur4.setText(nom);
     }
 
 }
