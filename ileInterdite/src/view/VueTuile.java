@@ -30,7 +30,6 @@ public class VueTuile extends JPanel {
     }
     
     public void assecheeInondeeOuCouleeTuile(int numTuile, EtatTuile etatTuile) {
-        System.out.println("dfvhio");
         String img = "/images/tuiles/";
         if (etatTuile == EtatTuile.COULEE) {
             img = "";

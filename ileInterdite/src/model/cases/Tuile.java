@@ -17,8 +17,8 @@ public class Tuile extends ObjetIdentifie {
     private int ligne;
     private int colonnes;
 
-    public Tuile(String nomTuile,Tresor tresor) {
-        super();
+    public Tuile(int idTuile, String nomTuile,Tresor tresor) {
+        super(idTuile);
         this.nomTuile = nomTuile;
         this.tresor = tresor;
         etat = EtatTuile.ASSECHEE;

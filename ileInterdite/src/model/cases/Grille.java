@@ -39,8 +39,8 @@ public class Grille {
 
     public void remplirGrille(Tuile[] tuile) {
         int i = 0;
-        for (int c = 0; c < 6; c++) {
-            for (int l = 0; l < 6; l++) {
+        for (int l = 0; l < 6; l++) {
+            for (int c = 0; c < 6; c++) {
                 if ((l == 0 && (c == 2 || c == 3))
                         || (l == 1 && (c == 1 || c == 2 || c == 3 || c == 4))
                         || (l == 2 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))

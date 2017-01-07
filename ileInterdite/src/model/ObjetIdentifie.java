@@ -10,7 +10,11 @@ public class ObjetIdentifie {
     
     public ObjetIdentifie() {
        this.id = ObjetIdentifie.getNextId();
-    } 
+    }
+    
+    public ObjetIdentifie(int id) {
+        setId(id);
+    }
 
     public Integer getId() {
         return this.id ;
