@@ -194,20 +194,16 @@ public class Controleur implements Observer {
         aventuriers.clear();
 
         if (!"".equals(vueInscription.nomJoueur1()) && !"Nom joueur".equals(vueInscription.nomJoueur1())) {
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur1(), couleurPion(), null, this) {
-            });
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur1(), couleurPion(), null, this));
         }
         if (!"".equals(vueInscription.nomJoueur2()) && !"Nom joueur".equals(vueInscription.nomJoueur2())) {
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur2(), couleurPion(), null, this) {
-            });
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur2(), couleurPion(), null, this));
         }
         if (!"".equals(vueInscription.nomJoueur3()) && !"Nom joueur".equals(vueInscription.nomJoueur3())) {
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur3(), couleurPion(), null, this) {
-            });
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur3(), couleurPion(), null, this));
         }
         if (!"".equals(vueInscription.nomJoueur4()) && !"Nom joueur".equals(vueInscription.nomJoueur4())) {
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur4(), couleurPion(), null, this) {
-            });
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur4(), couleurPion(), null, this));
         }
         for (int i = 0; i < aventuriers.size(); i++) {
             vueMontrerJoueur.ecrireNom(i + 1, aventuriers.get(i).getNom());
