@@ -1,6 +1,5 @@
 package controler;
 
-
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import model.aventuriers.Aventurier;
@@ -33,79 +32,54 @@ public class Controleur implements Observer {
         vueMontrerJoueur = new VueMontrerJoueur();
         ouvrirFenetreInterface();
     }
-
-    public Boolean PeutPrendreTresor(ArrayList<CarteTirage> main, Tuile tuile) {
-
-        int calice = 0;
-        int cristal = 0;
-        int pierre = 0;
-        int zephyr = 0;
-
-        for (int i = 0; i < main.size(); i++) {
-            if (main.get(i) == carteTresor) {
-                if (carteTresor.getTresor() == Tresor.CALICE) {
-                    calice = calice + 1;
-                }
-
-                if (carteTresor.getTresor() == Tresor.CRISTAL) {
-                    cristal = cristal + 1;
-                }
-
-                if (carteTresor.getTresor() == Tresor.PIERRE) {
-                    pierre = pierre + 1;
-                }
-
-                if (carteTresor.getTresor() == Tresor.ZEPHYR) {
-                    zephyr = zephyr + 1;
-                }
-
-            }
-        }
-        return (tuile.getTresor() == Tresor.CALICE && calice >= 4) || (tuile.getTresor() == Tresor.CRISTAL && cristal >= 4) || (tuile.getTresor() == Tresor.PIERRE && pierre >= 4) || (tuile.getTresor() == Tresor.ZEPHYR && zephyr >= 4);
-
-    }
-
-    public void Assecher(Tuile tuile) {
-        tuile.setEtat(EtatTuile.ASSECHEE);
-    }
-
-    public void obtenirTresor(Aventurier av, Tuile tuile) {
-        if (av.getPositionCourante().getTresor() != null) {
-            if (PeutPrendreTresor(av.getMain(), av.getPositionCourante())) {
-                av.addTresor(av.getPositionCourante().getTresor());
-            }
-            Tuile secondeTuile = rechercherTresor(av);
-            //    defausseCarteTresor(av,av.getPositionCourante().getTresor());
-            av.getPositionCourante().setTresor(null);
-            secondeTuile.setTresor(null);
-        }
-
-    }
-
-    public Tuile rechercherTresor(Aventurier av) {
-        Tuile t = null;
-        for (int i = 0; i < 24; i++) {
-            if (tuile[i].getTresor() == av.getPositionCourante().getTresor()) {
-                if (tuile[i] != av.getPositionCourante()) {
-                    t = tuile[i];
-                }
-            }
-        }
-        return t;
-    }
-    
-    public void defausseCarteTresor(Aventurier av,Tresor tresor){
-        for(int i = 0 ;i<av.getMain().size();i++){
-            if(av.getMain().get(i).estTresor()){
-                av.removeCarte(av.getMain().get(i));
-            }
-        }
-    }
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////UPDATE///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////    
 
     @Override
     public void update(Observable o, Object arg) {
+        if (o == vueInterface) {
+            if (arg instanceof Commandes) {
+                switch ((Commandes) arg) {
+                    case COMMENCER_PARTIE:
+
+                        break;
+                    case INSCRIRE_JOUEUR:
+                        vueInterface.fermerFenetre();
+                        vueMontrerJoueur.fermerFenetre();
+                        ouvrirFenetreInscription();
+                        break;
+                    case QUITTER:
+                        vueInterface.quitterJeu();//arrète le programme
+                        break;
+                }
+
+            }
+
+        }
+        if (o == vueInscription) {
+            if (arg instanceof Commandes) {
+                switch ((Commandes) arg) {
+                    case ANNULER:
+                        vueInscription.fermerFenetre();
+                        ouvrirFenetreInterface();
+                        break;
+                    case VALIDER:
+                        vueInscription.fermerFenetre();
+                        ajouteJoueur();
+                        ouvrirFenetreInterface();
+                        break;
+
+                }
+            }
+
+        }
+
     }
 
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////CREATION DE LA GRILLE ////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
         créerGrille();
     }
@@ -154,7 +128,84 @@ public class Controleur implements Observer {
         }
     }
 
-////////////////////Partie IHM ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////ACTION POSSIBLE/////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////ASSECHEMENT////////////////////////////////
+    public void Assecher(Tuile tuile) {
+        tuile.setEtat(EtatTuile.ASSECHEE);
+    }
+
+    //////////////////////////////////OBTENIR TRESOR////////////////////////////
+    public void obtenirTresor(Aventurier av, Tuile tuile) {
+        if (av.getPositionCourante().getTresor() != null) {
+            if (PeutPrendreTresor(av.getMain(), av.getPositionCourante())) {
+                av.addTresor(av.getPositionCourante().getTresor());
+            }
+            Tuile secondeTuile = rechercherTresor(av);
+            //    defausseCarteTresor(av,av.getPositionCourante().getTresor());
+            av.getPositionCourante().setTresor(null);
+            secondeTuile.setTresor(null);
+        }
+
+    }
+
+    public Boolean PeutPrendreTresor(ArrayList<CarteTirage> main, Tuile tuile) {
+
+        int calice = 0;
+        int cristal = 0;
+        int pierre = 0;
+        int zephyr = 0;
+
+        for (int i = 0; i < main.size(); i++) {
+            if (main.get(i) == carteTresor) {
+                if (carteTresor.getTresor() == Tresor.CALICE) {
+                    calice = calice + 1;
+                }
+
+                if (carteTresor.getTresor() == Tresor.CRISTAL) {
+                    cristal = cristal + 1;
+                }
+
+                if (carteTresor.getTresor() == Tresor.PIERRE) {
+                    pierre = pierre + 1;
+                }
+
+                if (carteTresor.getTresor() == Tresor.ZEPHYR) {
+                    zephyr = zephyr + 1;
+                }
+
+            }
+        }
+        return (tuile.getTresor() == Tresor.CALICE && calice >= 4) || (tuile.getTresor() == Tresor.CRISTAL && cristal >= 4) || (tuile.getTresor() == Tresor.PIERRE && pierre >= 4) || (tuile.getTresor() == Tresor.ZEPHYR && zephyr >= 4);
+
+    }
+
+    public Tuile rechercherTresor(Aventurier av) {
+        Tuile t = null;
+        for (int i = 0; i < 24; i++) {
+            if (tuile[i].getTresor() == av.getPositionCourante().getTresor()) {
+                if (tuile[i] != av.getPositionCourante()) {
+                    t = tuile[i];
+                }
+            }
+        }
+        return t;
+    }
+
+    public void defausseCarteTresor(Aventurier av, Tresor tresor) {
+        for (int i = 0; i < av.getMain().size(); i++) {
+            if (av.getMain().get(i).estTresor()) {
+                av.removeCarte(av.getMain().get(i));
+            }
+        }
+    }
+
+    ///////////////////////////////////////DEPLACEMENT//////////////////////////
+    ////////////////////////////////DONNER CARTE////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////Partie IHM /////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
     public void ouvrirFenetreInterface() {
         vueInterface = new VueInterface();
         vueInterface.addObserver(this);
@@ -234,47 +285,6 @@ public class Controleur implements Observer {
         return p;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        if (o == vueInterface) {
-            if (arg instanceof Commandes) {
-                switch ((Commandes) arg) {
-                    case COMMENCER_PARTIE:
-
-                        break;
-                    case INSCRIRE_JOUEUR:
-                        vueInterface.fermerFenetre();
-                        vueMontrerJoueur.fermerFenetre();
-                        ouvrirFenetreInscription();
-                        break;
-                    case QUITTER:
-                        vueInterface.quitterJeu();//arrète le programme
-                        break;
-                }
-
-            }
-
-        }
-        if (o == vueInscription) {
-            if (arg instanceof Commandes) {
-                switch ((Commandes) arg) {
-                    case ANNULER:
-                        vueInscription.fermerFenetre();
-                        ouvrirFenetreInterface();
-                        break;
-                    case VALIDER:
-                        vueInscription.fermerFenetre();
-                        ajouteJoueur();
-                        ouvrirFenetreInterface();
-                        break;
-
-                }
-            }
-
-        }
-
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -340,6 +350,30 @@ public class Controleur implements Observer {
 
     public void setDefausseInondation(ArrayList<CarteInondation> defausseInondation) {
         this.defausseInondation = defausseInondation;
+    }
+
+    public ArrayList<Aventurier> getAventuriers() {
+        return aventuriers;
+    }
+
+    public void setAventuriers(ArrayList<Aventurier> aventuriers) {
+        this.aventuriers = aventuriers;
+    }
+
+    public VueInterface getVueInterface() {
+        return vueInterface;
+    }
+
+    public void setVueInterface(VueInterface vueInterface) {
+        this.vueInterface = vueInterface;
+    }
+
+    public VueMontrerJoueur getVueMontrerJoueur() {
+        return vueMontrerJoueur;
+    }
+
+    public void setVueMontrerJoueur(VueMontrerJoueur vueMontrerJoueur) {
+        this.vueMontrerJoueur = vueMontrerJoueur;
     }
 
 }
