@@ -338,17 +338,22 @@ public class Controleur implements Observer {
 
         }
     }
-
-    public void PiocherCarteTresor(Aventurier av) {
-        CarteTirage cartePioche = getPiocheTirage().get(0);
-        remPiocheTirage(cartePioche);
-        if (!cartePioche.estMontee()) {
-            av.addCarteMain(cartePioche);
-        }
-        if (cartePioche.estMontee()) {
-            addPiocheTirage(cartePioche);
-            setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
-
+    
+    public void PiocherCarteTresor(Aventurier av){
+            CarteTirage cartePioche = getPiocheTirage().get(0);
+            remPiocheTirage(cartePioche);
+            if(!cartePioche.estMontee()){
+                av.addCarteMain(cartePioche);
+            }
+            if(cartePioche.estMontee()){
+                setNiveauEau(getNiveauEau() +1);
+                setDefausseInondation(melangerInondation(getDefausseInondation()));
+                for(CarteInondation c : piocheInondation){
+                    addDefausseInondation(c);
+                }
+                setPiocheInondation(getDefausseInondation());
+               
+               
         }
     }
 
