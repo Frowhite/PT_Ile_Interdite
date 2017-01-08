@@ -42,9 +42,9 @@ public class VueTuile extends JPanel {
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
     }
 
-    public void etatDeLaTuile(String image) {
+    public void imageTuile(String image) {
         img = new ImageIcon(new ImageIcon(getClass().getResource(image))
-                .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_DEFAULT));
+                .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_SMOOTH));
         
     }
     
@@ -75,7 +75,7 @@ public class VueTuile extends JPanel {
         
         
         img2 = new ImageIcon(new ImageIcon(getClass().getResource(i))
-                .getImage().getScaledInstance(dim.height / 6 - 100, dim.height / 6 - 100, Image.SCALE_DEFAULT));
+                .getImage().getScaledInstance(dim.height / 6 - 100, dim.height / 6 - 100, Image.SCALE_SMOOTH));
         tuile.setIcon(img2);
         
     }
@@ -91,7 +91,7 @@ public class VueTuile extends JPanel {
     public void paintComponent(Graphics g) {
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        g.drawImage(img.getImage(), 0, 0, null);
+        g.drawImage(img.getImage(), 3, 3, null);
     }
 
     public void assecheeInondeeOuCouleeTuile(int idTuile, EtatTuile etatTuile) {
@@ -180,7 +180,7 @@ public class VueTuile extends JPanel {
             img += ".png";
         }
 
-        etatDeLaTuile(img);
+        imageTuile(img);
     }
 
     public Pion getPion() {

@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
-import util.Utils;
 
 /**
  *
@@ -59,7 +58,7 @@ public class VueCarte extends JPanel {
 
         i += ".png";
 
-        img = new ImageIcon(new ImageIcon(getClass().getResource(i)).getImage().getScaledInstance(80, 110, Image.SCALE_DEFAULT));
+        img = new ImageIcon(new ImageIcon(getClass().getResource(i)).getImage().getScaledInstance(80, 110, Image.SCALE_SMOOTH));
         carte.setIcon(img);
     }
     

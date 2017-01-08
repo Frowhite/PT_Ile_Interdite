@@ -418,7 +418,7 @@ public class Controleur implements Observer {
         }
 
         initialiserPartie();
-//        vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
+        //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
     }
 
     public void ouvrirFenetreInterface() {
