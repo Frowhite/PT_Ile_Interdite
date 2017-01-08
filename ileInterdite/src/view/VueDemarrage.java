@@ -35,7 +35,6 @@ public class VueDemarrage extends Observable {
 
     public VueDemarrage() {
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         window.setSize(340, 430);
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();

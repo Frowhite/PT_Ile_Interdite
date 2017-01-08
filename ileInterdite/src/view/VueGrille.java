@@ -39,8 +39,8 @@ public class VueGrille extends JPanel {
     public void initialiserPlateau(Tuile[] tuiles) {
         for (int i = 0; i < 24; i++) {
             VueTuile t = new VueTuile(this);
-            tuile.put(tuiles[i].getId(), t);
-            t.assecheeInondeeOuCouleeTuile(tuiles[i].getId(), EtatTuile.ASSECHEE);// il calasse du plus petit au plus grand
+            tuile.put(tuiles[i].getId()-1, t);
+            t.assecheeInondeeOuCouleeTuile(tuiles[i].getId()-1, EtatTuile.ASSECHEE);// il calasse du plus petit au plus grand
         }
         affichePlateau(panelGlobale, tuiles);
     }
@@ -50,7 +50,7 @@ public class VueGrille extends JPanel {
         for (int i = 0; i < 24; i++) {
             gbc.gridx = tuiles[i].getColonnes();
             gbc.gridy = tuiles[i].getLigne();
-            panel.add(tuile.get(tuiles[i].getId()), gbc);
+            panel.add(tuile.get(tuiles[i].getId()-1), gbc);
         }
         panel.setOpaque(false);
     }

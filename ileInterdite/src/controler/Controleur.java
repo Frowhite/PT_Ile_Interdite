@@ -23,18 +23,18 @@ public class Controleur implements Observer {
     private ArrayList<CarteTirage> piocheTirage;
     private ArrayList<CarteInondation> defausseInondation;
     private ArrayList<CarteInondation> piocheInondation;
-    private int niveauEau;
+    private Integer niveauEau = 0;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
     private VueMontrerJoueur vueMontrerJoueur;
     private VuePlateau vuePlateau;
     private VueInscription vueInscription;
+    private VueAction vueAction;
 
     public Controleur() {
         vueMontrerJoueur = new VueMontrerJoueur();
         ouvrirFenetreInterface();
-        initialiserPartie();
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -91,50 +91,49 @@ public class Controleur implements Observer {
 //////////////////////////////CREATION & MISE EN PLACE DE LA PARTIE ////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
-        créerGrille();
-
-//        setNiveauEau(getVueNiveau().getNiveau());
-//        initialiserCartesTirages();
-//        initialiserCartesInondation();
-//        for(int i = 0;i<6;i++){
-//            PiocherCarteInondation();
-//            if(i<2){ 
-//                for(Aventurier jCourant : aventuriers){
-//                PiocherCarteTresorDepart(jCourant);
-//                }
-//            }
-//            
-//        // LancementPartie();
-//        }
+        vueNiveau = new VueNiveau(niveauEau);
+        setNiveauEau(getVueNiveau().getNiveau());
+        initialiserCartesTirages();
+        initialiserCartesInondation();
+        for(int i = 0;i<6;i++){
+            PiocherCarteInondation();
+            if(i<2){ 
+                for(Aventurier jCourant : aventuriers){
+                PiocherCarteTresorDepart(jCourant);
+                }
+            }
+            
+         //LancementPartie();
+        }
     }
 
     ////////////////////////////////GRILLE//////////////////////////////////////
     public void créerGrille() {
         tuile = new Tuile[24];
-        tuile[0] = new Tuile(0, "Heliport", null);
-        tuile[1] = new Tuile(1, "La Caverne des Ombres", Tresor.CRISTAL);
-        tuile[2] = new Tuile(2, "La Caverne du Brasier", Tresor.CRISTAL);
-        tuile[3] = new Tuile(3, "La Foret Pourpre", null);
-        tuile[4] = new Tuile(4, "La Porte de Bronze", null);
-        tuile[5] = new Tuile(5, "La Porte de Cuivre", null);
-        tuile[6] = new Tuile(6, "La Porte de fer", null);
-        tuile[7] = new Tuile(7, "La Porte d'Argent", null);
-        tuile[8] = new Tuile(8, "La Porte d'Or ", null);
-        tuile[9] = new Tuile(9, "La Tour du Guet", null);
-        tuile[10] = new Tuile(10, "Le Jardin du Hurlement", Tresor.ZEPHYR);
-        tuile[11] = new Tuile(11, "Le Jadin des Murmures", Tresor.ZEPHYR);
-        tuile[12] = new Tuile(12, "Le Lagon Perdu", null);
-        tuile[13] = new Tuile(13, "Le Marais Brumeux", null);
-        tuile[14] = new Tuile(14, "Le Palais de Corail", Tresor.CALICE);
-        tuile[15] = new Tuile(15, "Le Palais des Marees", Tresor.CALICE);
-        tuile[16] = new Tuile(16, "Le Pont des Abimes", null);
-        tuile[17] = new Tuile(17, "Le Rocher Fantome", null);
-        tuile[18] = new Tuile(18, "Le Temple de Lune", Tresor.PIERRE);
-        tuile[19] = new Tuile(19, "Le Temple du Soleil", Tresor.PIERRE);
-        tuile[20] = new Tuile(20, "Le Val du Crépuscule", null);
-        tuile[21] = new Tuile(21, "Les Dunes de L'illusion", null);
-        tuile[22] = new Tuile(22, "Les Falaises de l'Oubli", null);
-        tuile[23] = new Tuile(23, "Observatoire", null);
+        tuile[0] = new Tuile("Heliport", null);
+        tuile[1] = new Tuile("La Caverne des Ombres", Tresor.CRISTAL);
+        tuile[2] = new Tuile("La Caverne du Brasier", Tresor.CRISTAL);
+        tuile[3] = new Tuile("La Foret Pourpre", null);
+        tuile[4] = new Tuile("La Porte de Bronze", null);
+        tuile[5] = new Tuile("La Porte de Cuivre", null);
+        tuile[6] = new Tuile("La Porte de fer", null);
+        tuile[7] = new Tuile("La Porte d'Argent", null);
+        tuile[8] = new Tuile("La Porte d'Or ", null);
+        tuile[9] = new Tuile("La Tour du Guet", null);
+        tuile[10] = new Tuile("Le Jardin du Hurlement", Tresor.ZEPHYR);
+        tuile[11] = new Tuile("Le Jadin des Murmures", Tresor.ZEPHYR);
+        tuile[12] = new Tuile("Le Lagon Perdu", null);
+        tuile[13] = new Tuile("Le Marais Brumeux", null);
+        tuile[14] = new Tuile("Le Palais de Corail", Tresor.CALICE);
+        tuile[15] = new Tuile("Le Palais des Marees", Tresor.CALICE);
+        tuile[16] = new Tuile("Le Pont des Abimes", null);
+        tuile[17] = new Tuile("Le Rocher Fantome", null);
+        tuile[18] = new Tuile("Le Temple de Lune", Tresor.PIERRE);
+        tuile[19] = new Tuile("Le Temple du Soleil", Tresor.PIERRE);
+        tuile[20] = new Tuile("Le Val du Crépuscule", null);
+        tuile[21] = new Tuile("Les Dunes de L'illusion", null);
+        tuile[22] = new Tuile("Les Falaises de l'Oubli", null);
+        tuile[23] = new Tuile("Observatoire", null);
 
         melangerTuile(tuile);
 
@@ -349,9 +348,11 @@ public class Controleur implements Observer {
 ////////////////////Partie IHM /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void ouvrirPlateauDeJeu() {
-        initialiserPartie();
+        créerGrille();
         vuePlateau = new VuePlateau(aventuriers.size());
         vuePlateau.addObserver(this);
+        vueAction = new VueAction();
+        vueAction.addObserver(this);
 
         for (int i = 0; i < aventuriers.size(); i++) {
             switch (i) {
@@ -370,8 +371,9 @@ public class Controleur implements Observer {
             }
 
         }
-        vuePlateau.getVueGrille().initialiserPlateau(tuile);
-        vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
+        vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
+
+        //initialiserPartie();
 
     }
 
@@ -609,11 +611,11 @@ public class Controleur implements Observer {
         this.piocheInondation = piocheInondation;
     }
 
-    public int getNiveauEau() {
+    public Integer getNiveauEau() {
         return niveauEau;
     }
 
-    public void setNiveauEau(int niveauEau) {
+    public void setNiveauEau(Integer niveauEau) {
         this.niveauEau = niveauEau;
     }
 

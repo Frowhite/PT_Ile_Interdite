@@ -59,7 +59,7 @@ public class VuePlateau extends Observable {
 
         window.setContentPane(panelGlobale);
         //mettre en plein écran
-        window.setAlwaysOnTop(true);
+        //window.setAlwaysOnTop(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setVisible(true);
     }
