@@ -458,24 +458,49 @@ public class Controleur implements Observer {
         Pion p;
         if (!"".equals(vueInscription.nomJoueur1()) && !"Nom joueur".equals(vueInscription.nomJoueur1())) {
             p = couleurPion();
-            aventuriers.add(new Aventurier(25, vueInscription.nomJoueur1(), p, positionJoueurDebut(p), this));
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur1(), p, positionJoueurDebut(p), this));
         }
         if (!"".equals(vueInscription.nomJoueur2()) && !"Nom joueur".equals(vueInscription.nomJoueur2())) {
             p = couleurPion();
-            aventuriers.add(new Aventurier(26, vueInscription.nomJoueur2(), p, positionJoueurDebut(p), this));
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur2(), p, positionJoueurDebut(p), this));
         }
         if (!"".equals(vueInscription.nomJoueur3()) && !"Nom joueur".equals(vueInscription.nomJoueur3())) {
             p = couleurPion();
-            aventuriers.add(new Aventurier(27, vueInscription.nomJoueur3(), p, positionJoueurDebut(p), this));
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur3(), p, positionJoueurDebut(p), this));
         }
         if (!"".equals(vueInscription.nomJoueur4()) && !"Nom joueur".equals(vueInscription.nomJoueur4())) {
             p = couleurPion();
-            aventuriers.add(new Aventurier(28, vueInscription.nomJoueur4(), p, positionJoueurDebut(p), this));
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur4(), p, positionJoueurDebut(p), this));
         }
+
+        //donner un id aux aventuriers
+        for (int i = 0; i < aventuriers.size(); i++) {
+            switch (i) {
+                case 0:
+                    aventuriers.get(i).setId(25);
+                    break;
+                case 1:
+                    aventuriers.get(i).setId(26);
+                    break;
+                case 2:
+                    aventuriers.get(i).setId(27);
+                    break;
+                case 3:
+                    aventuriers.get(i).setId(28);
+                    break;
+            }
+        }
+
         //écrire les noms dans vueMontrerJoueur
+        int x = 0;
         for (int i = 0; i < aventuriers.size(); i++) {
             vueMontrerJoueur.ecrireNom(i + 1, aventuriers.get(i).getNom());
+            x++;
         }
+        for (int i = 0; i < 4 - x; i++) {
+            vueMontrerJoueur.ecrireNom(i + x + 1, "");
+        }
+
     }
 
     public Tuile positionJoueurDebut(Pion pion) {
