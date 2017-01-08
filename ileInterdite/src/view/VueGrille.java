@@ -34,7 +34,7 @@ public class VueGrille extends JPanel {
         this.add(panelGlobale);
     }
     
-    public void initialiserPlateau(Tuile[] tuiles) {
+        public void initialiserPlateau(Tuile[] tuiles) {
         for (int i = 0; i < 24; i++) {
             VueTuile t = new VueTuile();
             tuile.put(tuiles[i].getId(), t);

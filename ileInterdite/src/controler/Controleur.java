@@ -126,7 +126,11 @@ public class Controleur implements Observer {
         tuile[21] = new Tuile(21,"Les Dunes de L'illusion", null);
         tuile[22] = new Tuile(22,"Les Falaises de l'Oubli", null);
         tuile[23] = new Tuile(23,"Observatoire", null);
-
+        
+        for(int i =0;i<getTuile().length;i++){
+            System.out.println(tuile[i].getNomTuile() + "   " + tuile[i].getId());
+        }
+        
         melangerTuile(tuile);
 
         this.grille = new Grille(tuile);
