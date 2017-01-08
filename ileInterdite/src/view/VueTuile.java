@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,24 +23,24 @@ public class VueTuile extends JPanel {
     
     private ImageIcon img;
     private ImageIcon img2;
-    private JLabel tuile;
+    private ArrayList<JLabel> labelPion = new ArrayList<>();
     private Toolkit kit = Toolkit.getDefaultToolkit();
     private Dimension dim = kit.getScreenSize();
-    private Pion pion = null;
+    private ArrayList<Pion> pion = new ArrayList<>();
     
 
     public VueTuile(VueGrille vueGrille) {
         //taille des tuiles qui s'adapte à l'écran
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
-        tuile = new JLabel();
+        
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 vueGrille.getVuePlateau().choisirTuile();
             }
         });
-        this.add(tuile);
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
+        
     }
 
     public void imageTuile(String image) {
@@ -49,41 +50,65 @@ public class VueTuile extends JPanel {
     }
     
     public void mettrePion(Pion p){
-        pion=p;
-        String i = "/images/pions/";
-        switch (p) {
+        //prend en compte si il y a plusieur joueur sur la même tuile
+        pion.add(p);
+        int x=pion.size();//nombre de pion sur la case
+        
+        //efface les pions sur la tuile
+        for (int i = 0; i < labelPion.size(); i++) {
+            img2=null;
+            labelPion.get(i).setIcon(img2);
+        }
+        
+        labelPion.clear();
+        //dessine les pions sur la tuile
+        for (int i = 0; i < pion.size(); i++) {
+        
+        String s = "/images/pions/";
+        switch (pion.get(i)) {
             case BLEU:
-                i+="pionBleu";
+                s+="pionBleu";
                 break;
             case JAUNE:
-                i+="pionJaune";
+                s+="pionJaune";
                 break;
             case ORANGE:
-                i+="pionBronze";
+                s+="pionBronze";
                 break;
             case ROUGE:
-                i+="pionRouge";
+                s+="pionRouge";
                 break;
             case VERT:
-                i+="pionVert";
+                s+="pionVert";
                 break;
             case VIOLET:
-                i+="pionViolet";
+                s+="pionViolet";
                 break;
         }
-        i+=".png";
+        s+=".png";
         
         
-        img2 = new ImageIcon(new ImageIcon(getClass().getResource(i))
-                .getImage().getScaledInstance(dim.height / 6 - 100, dim.height / 6 - 100, Image.SCALE_SMOOTH));
-        tuile.setIcon(img2);
+        img2 = new ImageIcon(new ImageIcon(getClass().getResource(s))
+                .getImage().getScaledInstance(dim.height / 6-90-(x*10), dim.height / 6-90-(x*10), Image.SCALE_SMOOTH));
+        JLabel l = new JLabel();
+        l.setIcon(img2);
+        labelPion.add(l);
+        }
+        for (int i = 0; i < labelPion.size(); i++) {
+            this.add(labelPion.get(i));
+        }
         
     }
     
-    void enlevePion() {
-       pion=null;
+    void enlevePion(Pion p) {
+        int x=0;
+        for (int i = 0; i < pion.size() && pion.get(i)!=p; i++) {
+                x++;
+        }
+       pion.remove(p);
        img2=null;
-       tuile.setIcon(img2);
+       labelPion.get(x).setIcon(img2);
+       labelPion.remove(x);
     }
     
     
@@ -183,12 +208,14 @@ public class VueTuile extends JPanel {
         imageTuile(img);
     }
 
-    public Pion getPion() {
+    public ArrayList<Pion> getPion() {
         return pion;
     }
 
-    public void setPion(Pion pion) {
+    public void setPion(ArrayList<Pion> pion) {
         this.pion = pion;
-    }    
+    }
+
+      
     
 }
