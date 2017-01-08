@@ -42,16 +42,16 @@ public class VuePlateau extends Observable {
         //***création des aventuriers de 2 à 4***
         panelGauche = new JPanel(gl);
         panelDroite = new JPanel(gl);
-        aventurier1 = new VueAventurier();
+        aventurier1 = new VueAventurier(this);
         panelGauche.add(aventurier1);
-        aventurier2 = new VueAventurier();
+        aventurier2 = new VueAventurier(this);
         panelDroite.add(aventurier2);
         if (nbJoueur > 2) {
-            aventurier3 = new VueAventurier();
+            aventurier3 = new VueAventurier(this);
             panelGauche.add(aventurier3);
         }
         if (nbJoueur == 4) {
-            aventurier4 = new VueAventurier();
+            aventurier4 = new VueAventurier(this);
             panelDroite.add(aventurier4);
         }
         panelGlobale.add(panelGauche, BorderLayout.WEST);
@@ -87,9 +87,15 @@ public class VuePlateau extends Observable {
         return vueGrille;
     }
     
-    public void test(){
+    public void choisirTuile(){
                 setChanged();
-                notifyObservers(Commandes.ANNULER);
+                notifyObservers(Commandes.CHOISIR_TUILE);
+                clearChanged();
+    }
+    
+    public void choisirCarte(){
+                setChanged();
+                notifyObservers(Commandes.CHOISIR_CARTE);
                 clearChanged();
     }
 }

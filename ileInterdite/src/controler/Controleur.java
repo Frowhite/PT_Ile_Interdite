@@ -80,8 +80,11 @@ public class Controleur implements Observer {
         if (o == vuePlateau) {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
-                    case ANNULER:
-                        System.out.println("salut!!!");
+                    case CHOISIR_TUILE:
+                        System.out.println("Tuile!!!");
+                        break;
+                    case CHOISIR_CARTE:
+                        System.out.println("Carte");
                         break;
                 }
             }

@@ -20,7 +20,6 @@ import util.Utils.Pion;
 
 public class VueTuile extends JPanel {
     
-    private VueGrille vueGrille;
     private ImageIcon img;
     private ImageIcon img2;
     private JLabel tuile;
@@ -30,15 +29,13 @@ public class VueTuile extends JPanel {
     
 
     public VueTuile(VueGrille vueGrille) {
-        this.vueGrille=vueGrille;
         //taille des tuiles qui s'adapte à l'écran
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
         tuile = new JLabel();
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                vueGrille.getVuePlateau().test();
-                
+                vueGrille.getVuePlateau().choisirTuile();
             }
         });
         this.add(tuile);

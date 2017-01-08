@@ -7,6 +7,8 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -19,14 +21,20 @@ import util.Utils;
  * @author asus
  */
 public class VueCarte extends JPanel {
-    
     private ImageIcon img=null;
     private JLabel carte;
 
-    public VueCarte() {
+    public VueCarte(VueAventurier vueAventurier) {
         this.setPreferredSize(new Dimension(100, 110));//taille
 
         carte = new JLabel();
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                vueAventurier.getVuePlateau().choisirCarte();
+                
+            }
+        });
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
         this.add(carte);
     }

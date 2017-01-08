@@ -27,7 +27,6 @@ import util.Utils.Commandes;
  */
 public class VueDemarrage extends Observable {
 
-    private int nbJoueur;
     private JFrame window;
     private JPanel panelGlobale, panelCentre;
     private JButton bCommencerPartie, bInscrireJ, bQuitter;
@@ -36,7 +35,6 @@ public class VueDemarrage extends Observable {
     private GridLayout gl = new GridLayout(4, 1);
 
     public VueDemarrage(int nbJoueur) {
-        this.nbJoueur = nbJoueur;
         window = new JFrame();
         window.setSize(340, 430);
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
@@ -58,6 +56,7 @@ public class VueDemarrage extends Observable {
         bCommencerPartie.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //affiche un message d'erreur si il n'y a pas minimum 2 joueurs
                 if (nbJoueur < 2) {
                     JOptionPane.showMessageDialog(window, "Il n'y a pas assez de joueur (de 2 à 4 joueurs)", "Attention!!", JOptionPane.ERROR_MESSAGE);
                 } else {

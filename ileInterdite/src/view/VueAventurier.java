@@ -18,6 +18,7 @@ import util.Utils.Pion;
 
 public class VueAventurier extends JPanel {
 
+    private VuePlateau vuePlateau;
     private ArrayList<VueCarte> vueCarte;
     private JLabel donnerNomJoueur;
 
@@ -26,7 +27,8 @@ public class VueAventurier extends JPanel {
     private JPanel panelGlobale, panelCentre;
     private GridLayout gl = new GridLayout(3, 3);
 
-    public VueAventurier() {
+    public VueAventurier(VuePlateau vuePlateau) {
+        this.vuePlateau=vuePlateau;
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
         this.setSize(dim.width / 4, 430);
@@ -41,7 +43,7 @@ public class VueAventurier extends JPanel {
         panelCentre = new JPanel(gl);
 
         for (int i = 0; i < 9; i++) {
-            VueCarte c = new VueCarte();
+            VueCarte c = new VueCarte(this);
             panelCentre.add(c);
             vueCarte.add(c);
         }
@@ -72,11 +74,9 @@ public class VueAventurier extends JPanel {
                 x++;
             }
         }
-        
-        
+        //rajoute un emplacement de carte vide
         for (int i = 0; i < x; i++) {
-            //rajoute un emplacement de carte vide
-                VueCarte c = new VueCarte();
+                VueCarte c = new VueCarte(this);
                 vueCarte.add(c);
         }
         panelCentre.removeAll();
@@ -112,4 +112,10 @@ public class VueAventurier extends JPanel {
         }
 
     }
+
+    public VuePlateau getVuePlateau() {
+        return vuePlateau;
+    }
+    
+    
 }
