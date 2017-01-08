@@ -1,32 +1,38 @@
 package view;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import util.Utils;
 import util.Utils.EtatTuile;
+import util.Utils.Pion;
 
 public class VueTuile extends JPanel {
 
     private VueGrille vueGrille;
     private ImageIcon img;
+    private ImageIcon img2;
     private JLabel tuile;
     private EtatTuile etatTuile = EtatTuile.ASSECHEE;
     int x=0;
+    private Toolkit kit = Toolkit.getDefaultToolkit();
+    private Dimension dim = kit.getScreenSize();
+    
 
     public VueTuile(VueGrille vueGrille) {
         this.vueGrille=vueGrille;
         //taille des tuiles qui s'adapte à l'écran
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension dim = kit.getScreenSize();
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
         tuile = new JLabel();
         tuile.addMouseListener(new MouseAdapter() {
@@ -37,12 +43,52 @@ public class VueTuile extends JPanel {
             }
         });
         this.add(tuile);
+        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
     }
 
     public void etatDeLaTuile(String image) {
         img = new ImageIcon(new ImageIcon(getClass().getResource(image))
-                .getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
-        tuile.setIcon(img);
+                .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_DEFAULT));
+        
+    }
+    
+    public void mettrePion(Pion p){
+        String i = "/images/pions/";
+        switch (p) {
+            case BLEU:
+                i+="pionBleu";
+                break;
+            case JAUNE:
+                i+="pionJaune";
+                break;
+            case ORANGE:
+                i+="pionBronze";
+                break;
+            case ROUGE:
+                i+="pionRouge";
+                break;
+            case VERT:
+                i+="pionVert";
+                break;
+            case VIOLET:
+                i+="pionViolet";
+                break;
+        }
+        i+=".png";
+        
+        
+        img2 = new ImageIcon(new ImageIcon(getClass().getResource(i))
+                .getImage().getScaledInstance(dim.height / 6 - 100, dim.height / 6 - 100, Image.SCALE_DEFAULT));
+        tuile.setIcon(img2);
+        
+    }
+    
+    
+    //dessin le fond
+    public void paintComponent(Graphics g) {
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension dim = kit.getScreenSize();
+        g.drawImage(img.getImage(), 0, 0, null);
     }
 
     public void assecheeInondeeOuCouleeTuile(int numTuile, EtatTuile etatTuile) {

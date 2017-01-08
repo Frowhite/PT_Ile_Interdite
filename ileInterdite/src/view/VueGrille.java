@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import model.cases.Tuile;
 import util.Utils;
 import util.Utils.EtatTuile;
+import util.Utils.Pion;
 
 public class VueGrille extends JPanel {
     
@@ -50,6 +52,7 @@ public class VueGrille extends JPanel {
         for (int i = 0; i < 24; i++) {
             gbc.gridx = tuiles[i].getColonnes();
             gbc.gridy = tuiles[i].getLigne();
+            gbc.insets = new Insets(10,10,0,0);
             panel.add(tuile.get(tuiles[i].getId()), gbc);
         }
         panel.setOpaque(false);
@@ -58,6 +61,14 @@ public class VueGrille extends JPanel {
     public void etatTuile(int numTuile, EtatTuile etatTuile) {
         tuile.get(numTuile).assecheeInondeeOuCouleeTuile(numTuile, etatTuile);
     }
+    
+    public void deplacePion(Pion p, int id) {
+        tuile.get(id).mettrePion(p);
+    }
+    
+    public VuePlateau getVuePlateau() {
+        return vuePlateau;
+    }
 
     //dessin le fond
     public void paintComponent(Graphics g) {
@@ -65,10 +76,5 @@ public class VueGrille extends JPanel {
         Dimension dim = kit.getScreenSize();
         g.drawImage(img, 0, 0, null);
     }
-
-    public VuePlateau getVuePlateau() {
-        return vuePlateau;
-    }
-    
     
 }

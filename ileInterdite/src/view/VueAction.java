@@ -36,7 +36,7 @@ public class VueAction extends Observable {
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width / 2 + 250, dim.height / 2 + 300);
+        window.setLocation(dim.width / 2 + 250, dim.height / 2 + 330);
         panelGlobale = new JPanel(new BorderLayout());
         //***Haut***
         //text nb d'action

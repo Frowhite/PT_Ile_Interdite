@@ -113,8 +113,8 @@ public class Controleur implements Observer {
 //////////////////////////////CREATION & MISE EN PLACE DE LA PARTIE ////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
-        vueNiveau = new VueNiveau(niveauEau);
-        setNiveauEau(getVueNiveau().getNiveau());
+  //      vueNiveau = new VueNiveau(niveauEau);
+  //      setNiveauEau(getVueNiveau().getNiveau());
         initialiserCartesTirages();
         initialiserCartesInondation();
         for (int i = 0; i < 6; i++) {
@@ -390,11 +390,18 @@ public class Controleur implements Observer {
                     vuePlateau.getAventurier4().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
             }
-            System.out.println("id case = "+aventuriers.get(i).getNom()+":"+aventuriers.get(i).getPositionCourante().getId());
+            System.out.println("id case = " + aventuriers.get(i).getNom() + ":" + aventuriers.get(i).getPositionCourante().getId());
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
+        //vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
 
-        //initialiserPartie();
+        //place les pions sur le plateau
+        for (int i = 0; i < aventuriers.size(); i++) {
+            vuePlateau.getVueGrille().deplacePion(aventuriers.get(i).getCapacite(),
+                    aventuriers.get(i).getPositionCourante().getId());
+        }
+
+        initialiserPartie();
     }
 
     public void ouvrirFenetreInterface() {
@@ -454,9 +461,9 @@ public class Controleur implements Observer {
         }
     }
 
-  public Tuile positionJoueurDebut(Pion pion) {
+    public Tuile positionJoueurDebut(Pion pion) {
         Tuile t = tuile[0];
-        int idTuile=0;
+        int idTuile = 0;
 
         //met l'id de la tuile où le joueur commence
         switch (pion) {
