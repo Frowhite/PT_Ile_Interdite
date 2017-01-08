@@ -9,6 +9,8 @@ import java.util.Observable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import util.Utils;
+import util.Utils.Commandes;
 
 /**
  *
@@ -34,7 +36,7 @@ public class VuePlateau extends Observable {
 
         panelGlobale = new JPanel(new BorderLayout());
         //***création de la grille de jeu***
-        vueGrille = new VueGrille(plateau.getImage());
+        vueGrille = new VueGrille(plateau.getImage(), this);
         panelGlobale.add(vueGrille, BorderLayout.CENTER);
 
         //***création des aventuriers de 2 à 4***
@@ -57,7 +59,7 @@ public class VuePlateau extends Observable {
 
         window.setContentPane(panelGlobale);
         //mettre en plein écran
-        window.setAlwaysOnTop(true);
+        //window.setAlwaysOnTop(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setVisible(true);
     }
@@ -82,5 +84,9 @@ public class VuePlateau extends Observable {
         return vueGrille;
     }
     
-    
+    public void test(){
+                setChanged();
+                notifyObservers(Commandes.ANNULER);
+                clearChanged();
+    }
 }

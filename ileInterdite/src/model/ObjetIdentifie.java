@@ -12,8 +12,8 @@ public class ObjetIdentifie {
        this.id = ObjetIdentifie.getNextId();
     }
     
-    public ObjetIdentifie(int id) {
-        setId(id);
+    public ObjetIdentifie(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {

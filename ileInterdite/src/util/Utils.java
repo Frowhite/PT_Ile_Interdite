@@ -28,8 +28,7 @@ public class Utils {
         INSCRIRE_JOUEUR("Demande l'inscription de nouveau joueur"),
         COMMENCER_PARTIE("Commence la partie"), 
         QUITTER("Quitte le jeu"),
-        ANNULER("Annule l'inscriptions des joueurs"),
-        VALIDER("Valider l'inscriptions des joueurs");
+        ANNULER("Annule l'inscriptions des joueurs");
 
         private final String libelle ;
 

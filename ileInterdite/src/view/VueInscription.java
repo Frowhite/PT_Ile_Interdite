@@ -40,7 +40,6 @@ public class VueInscription extends Observable {
 
     public VueInscription() {
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         window.setSize(300, 230);
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
@@ -117,7 +116,7 @@ public class VueInscription extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(Utils.Commandes.VALIDER);
+                notifyObservers(Utils.Commandes.VALIDER_JOUEURS);
                 clearChanged();
             }
         });
