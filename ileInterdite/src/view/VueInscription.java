@@ -116,7 +116,7 @@ public class VueInscription extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(Utils.Commandes.VALIDER);
+                notifyObservers(Utils.Commandes.VALIDER_JOUEURS);
                 clearChanged();
             }
         });

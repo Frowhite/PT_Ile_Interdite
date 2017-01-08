@@ -86,7 +86,7 @@ public class VuePlateau extends Observable {
     
     public void test(){
                 setChanged();
-                notifyObservers(Commandes.VALIDER);
+                notifyObservers(Commandes.ANNULER);
                 clearChanged();
     }
 }

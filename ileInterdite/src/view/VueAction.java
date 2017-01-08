@@ -9,11 +9,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import util.Utils;
+import util.Utils.Commandes;
 
 /**
  *
@@ -42,25 +46,43 @@ public class VueAction extends Observable {
         panelCentre = new JPanel(gl);
         //boutton déplacer
         bDeplace = new JButton("Ce déplacer");
+        actionListener(bDeplace, Commandes.BOUGER);
         panelCentre.add(bDeplace);
         //boutton assecher
         bAssechee = new JButton("Assecher tuile");
+        actionListener(bAssechee, Commandes.ASSECHER);
         panelCentre.add(bAssechee);
         //boutton donner carte
         bDonneCarte = new JButton("Donner carte");
+        actionListener(bDonneCarte, Commandes.DONNER);
         panelCentre.add(bDonneCarte);
         //boutton utiliser carte
         bUtiliseCarte = new JButton("Utiliser carte");
+        actionListener(bUtiliseCarte, Commandes.CHOISIR_CARTE);
         panelCentre.add(bUtiliseCarte);
         
         panelGlobale.add(panelCentre, BorderLayout.CENTER);
         
         //***Bas***
         //boutton prendre tresor
-        bPrendreTresor = new JButton("Prendre le trésor");
+        bPrendreTresor = new JButton("Recupérer le trésor");
+        actionListener(bPrendreTresor, Commandes.RECUPERER_TRESOR);
         panelGlobale.add(bPrendreTresor, BorderLayout.SOUTH);
         
         window.add(panelGlobale);
         window.setVisible(true);
+    }
+    
+    public void actionListener(JButton button, Commandes c){
+         button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(c);
+                clearChanged();
+            }
+        });
+    
+    
     }
 }
