@@ -24,6 +24,7 @@ import util.Utils.Commandes;
  * @author asus
  */
 public class VueAction extends Observable {
+
     private JFrame window;
     private JPanel panelGlobale, panelCentre;
     private GridLayout gl = new GridLayout(2, 2);
@@ -60,21 +61,21 @@ public class VueAction extends Observable {
         bUtiliseCarte = new JButton("Utiliser carte");
         actionListener(bUtiliseCarte, Commandes.CHOISIR_CARTE);
         panelCentre.add(bUtiliseCarte);
-        
+
         panelGlobale.add(panelCentre, BorderLayout.CENTER);
-        
+
         //***Bas***
         //boutton prendre tresor
         bPrendreTresor = new JButton("Recupérer le trésor");
         actionListener(bPrendreTresor, Commandes.RECUPERER_TRESOR);
         panelGlobale.add(bPrendreTresor, BorderLayout.SOUTH);
-        
+
         window.add(panelGlobale);
         window.setVisible(true);
     }
-    
-    public void actionListener(JButton button, Commandes c){
-         button.addActionListener(new ActionListener() {
+
+    public void actionListener(JButton button, Commandes c) {
+        button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
@@ -82,7 +83,9 @@ public class VueAction extends Observable {
                 clearChanged();
             }
         });
-    
-    
+    }
+
+    public void fermerFenetre() {
+        window.dispose();
     }
 }

@@ -90,18 +90,23 @@ public class Controleur implements Observer {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
                     case BOUGER:
+                        vueAction.fermerFenetre();
                         System.out.println("1");
                         break;
                     case ASSECHER:
+                        vueAction.fermerFenetre();
                         System.out.println("2");
                         break;
                     case DONNER:
+                        vueAction.fermerFenetre();
                         System.out.println("3");
                         break;
                     case CHOISIR_CARTE:
+                        vueAction.fermerFenetre();
                         System.out.println("4");
                         break;
                     case RECUPERER_TRESOR:
+                        vueAction.fermerFenetre();
                         System.out.println("5");
                         break;
                 }
