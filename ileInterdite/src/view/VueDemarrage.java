@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import util.Utils.Commandes;
 
@@ -26,6 +27,7 @@ import util.Utils.Commandes;
  */
 public class VueDemarrage extends Observable {
 
+    private int nbJoueur;
     private JFrame window;
     private JPanel panelGlobale, panelCentre;
     private JButton bCommencerPartie, bInscrireJ, bQuitter;
@@ -33,7 +35,8 @@ public class VueDemarrage extends Observable {
     private Font font = new Font("Arial", 0, 25);
     private GridLayout gl = new GridLayout(4, 1);
 
-    public VueDemarrage() {
+    public VueDemarrage(int nbJoueur) {
+        this.nbJoueur = nbJoueur;
         window = new JFrame();
         window.setSize(340, 430);
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
@@ -55,9 +58,13 @@ public class VueDemarrage extends Observable {
         bCommencerPartie.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (nbJoueur < 2) {
+                    JOptionPane.showMessageDialog(window, "Il n'y a pas assez de joueur (de 2 à 4 joueurs)", "Attention!!", JOptionPane.ERROR_MESSAGE);
+                } else {
                     setChanged();
                     notifyObservers(Commandes.COMMENCER_PARTIE);
                     clearChanged();
+                }
             }
         });
 
@@ -69,13 +76,12 @@ public class VueDemarrage extends Observable {
         bInscrireJ.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    setChanged();
-                    notifyObservers(Commandes.INSCRIRE_JOUEUR);
-                    clearChanged();
+                setChanged();
+                notifyObservers(Commandes.INSCRIRE_JOUEUR);
+                clearChanged();
             }
         });
         panelCentre.add(bInscrireJ);
-       
 
         //boutton quitter
         bQuitter = new JButton("Quitter");
@@ -83,13 +89,12 @@ public class VueDemarrage extends Observable {
         bQuitter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    setChanged();
-                    notifyObservers(Commandes.QUITTER);
-                    clearChanged();
+                setChanged();
+                notifyObservers(Commandes.QUITTER);
+                clearChanged();
             }
         });
         panelCentre.add(bQuitter);
-        
 
         panelGlobale.add(panelCentre, BorderLayout.CENTER);
 
