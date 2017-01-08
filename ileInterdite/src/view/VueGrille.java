@@ -49,7 +49,7 @@ public class VueGrille extends JPanel {
     
     //crée le plateau
     public void affichePlateau(JPanel panel, Tuile[] tuiles) {
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < tuile.size(); i++) {
             gbc.gridx = tuiles[i].getColonnes();
             gbc.gridy = tuiles[i].getLigne();
             gbc.insets = new Insets(10,10,0,0);
@@ -63,6 +63,13 @@ public class VueGrille extends JPanel {
     }
     
     public void deplacePion(Pion p, int id) {
+        //enlève le pion de la dernière tuile
+        for (int i = 0; i < tuile.size(); i++) {
+            if (tuile.get(i).getPion()==p){
+                tuile.get(i).enlevePion();
+            }
+        }
+        //rajoute le pion sur la nouvelle tuile
         tuile.get(id).mettrePion(p);
     }
     

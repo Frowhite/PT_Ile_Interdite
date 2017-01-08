@@ -119,7 +119,7 @@ public class VueNiveau {
             GridBagConstraints gbc = new GridBagConstraints();
             panelDroit.add(labelDroit, gbc);
         }
-        panelsGauches.get(niveauInitial).setBackground(Color.YELLOW);
+//        panelsGauches.get(niveauInitial).setBackground(Color.YELLOW);
         this.window.setVisible(true);
     }
 

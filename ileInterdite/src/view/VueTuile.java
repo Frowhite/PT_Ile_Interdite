@@ -28,6 +28,7 @@ public class VueTuile extends JPanel {
     int x=0;
     private Toolkit kit = Toolkit.getDefaultToolkit();
     private Dimension dim = kit.getScreenSize();
+    private Pion pion = null;
     
 
     public VueTuile(VueGrille vueGrille) {
@@ -53,6 +54,7 @@ public class VueTuile extends JPanel {
     }
     
     public void mettrePion(Pion p){
+        pion=p;
         String i = "/images/pions/";
         switch (p) {
             case BLEU:
@@ -81,6 +83,13 @@ public class VueTuile extends JPanel {
                 .getImage().getScaledInstance(dim.height / 6 - 100, dim.height / 6 - 100, Image.SCALE_DEFAULT));
         tuile.setIcon(img2);
         
+    }
+    
+    void enlevePion() {
+       pion=null;
+       img2=new ImageIcon(new ImageIcon(getClass().getResource(""))
+                .getImage().getScaledInstance(dim.height / 6 - 100, dim.height / 6 - 100, Image.SCALE_DEFAULT));
+       tuile.setIcon(img2);
     }
     
     
@@ -180,4 +189,12 @@ public class VueTuile extends JPanel {
         etatDeLaTuile(img);
     }
 
+    public Pion getPion() {
+        return pion;
+    }
+
+    public void setPion(Pion pion) {
+        this.pion = pion;
+    }    
+    
 }
