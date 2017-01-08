@@ -22,8 +22,8 @@ public class Aventurier extends ObjetIdentifie {
     private Controleur controleur;
     
 
-    public Aventurier(String nom, Pion capacite, Tuile positionCourante, Controleur controleur) {
-        super();
+    public Aventurier(int idJoueur, String nom, Pion capacite, Tuile positionCourante, Controleur controleur) {
+        super(idJoueur);
         this.nom = nom;
         this.capacite = capacite;
         main = new ArrayList();

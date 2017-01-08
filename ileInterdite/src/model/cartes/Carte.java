@@ -14,6 +14,11 @@ public abstract class Carte extends ObjetIdentifie {
         super();
         this.nom = nom;
     }
+    
+    public Carte(int id, String nom) {
+        super(id);
+        this.nom = nom;
+    }
 
     public String getNom() {
         return nom;

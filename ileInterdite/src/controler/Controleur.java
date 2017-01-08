@@ -177,39 +177,39 @@ public class Controleur implements Observer {
 ///////////////////////////////////////CARTES TIRAGE////////////////////////////
 
     public void initialiserCartesTirages() {
-        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
-        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
-        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
-        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
-        addPiocheTirage(new CarteTresor("Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor(30,"Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor(31,"Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor(32,"Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor(33,"Calice", Tresor.CALICE));
+        addPiocheTirage(new CarteTresor(34,"Calice", Tresor.CALICE));
 
-        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
-        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
-        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
-        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
-        addPiocheTirage(new CarteTresor("Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor(35,"Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor(36,"Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor(37,"Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor(38,"Pierre", Tresor.PIERRE));
+        addPiocheTirage(new CarteTresor(39,"Pierre", Tresor.PIERRE));
 
-        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
-        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
-        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
-        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
-        addPiocheTirage(new CarteTresor("Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(40,"Zephir", Tresor.ZEPHYR)); //A remplacer : "Zephyr"
+        addPiocheTirage(new CarteTresor(41,"Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(42,"Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(43,"Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(44,"Zephir", Tresor.ZEPHYR));
 
-        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
-        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
-        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
-        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
-        addPiocheTirage(new CarteTresor("Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor(45,"Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor(46,"Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor(47,"Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor(48,"Cristal", Tresor.CRISTAL));
+        addPiocheTirage(new CarteTresor(49,"Cristal", Tresor.CRISTAL));
 
-        addPiocheTirage(new CarteSacsDeSable());
-        addPiocheTirage(new CarteSacsDeSable());
+        addPiocheTirage(new CarteSacsDeSable(50));
+        addPiocheTirage(new CarteSacsDeSable(51));
 
-        addPiocheTirage(new CarteHelicoptere());
-        addPiocheTirage(new CarteHelicoptere());
-        addPiocheTirage(new CarteHelicoptere());
+        addPiocheTirage(new CarteHelicoptere(52));
+        addPiocheTirage(new CarteHelicoptere(53));
+        addPiocheTirage(new CarteHelicoptere(54));
 
-        addPiocheTirage(new CarteMonteeDesEaux());
-        addPiocheTirage(new CarteMonteeDesEaux());
+        addPiocheTirage(new CarteMonteeDesEaux(55));
+        addPiocheTirage(new CarteMonteeDesEaux(56));
 
         setPiocheTirage(melangerTirage(getPiocheTirage()));
     }
@@ -330,13 +330,14 @@ public class Controleur implements Observer {
         remPiocheTirage(cartePioche);
         if (!cartePioche.estMontee()) {
             jCourant.addCarteMain(cartePioche);
+            vuePlateau.getAventurier(jCourant.getId()).ajouterCarte(cartePioche.getId());
         }
         if (cartePioche.estMontee()) {
             addPiocheTirage(cartePioche);
             setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
             PiocherCarteTresorDepart(jCourant);
-
         }
+        
     }
     
     public void PiocherCarteTresor(Aventurier av){
@@ -344,6 +345,7 @@ public class Controleur implements Observer {
             remPiocheTirage(cartePioche);
             if(!cartePioche.estMontee()){
                 av.addCarteMain(cartePioche);
+                vuePlateau.getAventurier(av.getId()).ajouterCarte(cartePioche.getId());
             }
             if(cartePioche.estMontee()){
                 setNiveauEau(getNiveauEau() +1);
@@ -385,16 +387,16 @@ public class Controleur implements Observer {
         for (int i = 0; i < aventuriers.size(); i++) {
             switch (i) {
                 case 0:
-                    vuePlateau.getAventurier1().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
+                    vuePlateau.getAventurier(25).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
                 case 1:
-                    vuePlateau.getAventurier2().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
+                    vuePlateau.getAventurier(26).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
                 case 2:
-                    vuePlateau.getAventurier3().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
+                    vuePlateau.getAventurier(27).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
                 case 3:
-                    vuePlateau.getAventurier4().setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
+                    vuePlateau.getAventurier(28).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
                     break;
             }
             System.out.println("id case = " + aventuriers.get(i).getNom() + ":" + aventuriers.get(i).getPositionCourante().getId());
@@ -407,8 +409,9 @@ public class Controleur implements Observer {
             vuePlateau.getVueGrille().deplacePion(aventuriers.get(i).getCapacite(),
                     aventuriers.get(i).getPositionCourante().getId());
         }
-        //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
+        
         initialiserPartie();
+//        vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
     }
 
     public void ouvrirFenetreInterface() {
@@ -448,19 +451,19 @@ public class Controleur implements Observer {
         Pion p;
         if (!"".equals(vueInscription.nomJoueur1()) && !"Nom joueur".equals(vueInscription.nomJoueur1())) {
             p = couleurPion();
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur1(), p, positionJoueurDebut(p), this));
+            aventuriers.add(new Aventurier(25,vueInscription.nomJoueur1(), p, positionJoueurDebut(p), this));
         }
         if (!"".equals(vueInscription.nomJoueur2()) && !"Nom joueur".equals(vueInscription.nomJoueur2())) {
             p = couleurPion();
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur2(), p, positionJoueurDebut(p), this));
+            aventuriers.add(new Aventurier(26,vueInscription.nomJoueur2(), p, positionJoueurDebut(p), this));
         }
         if (!"".equals(vueInscription.nomJoueur3()) && !"Nom joueur".equals(vueInscription.nomJoueur3())) {
             p = couleurPion();
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur3(), p, positionJoueurDebut(p), this));
+            aventuriers.add(new Aventurier(27,vueInscription.nomJoueur3(), p, positionJoueurDebut(p), this));
         }
         if (!"".equals(vueInscription.nomJoueur4()) && !"Nom joueur".equals(vueInscription.nomJoueur4())) {
             p = couleurPion();
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur4(), p, positionJoueurDebut(p), this));
+            aventuriers.add(new Aventurier(28,vueInscription.nomJoueur4(), p, positionJoueurDebut(p), this));
         }
         //écrire les noms dans vueMontrerJoueur
         for (int i = 0; i < aventuriers.size(); i++) {
@@ -540,6 +543,7 @@ public class Controleur implements Observer {
         } while (!personneNACePion);
         return p;
     }
+    
 
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////ADD & REMOVE//////////////////////////////////

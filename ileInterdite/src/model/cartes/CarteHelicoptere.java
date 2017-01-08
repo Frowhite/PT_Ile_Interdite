@@ -6,8 +6,8 @@ package model.cartes;
  */
 public class CarteHelicoptere extends CarteTirage {
     
-    public CarteHelicoptere(){
-        super("Hélicoptere");
+    public CarteHelicoptere(int idCarte){
+        super(idCarte, "Hélicoptere");
     }
     
     @Override

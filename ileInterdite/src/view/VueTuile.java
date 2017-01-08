@@ -19,13 +19,11 @@ import util.Utils.EtatTuile;
 import util.Utils.Pion;
 
 public class VueTuile extends JPanel {
-
+    
     private VueGrille vueGrille;
     private ImageIcon img;
     private ImageIcon img2;
     private JLabel tuile;
-    private EtatTuile etatTuile = EtatTuile.ASSECHEE;
-    int x=0;
     private Toolkit kit = Toolkit.getDefaultToolkit();
     private Dimension dim = kit.getScreenSize();
     private Pion pion = null;
@@ -36,7 +34,7 @@ public class VueTuile extends JPanel {
         //taille des tuiles qui s'adapte à l'écran
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
         tuile = new JLabel();
-        tuile.addMouseListener(new MouseAdapter() {
+        this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 vueGrille.getVuePlateau().test();
@@ -87,8 +85,7 @@ public class VueTuile extends JPanel {
     
     void enlevePion() {
        pion=null;
-       img2=new ImageIcon(new ImageIcon(getClass().getResource(""))
-                .getImage().getScaledInstance(dim.height / 6 - 100, dim.height / 6 - 100, Image.SCALE_DEFAULT));
+       img2=null;
        tuile.setIcon(img2);
     }
     
@@ -100,12 +97,12 @@ public class VueTuile extends JPanel {
         g.drawImage(img.getImage(), 0, 0, null);
     }
 
-    public void assecheeInondeeOuCouleeTuile(int numTuile, EtatTuile etatTuile) {
+    public void assecheeInondeeOuCouleeTuile(int idTuile, EtatTuile etatTuile) {
         String img = "/images/tuiles/";
         if (etatTuile == EtatTuile.COULEE) {
             img = "";
         } else {
-            switch (numTuile) {
+            switch (idTuile) {
                 case 0:
                     img += "Heliport";
                     break;

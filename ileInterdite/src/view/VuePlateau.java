@@ -64,20 +64,23 @@ public class VuePlateau extends Observable {
         window.setVisible(true);
     }
 
-    public VueAventurier getAventurier1() {
-        return aventurier1;
-    }
-
-    public VueAventurier getAventurier2() {
-        return aventurier2;
-    }
-
-    public VueAventurier getAventurier3() {
-        return aventurier3;
-    }
-
-    public VueAventurier getAventurier4() {
-        return aventurier4;
+    public VueAventurier getAventurier(int idJoueur){
+        VueAventurier aventurier=aventurier1;
+        switch (idJoueur) {
+                case 25:
+                    aventurier=aventurier1;
+                    break;
+                case 26:
+                    aventurier=aventurier2;
+                    break;
+                case 27:
+                    aventurier=aventurier3;
+                    break;
+                case 28:
+                    aventurier=aventurier4;
+                    break;
+        }
+        return aventurier;
     }
 
     public VueGrille getVueGrille() {

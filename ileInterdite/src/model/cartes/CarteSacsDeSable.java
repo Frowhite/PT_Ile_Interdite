@@ -6,8 +6,8 @@ package model.cartes;
  */
 public class CarteSacsDeSable extends CarteTirage {
     
-    public CarteSacsDeSable(){
-        super("Sac de Sable");
+    public CarteSacsDeSable(int idCarte){
+        super(idCarte, "Sac de Sable");
     }
     
     @Override

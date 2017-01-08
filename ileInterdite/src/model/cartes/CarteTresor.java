@@ -12,8 +12,8 @@ public class CarteTresor extends CarteTirage {
     
      private Tresor tresor;
 
-    public CarteTresor(String nom,Tresor tresor) {
-        super(nom);
+    public CarteTresor(int idCarte,String nom,Tresor tresor) {
+        super(idCarte,nom);
         this.tresor = tresor;
     }
 

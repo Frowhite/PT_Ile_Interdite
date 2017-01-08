@@ -9,6 +9,9 @@ public abstract class CarteTirage extends Carte {
     public CarteTirage(String nom){
         super(nom);
     }
+    public CarteTirage(int idCarte, String nom){
+        super(idCarte, nom);
+    }
     
     public boolean estTresor(){
         return false;
