@@ -267,7 +267,6 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
         //Boucle Partie Continue?
-
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
         setjCourant(aventuriers.get(numJoueurQuiJoue));
@@ -276,7 +275,7 @@ public class Controleur implements Observer {
     public void finTour() {
         actionRestante -= 1;
         if (actionRestante == 0) {
-
+            grille.setCompetanceActitiveBleu(true);
             for (int i = 0; i < getNiveauEau(); i++) {
                 PiocherCarteInondation();
                 System.out.println("MA ***** sur ton front");
@@ -298,8 +297,12 @@ public class Controleur implements Observer {
     /////////////////////////////////ASSECHEMENT////////////////////////////////
     public void possiblesAssechement(Aventurier av) {
         grille.TuilesPossiblesAssechement(av);
-        for (Tuile t : av.getTuilesPossibleAssechement()) {
-            vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
+        if (!av.getTuilesPossibleAssechement().isEmpty()) {
+            for (Tuile t : av.getTuilesPossibleAssechement()) {
+                vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
+            }
+        } else {
+            debutTour();
         }
     }
 
@@ -404,7 +407,9 @@ public class Controleur implements Observer {
 
     //suppr la dèrnière position du joueur et met la nouvelle
     public void avancer(Aventurier jCourant, int idNvTuile) {
-
+        if (jCourant.getCapacite() == Pion.BLEU && getGrille().isCompetanceActitiveBleu()) {
+            competanceBleu(jCourant, idNvTuile);
+        }
         jCourant.getPositionCourante().getAventuriers().remove(jCourant);
         for (int i = 0; i < tuile.length; i++) {
             if (tuile[i].getId() == idNvTuile) {
@@ -414,6 +419,23 @@ public class Controleur implements Observer {
         }
         jCourant.getTuilesPossibles().clear();
         finTour();
+    }
+
+    public void competanceBleu(Aventurier jCourant, int idNvTuile) {
+        int l = jCourant.getPositionCourante().getLigne();
+        int c = jCourant.getPositionCourante().getColonnes();
+        getGrille().setCompetanceActitiveBleu(false);
+        for (int i = 0; i < tuile.length; i++) {
+            if (tuile[i].getId() == idNvTuile) {
+                if (tuile[i].getColonnes() == c - 1 && tuile[i].getLigne() == l
+                        || tuile[i].getColonnes() == c + 1 && tuile[i].getLigne() == l
+                        || tuile[i].getColonnes() == c && tuile[i].getLigne() == l - 1
+                        || tuile[i].getColonnes() == c && tuile[i].getLigne() == l + 1) {
+                    getGrille().setCompetanceActitiveBleu(true);
+                }
+            }
+        }
+
     }
 
     ////////////////////////////////DONNER CARTE////////////////////////////////
@@ -459,7 +481,7 @@ public class Controleur implements Observer {
 
     ///////////////////////////////PIOCHER CARTE INONDATION/////////////////////
     public void PiocherCarteInondation() {
-        CarteInondation tuileInonde = getPiocheInondation().get(0);
+        CarteInondation tuileInonde = getPiocheInondation().get(0);                 //-->renvoie:ava.lang.IndexOutOfBoundsException:
         System.out.println(tuileInonde.getNom());
         remPiocheInondation(tuileInonde);
         for (int i = 0; i < getTuile().length; i++) {

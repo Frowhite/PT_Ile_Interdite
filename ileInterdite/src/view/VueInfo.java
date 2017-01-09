@@ -63,13 +63,13 @@ public class VueInfo {
                 nomPersonnage.setForeground(Color.GREEN);
                 infoPersonnage.setForeground(Color.GREEN);
                 nomPersonnage.setText("<html><u><B>L’Explorateur:</B></u></html>");
-                infoPersonnage.setText("<html>L'Explorateur peut se <br>déplacer et <br>assécher en diagonale.</html>");
+                infoPersonnage.setText("<html>L'Explorateur peut se <br>déplacer et assécher<br>en diagonale.</html>");
                 break;
             case VIOLET:
                 nomPersonnage.setForeground(new Color(153, 0, 153));
                 infoPersonnage.setForeground(new Color(153, 0, 153));
                 nomPersonnage.setText("<html><u><B>Le Plongeur</B></u></html>");
-                infoPersonnage.setText("<html>Le Plongeur peut </html>");
+                infoPersonnage.setText("<html>Le Plongeur peut se<br>déplacer au travers<br>d’une ou plusieurs tuiles<br>adjacentes manquantes<br>et/ou inondées pour 1<br>action</html>");
                 break;
         }
         nomPersonnage.setFont(new Font("Arial", 0, 30));

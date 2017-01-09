@@ -17,7 +17,8 @@ import util.Utils.Pion;
  */
 public class Grille {
 
-    Tuile[][] tuiles; // Les tuiles du jeu
+    private Tuile[][] tuiles; // Les tuiles du jeu
+    private boolean competanceActitiveBleu = true;
 
     public Grille(Tuile[] tuile) {
         this.tuiles = new Tuile[6][6];
@@ -28,7 +29,7 @@ public class Grille {
 
         ArrayList<Tuile> buffer = new ArrayList();
 
-        if (av.getCapacite() == Pion.BLEU) {
+        if (av.getCapacite() == Pion.BLEU && isCompetanceActitiveBleu()) {
             for (int l = 0; l < 6; l++) {
                 for (int c = 0; c < 6; c++) {
                     if ((l == 0 && (c == 2 || c == 3))
@@ -171,4 +172,17 @@ public class Grille {
             }
         }
     }
+    
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////GETTEURS&SETTEURS////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+    public boolean isCompetanceActitiveBleu() {
+        return competanceActitiveBleu;
+    }
+
+    public void setCompetanceActitiveBleu(boolean competanceActitiveBleu) {
+        this.competanceActitiveBleu = competanceActitiveBleu;
+    }
+    
 }
