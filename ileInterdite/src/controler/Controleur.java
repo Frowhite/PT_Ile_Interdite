@@ -268,7 +268,7 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////ASSECHEMENT////////////////////////////////
     public void Assecher(Aventurier av,Tuile tuile) {
-        grille.TuilesPossibles(av);
+        grille.TuilesPossiblesDeplacement(av);
         av.addTuilesPossibles(av.getPositionCourante());
         
         
@@ -352,7 +352,7 @@ public class Controleur implements Observer {
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
     public void seDeplacer(Aventurier av) {
-        grille.TuilesPossibles(av);
+        grille.TuilesPossiblesDeplacement(av);
         for(Tuile t : av.getTuilesPossibles()){
             vuePlateau.getVueGrille().idTuileDeplacement(t.getId());
         }
