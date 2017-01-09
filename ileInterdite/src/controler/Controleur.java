@@ -14,6 +14,7 @@ import view.*;
  */
 public class Controleur implements Observer {
 
+    private boolean competanceActitiveRouge = false;
     private ArrayList<Aventurier> aventuriers = new ArrayList<>();
     private Tuile tuile[];
     private ArrayList<Tresor> tresors = new ArrayList<>();
@@ -92,7 +93,11 @@ public class Controleur implements Observer {
                     case CHOISIR_TUILE_ASSECHEMENT:
                         vuePlateau.getVueGrille().etatTuile(vuePlateau.getDerniereTuileAppuye(), EtatTuile.ASSECHEE);
                         assecher(vuePlateau.getDerniereTuileAppuye());
-                        debutTour();
+                        if (!isCompetanceActitiveRouge()) {//le pion rouge va pouvoir assechee 2 fois
+                            debutTour();
+                        } else {
+                            possiblesAssechement(getjCourant());
+                        }
                         break;
                     case CHOISIR_CARTE:
                         System.out.println("Carte");
@@ -275,7 +280,7 @@ public class Controleur implements Observer {
     public void finTour() {
         actionRestante -= 1;
         if (actionRestante == 0) {
-            grille.setCompetanceActitiveBleu(true);
+            grille.setCompetanceActitiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
             for (int i = 0; i < getNiveauEau(); i++) {
                 PiocherCarteInondation();
                 System.out.println("MA ***** sur ton front");
@@ -287,6 +292,10 @@ public class Controleur implements Observer {
             numJoueurQuiJoue += 1;
             numJoueurQuiJoue %= aventuriers.size();
             actionRestante = 3;
+            //le Navigateur a 4 actions
+            if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
+                actionRestante += 1;
+            }
         }
 
     }
@@ -298,12 +307,20 @@ public class Controleur implements Observer {
     public void possiblesAssechement(Aventurier av) {
         grille.TuilesPossiblesAssechement(av);
         if (!av.getTuilesPossibleAssechement().isEmpty()) {
+            if (av.getCapacite() == Pion.ROUGE && !isCompetanceActitiveRouge()) {//le pion rouge va pouvoir assechee 2 fois (voir update)
+                setCompetanceActitiveRouge(true);
+            } else {
+                setCompetanceActitiveRouge(false);
+            }
             for (Tuile t : av.getTuilesPossibleAssechement()) {
                 vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
             }
-        } else {
-            debutTour();
+        } else if (av.getCapacite() == Pion.ROUGE && isCompetanceActitiveRouge()) {
+            setCompetanceActitiveRouge(false);
+            finTour();
         }
+        debutTour();
+
     }
 
     public void assecher(int idTuileAssechee) {
@@ -313,7 +330,9 @@ public class Controleur implements Observer {
             }
         }
         jCourant.getTuilesPossibleAssechement().clear();
-        finTour();
+        if (!isCompetanceActitiveRouge()) {
+            finTour();
+        }
     }
 
 //    public void Assecher(Aventurier av, Tuile tuile) {
@@ -414,7 +433,6 @@ public class Controleur implements Observer {
         for (int i = 0; i < tuile.length; i++) {
             if (tuile[i].getId() == idNvTuile) {
                 jCourant.setPositionCourante(tuile[i]);
-
             }
         }
         jCourant.getTuilesPossibles().clear();
@@ -871,4 +889,13 @@ public class Controleur implements Observer {
     public void setVueAction(VueAction vueAction) {
         this.vueAction = vueAction;
     }
+
+    public boolean isCompetanceActitiveRouge() {
+        return competanceActitiveRouge;
+    }
+
+    public void setCompetanceActitiveRouge(boolean competanceActitiveRouge) {
+        this.competanceActitiveRouge = competanceActitiveRouge;
+    }
+
 }

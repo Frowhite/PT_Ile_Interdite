@@ -69,7 +69,7 @@ public class VueInfo {
                 nomPersonnage.setForeground(new Color(153, 0, 153));
                 infoPersonnage.setForeground(new Color(153, 0, 153));
                 nomPersonnage.setText("<html><u><B>Le Plongeur</B></u></html>");
-                infoPersonnage.setText("<html>Le Plongeur peut se<br>déplacer au travers<br>d’une ou plusieurs tuiles<br>adjacentes manquantes<br>et/ou inondées pour 1<br>action</html>");
+                infoPersonnage.setText("<html>Le Plongeur peut se<br>déplacer au travers<br>d’une ou plusieurs tuiles<br>adjacentes manquantes<br>et/ou inondées pour 1<br>action.</html>");
                 break;
         }
         nomPersonnage.setFont(new Font("Arial", 0, 30));

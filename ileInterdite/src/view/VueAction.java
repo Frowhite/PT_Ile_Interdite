@@ -55,6 +55,9 @@ public class VueAction extends Observable {
             case 3:
                 tNbDAction = new JLabel(nomJCourant + ": Actions restantes : 3");
                 break;
+            case 4:
+                tNbDAction = new JLabel(nomJCourant + ": Actions restantes : 4");
+                break;
         }
 
         switch (pion) {
