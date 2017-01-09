@@ -518,10 +518,10 @@ public class Controleur implements Observer {
                 idTuile = 8;
                 break;
             case ORANGE:
-                idTuile = 4;
+                idTuile = 7;
                 break;
             case ROUGE:
-                idTuile = 7;
+                idTuile = 4;
                 break;
             case VERT:
                 idTuile = 5;
