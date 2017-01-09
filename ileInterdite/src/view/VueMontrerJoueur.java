@@ -77,9 +77,6 @@ public class VueMontrerJoueur {
     }
     
     public void fermerFenetre() {
-        window.setVisible(false);
-    }
-    public void ouvrirFenetre() {
-        window.setVisible(true);
+        window.dispose();
     }
 }

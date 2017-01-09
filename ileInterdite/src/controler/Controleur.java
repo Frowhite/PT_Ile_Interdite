@@ -33,7 +33,6 @@ public class Controleur implements Observer {
     private VueAction vueAction;
 
     public Controleur() {
-        vueMontrerJoueur = new VueMontrerJoueur();
         ouvrirFenetreInterface();
         créerGrille();
     }
@@ -47,13 +46,13 @@ public class Controleur implements Observer {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
                     case COMMENCER_PARTIE:
+                        vueMontrerJoueur.fermerFenetre();
                         vueDemarrage.fermerFenetre();
-                        vueMontrerJoueur.fermerFenetre();//pour vueMontrerJoueur:met en setVisible(false)
                         ouvrirPlateauDeJeu();
                         break;
                     case INSCRIRE_JOUEUR:
+                        vueMontrerJoueur.fermerFenetre();
                         vueDemarrage.fermerFenetre();
-                        vueMontrerJoueur.fermerFenetre();//pour vueMontrerJoueur:met en setVisible(false)
                         ouvrirFenetreInscription();
                         break;
                     case QUITTER:
@@ -422,9 +421,20 @@ public class Controleur implements Observer {
     }
 
     public void ouvrirFenetreInterface() {
+        vueMontrerJoueur= new VueMontrerJoueur();
+        //écrire les noms dans vueMontrerJoueur
+        int x = 0;
+        for (int i = 0; i < aventuriers.size(); i++) {
+            vueMontrerJoueur.ecrireNom(i + 1, aventuriers.get(i).getNom());
+            x++;
+        }
+        for (int i = 0; i < 4 - x; i++) {
+            vueMontrerJoueur.ecrireNom(i + x + 1, "");
+        }
+        
         vueDemarrage = new VueDemarrage(aventuriers.size());
         vueDemarrage.addObserver(this);
-        vueMontrerJoueur.ouvrirFenetre();
+        
     }
 
     public void ouvrirFenetreInscription() {
@@ -491,15 +501,7 @@ public class Controleur implements Observer {
             }
         }
 
-        //écrire les noms dans vueMontrerJoueur
-        int x = 0;
-        for (int i = 0; i < aventuriers.size(); i++) {
-            vueMontrerJoueur.ecrireNom(i + 1, aventuriers.get(i).getNom());
-            x++;
-        }
-        for (int i = 0; i < 4 - x; i++) {
-            vueMontrerJoueur.ecrireNom(i + x + 1, "");
-        }
+        
 
     }
 
