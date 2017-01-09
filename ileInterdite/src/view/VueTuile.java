@@ -222,4 +222,10 @@ public class VueTuile extends JPanel {
         this.pion = pion;
     }
 
+    public void setPossibliteDeplacement(boolean possibliteDeplacement) {
+        this.possibliteDeplacement = possibliteDeplacement;
+    }
+    
+    
+
 }

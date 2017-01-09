@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -8,7 +9,9 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.HashMap;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import model.cases.Tuile;
 import util.Utils.EtatTuile;
 import util.Utils.Pion;
@@ -68,6 +71,13 @@ public class VueGrille extends JPanel {
         }
         //rajoute le pion sur la nouvelle tuile
         tuile.get(id).mettrePion(p);
+    }
+    
+    public void remiseAZeroDesTuiles(){
+        for (int i = 0; i < tuile.size(); i++) {
+            tuile.get(i).setPossibliteDeplacement(false);
+            tuile.get(i).setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.WHITE));//bordure
+        }
     }
 
     public VuePlateau getVuePlateau() {

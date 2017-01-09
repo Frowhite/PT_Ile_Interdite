@@ -90,9 +90,11 @@ public class VuePlateau extends Observable {
     
     public void choisirTuile(int idTuile){
                 derniereTuileAppuye=idTuile;
+                getVueGrille().remiseAZeroDesTuiles();
                 setChanged();
                 notifyObservers(Commandes.CHOISIR_TUILE);
                 clearChanged();
+                
     }
     
     public void choisirCarte(){
