@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -20,19 +21,19 @@ import util.Utils.EtatTuile;
 import util.Utils.Pion;
 
 public class VueTuile extends JPanel {
-    
+
     private ImageIcon img;
     private ImageIcon img2;
     private ArrayList<JLabel> labelPion = new ArrayList<>();
     private Toolkit kit = Toolkit.getDefaultToolkit();
     private Dimension dim = kit.getScreenSize();
     private ArrayList<Pion> pion = new ArrayList<>();
-    
+    private boolean possibliteDeplacement = false;
 
     public VueTuile(VueGrille vueGrille) {
         //taille des tuiles qui s'adapte à l'écran
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
-        
+
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -40,82 +41,83 @@ public class VueTuile extends JPanel {
             }
         });
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
-        
+
     }
 
     public void imageTuile(String image) {
         img = new ImageIcon(new ImageIcon(getClass().getResource(image))
                 .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_SMOOTH));
-        
+
     }
     
-    public void mettrePion(Pion p){
+    public void tuilePossibleDeplacement(){
+       possibliteDeplacement = true;
+       this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
+    }
+
+    public void mettrePion(Pion p) {
         //prend en compte si il y a plusieur joueur sur la même tuile
         pion.add(p);
-        int x=pion.size();//nombre de pion sur la case
-        
+        int x = pion.size();//nombre de pion sur la case
+
         //efface les pions sur la tuile
         for (int i = 0; i < labelPion.size(); i++) {
-            img2=null;
+            img2 = null;
             labelPion.get(i).setIcon(img2);
         }
-        
+
         labelPion.clear();
         //dessine les pions sur la tuile
         for (int i = 0; i < pion.size(); i++) {
-        
-        String s = "/images/pions/";
-        switch (pion.get(i)) {
-            case BLEU:
-                s+="pionBleu";
-                break;
-            case JAUNE:
-                s+="pionJaune";
-                break;
-            case ORANGE:
-                s+="pionBronze";
-                break;
-            case ROUGE:
-                s+="pionRouge";
-                break;
-            case VERT:
-                s+="pionVert";
-                break;
-            case VIOLET:
-                s+="pionViolet";
-                break;
-        }
-        s+=".png";
-        
-        
-        img2 = new ImageIcon(new ImageIcon(getClass().getResource(s))
-                .getImage().getScaledInstance(dim.height / 6-90-(x*10), dim.height / 6-90-(x*10), Image.SCALE_SMOOTH));
-        JLabel l = new JLabel();
-        l.setIcon(img2);
-        labelPion.add(l);
+
+            String s = "/images/pions/";
+            switch (pion.get(i)) {
+                case BLEU:
+                    s += "pionBleu";
+                    break;
+                case JAUNE:
+                    s += "pionJaune";
+                    break;
+                case ORANGE:
+                    s += "pionBronze";
+                    break;
+                case ROUGE:
+                    s += "pionRouge";
+                    break;
+                case VERT:
+                    s += "pionVert";
+                    break;
+                case VIOLET:
+                    s += "pionViolet";
+                    break;
+            }
+            s += ".png";
+
+            img2 = new ImageIcon(new ImageIcon(getClass().getResource(s))
+                    .getImage().getScaledInstance(dim.height / 6 - 90 - (x * 10), dim.height / 6 - 90 - (x * 10), Image.SCALE_SMOOTH));
+            JLabel l = new JLabel();
+            l.setIcon(img2);
+            labelPion.add(l);
         }
         for (int i = 0; i < labelPion.size(); i++) {
             this.add(labelPion.get(i));
         }
-        
+
     }
-    
+
     void enlevePion(Pion p) {
-        int x=0;
-        for (int i = 0; i < pion.size() && pion.get(i)!=p; i++) {
-                x++;
+        int x = 0;
+        for (int i = 0; i < pion.size() && pion.get(i) != p; i++) {
+            x++;
         }
-       pion.remove(p);
-       img2=null;
-       labelPion.get(x).setIcon(img2);
-       labelPion.remove(x);
+        pion.remove(p);
+        img2 = null;
+        labelPion.get(x).setIcon(img2);
+        labelPion.remove(x);
     }
-    
-    
+
     //dessin le fond
     public void paintComponent(Graphics g) {
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension dim = kit.getScreenSize();
         g.drawImage(img.getImage(), 3, 3, null);
     }
 
@@ -216,6 +218,4 @@ public class VueTuile extends JPanel {
         this.pion = pion;
     }
 
-      
-    
 }

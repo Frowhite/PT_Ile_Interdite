@@ -81,4 +81,8 @@ public class VueGrille extends JPanel {
         g.drawImage(img, 0, 0, null);
     }
 
+    public void idTuileDeplacement(int idTuile) {
+        tuile.get(idTuile).tuilePossibleDeplacement();
+    }
+
 }
