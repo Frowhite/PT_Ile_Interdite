@@ -25,7 +25,7 @@ public class Controleur implements Observer {
     private ArrayList<CarteInondation> piocheInondation = new ArrayList<>();
     private Integer niveauEau = 1;
     private Aventurier jCourant;
-    private int joueurQuiJoue = 0;
+    private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
 
     private VueNiveau vueNiveau;
@@ -34,6 +34,7 @@ public class Controleur implements Observer {
     private VuePlateau vuePlateau;
     private VueInscription vueInscription;
     private VueAction vueAction;
+    private VueInfo vueInfo;
 
     public Controleur() {
         ouvrirFenetreInterface();
@@ -84,13 +85,17 @@ public class Controleur implements Observer {
                 switch ((Commandes) arg) {
                     case CHOISIR_TUILE:
 
-                        vuePlateau.getVueGrille().deplacePion((aventuriers.get(joueurQuiJoue))
+                        vuePlateau.getVueGrille().deplacePion((aventuriers.get(numJoueurQuiJoue))
                                 .getCapacite(), vuePlateau.getDerniereTuileAppuye());
-                        avancer(aventuriers.get(joueurQuiJoue), vuePlateau.getDerniereTuileAppuye());
+                        avancer(aventuriers.get(numJoueurQuiJoue), vuePlateau.getDerniereTuileAppuye());
                         debutTour();
                         break;
                     case CHOISIR_CARTE:
                         System.out.println("Carte");
+                        break;
+                    case INFO:
+                        vueInfo = new VueInfo(aventuriers.get(vuePlateau.getDernierBouttonInfoAppuye()).getCapacite());
+                        
                         break;
                 }
             }
@@ -259,9 +264,9 @@ public class Controleur implements Observer {
     public void debutTour() {
         //Boucle Partie Continue?
 
-        vueAction = new VueAction(aventuriers.get(joueurQuiJoue).getNom(), actionRestante);
+        vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
-        setjCourant(aventuriers.get(joueurQuiJoue));
+        setjCourant(aventuriers.get(numJoueurQuiJoue));
     }
 
     public void finTour() {
@@ -270,14 +275,14 @@ public class Controleur implements Observer {
 
             for (int i = 0; i < getNiveauEau(); i++) {
                 PiocherCarteInondation();
-                System.out.println("MA bite sur ton front");
+                System.out.println("MA ***** sur ton front");
 
             }
-            PiocherCarteTresor(aventuriers.get(joueurQuiJoue));
-            PiocherCarteTresor(aventuriers.get(joueurQuiJoue));
+            PiocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
+            PiocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
             
-            joueurQuiJoue += 1;
-            joueurQuiJoue %= aventuriers.size();
+            numJoueurQuiJoue += 1;
+            numJoueurQuiJoue %= aventuriers.size();
             actionRestante = 3;
         }
 

@@ -6,6 +6,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -16,7 +17,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import util.Utils;
 import util.Utils.Commandes;
+import util.Utils.Pion;
 
 /**
  *
@@ -30,7 +33,7 @@ public class VueAction extends Observable {
     private JLabel tNbDAction;
     private JButton bDeplace, bAssechee, bDonneCarte, bUtiliseCarte, bPrendreTresor;
 
-    public VueAction(String nomJCourant, int numAction) {
+    public VueAction(String nomJCourant, int numAction, Pion pion) {
         window = new JFrame();
         window.setSize(300, 100);
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
@@ -40,18 +43,41 @@ public class VueAction extends Observable {
         panelGlobale = new JPanel(new BorderLayout());
         //***Haut***
         //text nb d'action
-        switch(1){
+        tNbDAction = new JLabel();
+
+        switch (numAction) {
             case 1:
-                tNbDAction = new JLabel(nomJCourant+": Action restante : 1");
+                tNbDAction = new JLabel(nomJCourant + ": Action restante : 1");
                 break;
             case 2:
-                tNbDAction = new JLabel(nomJCourant+": Actions restantes : 2");
+                tNbDAction = new JLabel(nomJCourant + ": Actions restantes : 2");
                 break;
             case 3:
-                tNbDAction = new JLabel(nomJCourant+": Actions restantes : 3");
+                tNbDAction = new JLabel(nomJCourant + ": Actions restantes : 3");
                 break;
         }
-        
+
+        switch (pion) {
+            case BLEU:
+                tNbDAction.setForeground(Color.BLUE);
+                break;
+            case JAUNE:
+                tNbDAction.setForeground(Color.YELLOW);
+                break;
+            case ORANGE:
+                tNbDAction.setForeground(Color.ORANGE);
+                break;
+            case ROUGE:
+                tNbDAction.setForeground(Color.RED);
+                break;
+            case VERT:
+                tNbDAction.setForeground(Color.GREEN);
+                break;
+            case VIOLET:
+                tNbDAction.setForeground(new Color(153, 0, 153));
+                break;
+        }
+
         panelGlobale.add(tNbDAction, BorderLayout.NORTH);
         //***panel centre***
         panelCentre = new JPanel(gl);

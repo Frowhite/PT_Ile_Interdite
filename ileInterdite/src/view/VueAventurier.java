@@ -6,34 +6,50 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import util.Utils.Pion;
 
 public class VueAventurier extends JPanel {
-
+    private JButton bInfo;
     private VuePlateau vuePlateau;
     private ArrayList<VueCarte> vueCarte;
     private JLabel donnerNomJoueur;
 
     private Font font1 = new Font("Arial", 0, 25);
     private Font font2 = new Font("Arial", 0, 18);
-    private JPanel panelGlobale, panelCentre;
+    private JPanel panelHaut, panelGlobale, panelCentre;
     private GridLayout gl = new GridLayout(3, 3);
 
-    public VueAventurier(VuePlateau vuePlateau) {
+    public VueAventurier(int numAventurier, VuePlateau vuePlateau) {
         this.vuePlateau=vuePlateau;
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
         this.setSize(dim.width / 4, 430);
         vueCarte = new ArrayList<>();
-
-        //***haut***
+        
         panelGlobale = new JPanel(new BorderLayout());
+        //***panel haut***
+        panelHaut = new JPanel(new BorderLayout());
+        bInfo = new JButton("?");
+        bInfo.setSize(10, 5);
+        bInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vuePlateau.infoAventurier(numAventurier);
+            }
+        });
+        
+        panelHaut.add(bInfo, BorderLayout.WEST);
+        
         donnerNomJoueur = new JLabel();
         donnerNomJoueur.setFont(font1);//taille de la police
-        panelGlobale.add(donnerNomJoueur, BorderLayout.NORTH);
+        panelHaut.add(donnerNomJoueur, BorderLayout.CENTER);
+        panelGlobale.add(panelHaut, BorderLayout.NORTH);
         //***panel centre***
         panelCentre = new JPanel(gl);
 
@@ -88,21 +104,27 @@ public class VueAventurier extends JPanel {
         switch (p) {
             case BLEU:
                 donnerNomJoueur.setForeground(Color.BLUE);
+                bInfo.setForeground(Color.BLUE);
                 break;
             case JAUNE:
                 donnerNomJoueur.setForeground(Color.YELLOW);
+                bInfo.setForeground(Color.YELLOW);
                 break;
             case ORANGE:
                 donnerNomJoueur.setForeground(Color.ORANGE);
+                bInfo.setForeground(Color.ORANGE);
                 break;
             case ROUGE:
                 donnerNomJoueur.setForeground(Color.RED);
+                bInfo.setForeground(Color.RED);
                 break;
             case VERT:
                 donnerNomJoueur.setForeground(Color.GREEN);
+                bInfo.setForeground(Color.GREEN);
                 break;
             case VIOLET:
                 donnerNomJoueur.setForeground(new Color(153, 0, 153));
+                bInfo.setForeground(new Color(153, 0, 153));
                 break;
         }
 

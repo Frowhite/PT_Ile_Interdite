@@ -18,7 +18,10 @@ import util.Utils.Commandes;
  * @author IUT2-Dept Info
  */
 public class VuePlateau extends Observable {
+    ///////////////info a récup//////////////////////
     private int derniereTuileAppuye;
+    private int dernierBouttonInfoAppuye;
+    /////////////////////////////////////////////////
     private ImageIcon plateau;
     private VueGrille vueGrille;
     private VueAventurier aventurier1, aventurier2, aventurier3, aventurier4;
@@ -43,16 +46,16 @@ public class VuePlateau extends Observable {
         //***création des aventuriers de 2 à 4***
         panelGauche = new JPanel(gl);
         panelDroite = new JPanel(gl);
-        aventurier1 = new VueAventurier(this);
+        aventurier1 = new VueAventurier(0,this);
         panelGauche.add(aventurier1);
-        aventurier2 = new VueAventurier(this);
+        aventurier2 = new VueAventurier(1,this);
         panelDroite.add(aventurier2);
         if (nbJoueur > 2) {
-            aventurier3 = new VueAventurier(this);
+            aventurier3 = new VueAventurier(2,this);
             panelGauche.add(aventurier3);
         }
         if (nbJoueur == 4) {
-            aventurier4 = new VueAventurier(this);
+            aventurier4 = new VueAventurier(3,this);
             panelDroite.add(aventurier4);
         }
         panelGlobale.add(panelGauche, BorderLayout.WEST);
@@ -65,21 +68,21 @@ public class VuePlateau extends Observable {
         window.setVisible(true);
     }
 
-    public VueAventurier getAventurier(int idJoueur){
-        VueAventurier aventurier=aventurier1;
+    public VueAventurier getAventurier(int idJoueur) {
+        VueAventurier aventurier = aventurier1;
         switch (idJoueur) {
-                case 25:
-                    aventurier=aventurier1;
-                    break;
-                case 26:
-                    aventurier=aventurier2;
-                    break;
-                case 27:
-                    aventurier=aventurier3;
-                    break;
-                case 28:
-                    aventurier=aventurier4;
-                    break;
+            case 25:
+                aventurier = aventurier1;
+                break;
+            case 26:
+                aventurier = aventurier2;
+                break;
+            case 27:
+                aventurier = aventurier3;
+                break;
+            case 28:
+                aventurier = aventurier4;
+                break;
         }
         return aventurier;
     }
@@ -87,25 +90,41 @@ public class VuePlateau extends Observable {
     public VueGrille getVueGrille() {
         return vueGrille;
     }
-    
-    public void choisirTuile(int idTuile){
-                derniereTuileAppuye=idTuile;
-                getVueGrille().remiseAZeroDesTuiles();
-                setChanged();
-                notifyObservers(Commandes.CHOISIR_TUILE);
-                clearChanged();
-                
-    }
-    
-    public void choisirCarte(){
-                setChanged();
-                notifyObservers(Commandes.CHOISIR_CARTE);
-                clearChanged();
+
+    public void choisirTuile(int idTuile) {
+        derniereTuileAppuye = idTuile;
+        getVueGrille().remiseAZeroDesTuiles();
+        setChanged();
+        notifyObservers(Commandes.CHOISIR_TUILE);
+        clearChanged();
+
     }
 
+    public void choisirCarte() {
+        setChanged();
+        notifyObservers(Commandes.CHOISIR_CARTE);
+        clearChanged();
+    }
+
+    
+
+    public void infoAventurier(int numAventurier) {
+        dernierBouttonInfoAppuye=numAventurier;
+        setChanged();
+        notifyObservers(Commandes.INFO);
+        clearChanged();
+    }
+    
+/////////////////GETTEURS&SETTEURS//////////////////   
+    
     public int getDerniereTuileAppuye() {
         return derniereTuileAppuye;
     }
+
+    public int getDernierBouttonInfoAppuye() {
+        return dernierBouttonInfoAppuye;
+    }
+    
     
     
 }

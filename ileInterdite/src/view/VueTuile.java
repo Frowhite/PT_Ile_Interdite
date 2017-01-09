@@ -5,23 +5,19 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
-import util.Utils;
 import util.Utils.EtatTuile;
 import util.Utils.Pion;
 
 public class VueTuile extends JPanel {
-    private int idTuile;
+    private int test;
     private ImageIcon img;
     private ImageIcon img2;
     private ArrayList<JLabel> labelPion = new ArrayList<>();
@@ -31,7 +27,6 @@ public class VueTuile extends JPanel {
     private boolean possibliteDeplacement = false;
 
     public VueTuile(int idTuile, VueGrille vueGrille) {
-        this.idTuile=idTuile;
         //taille des tuiles qui s'adapte à l'écran
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
 
@@ -42,11 +37,34 @@ public class VueTuile extends JPanel {
                     vueGrille.getVuePlateau().choisirTuile(idTuile);
                 }
             }
-        });
-        
-        
-        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
 
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (possibliteDeplacement) {
+                actionAvecMouseListener(true);
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (possibliteDeplacement) {            
+                actionAvecMouseListener(false);
+            }
+            }
+        });
+
+        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
+        this.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
+    }
+    
+    public void actionAvecMouseListener(boolean b){
+        if (b) {
+            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, Color.RED));
+        }else{
+            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
+        }
+        
+    
     }
 
     public void imageTuile(String image) {
@@ -57,7 +75,7 @@ public class VueTuile extends JPanel {
 
     public void tuilePossibleDeplacement() {
         possibliteDeplacement = true;
-        this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
     }
 
     public void mettrePion(Pion p) {
@@ -124,7 +142,7 @@ public class VueTuile extends JPanel {
     //dessin le fond
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(img.getImage(), 3, 3, null);
+        g.drawImage(img.getImage(), 3+10*test, 3, null);
     }
 
     public void assecheeInondeeOuCouleeTuile(int idTuile, EtatTuile etatTuile) {
@@ -227,7 +245,5 @@ public class VueTuile extends JPanel {
     public void setPossibliteDeplacement(boolean possibliteDeplacement) {
         this.possibliteDeplacement = possibliteDeplacement;
     }
-    
-    
 
 }
