@@ -1,5 +1,6 @@
 package model.cases;
 
+import java.util.ArrayList;
 import model.aventuriers.Aventurier;
 import util.Utils;
 import util.Utils.Pion;
@@ -15,15 +16,18 @@ import util.Utils.Pion;
  * @author IUT2-Dept Info
  */
 public class Grille {
-    
+
     Tuile[][] tuiles; // Les tuiles du jeu
 
     public Grille(Tuile[] tuile) {
         this.tuiles = new Tuile[6][6];
         remplirGrille(tuile);
     }
-    
+
     public void TuilesPossibles(Aventurier av) {
+        
+        ArrayList<Tuile> buffer = new ArrayList();
+        
         if (av.getCapacite() == Pion.BLEU) {
             for (int l = 0; l < 6; l++) {
                 for (int c = 0; c < 6; c++) {
@@ -34,30 +38,46 @@ public class Grille {
                             || (l == 4 && (c == 1 || c == 2 || c == 3 || c == 4))
                             || (l == 5 && (c == 2 || c == 3))) {
                         if (tuiles[l][c].getEtat() != Utils.EtatTuile.COULEE) {
-                            av.addTuilesPossibles(tuiles[l][c]);                            
+                            av.addTuilesPossibles(tuiles[l][c]);
                         }
                         av.addTuilesPossibles(av.getPositionCourante());
                     }
                 }
             }
+
+        } else {
+
+            buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1]);
+            buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() + 1]);
+            buffer.add(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes()]);
+            buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes()]);
+
+            if (av.getCapacite() == Pion.VERT) {
+                buffer.add(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes() - 1]);
+                buffer.add(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes() + 1]);
+                buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() - 1]);
+                buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() + 1]);
+
+            }
+
+            for (Tuile t : buffer) {
+                if (t.getEtat() != Utils.EtatTuile.COULEE) {
+                    av.addTuilesPossibles(t);
+                }
+            }
+            
+            if(av.getCapacite() == Pion.VIOLET){
+                Tuile positionRelative = new Tuile(500,"Position Relative", null);
+             for (Tuile t : buffer) {
+               {
+                    av.addTuilesPossibles(t);
+                }
+            }
+            }
             
         }
-        
-        /*
-        av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1]);
-        av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes()]);
-        av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() + 1]);
-        av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes()]);
-        
-        if (av.getCapacite() == Pion.VERT) {
-            av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes() - 1]);
-            av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes() + 1]);
-            av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() + 1]);
-            av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() - 1]);
-        }*/
-        
     }
-    
+
     public void remplirGrille(Tuile[] tuile) {
         int i = 0;
         for (int l = 0; l < 6; l++) {
