@@ -21,7 +21,7 @@ import util.Utils.EtatTuile;
 import util.Utils.Pion;
 
 public class VueTuile extends JPanel {
-
+    private int idTuile;
     private ImageIcon img;
     private ImageIcon img2;
     private ArrayList<JLabel> labelPion = new ArrayList<>();
@@ -30,14 +30,17 @@ public class VueTuile extends JPanel {
     private ArrayList<Pion> pion = new ArrayList<>();
     private boolean possibliteDeplacement = false;
 
-    public VueTuile(VueGrille vueGrille) {
+    public VueTuile(int idTuile, VueGrille vueGrille) {
+        this.idTuile=idTuile;
         //taille des tuiles qui s'adapte à l'écran
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
 
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                vueGrille.getVuePlateau().choisirTuile();
+                if (possibliteDeplacement) {
+                    vueGrille.getVuePlateau().choisirTuile(idTuile);
+                }
             }
         });
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
@@ -49,10 +52,10 @@ public class VueTuile extends JPanel {
                 .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_SMOOTH));
 
     }
-    
-    public void tuilePossibleDeplacement(){
-       possibliteDeplacement = true;
-       this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
+
+    public void tuilePossibleDeplacement() {
+        possibliteDeplacement = true;
+        this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
     }
 
     public void mettrePion(Pion p) {
@@ -117,6 +120,7 @@ public class VueTuile extends JPanel {
     }
 
     //dessin le fond
+    @Override
     public void paintComponent(Graphics g) {
         g.drawImage(img.getImage(), 3, 3, null);
     }
