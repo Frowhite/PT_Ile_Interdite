@@ -83,11 +83,15 @@ public class Controleur implements Observer {
         if (o == vuePlateau) {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
-                    case CHOISIR_TUILE:
-
+                    case CHOISIR_TUILE_DEPLACEMENT:
                         vuePlateau.getVueGrille().deplacePion((aventuriers.get(numJoueurQuiJoue))
                                 .getCapacite(), vuePlateau.getDerniereTuileAppuye());
                         avancer(aventuriers.get(numJoueurQuiJoue), vuePlateau.getDerniereTuileAppuye());
+                        debutTour();
+                        break;
+                    case CHOISIR_TUILE_ASSECHEMENT:
+                        vuePlateau.getVueGrille().etatTuile(vuePlateau.getDerniereTuileAppuye(), EtatTuile.ASSECHEE);
+                        assecher(vuePlateau.getDerniereTuileAppuye());
                         debutTour();
                         break;
                     case CHOISIR_CARTE:
@@ -95,7 +99,7 @@ public class Controleur implements Observer {
                         break;
                     case INFO:
                         vueInfo = new VueInfo(aventuriers.get(vuePlateau.getDernierBouttonInfoAppuye()).getCapacite());
-                        
+
                         break;
                 }
             }
@@ -105,11 +109,11 @@ public class Controleur implements Observer {
                 switch ((Commandes) arg) {
                     case BOUGER:
                         vueAction.fermerFenetre();
-                        seDeplacer(getjCourant());
+                        possiblesDeplacer(getjCourant());
                         break;
                     case ASSECHER:
                         vueAction.fermerFenetre();
-                        System.out.println("2");
+                        possiblesAssechement(getjCourant());
                         break;
                     case DONNER:
                         vueAction.fermerFenetre();
@@ -280,7 +284,7 @@ public class Controleur implements Observer {
             }
             PiocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
             PiocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
-            
+
             numJoueurQuiJoue += 1;
             numJoueurQuiJoue %= aventuriers.size();
             actionRestante = 3;
@@ -292,13 +296,29 @@ public class Controleur implements Observer {
     ////////////////////////////////////ACTION POSSIBLE/////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////ASSECHEMENT////////////////////////////////
-    public void Assecher(Aventurier av, Tuile tuile) {
-        grille.TuilesPossiblesDeplacement(av);
-        av.addTuilesPossibles(av.getPositionCourante());
-
-        tuile.setEtat(EtatTuile.ASSECHEE);
+    public void possiblesAssechement(Aventurier av) {
+        grille.TuilesPossiblesAssechement(av);
+        for (Tuile t : av.getTuilesPossibleAssechement()) {
+            vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
+        }
     }
 
+    public void assecher(int idTuileAssechee) {
+        for (int i = 0; i < tuile.length; i++) {
+            if (idTuileAssechee == tuile[i].getId()) {
+                tuile[i].setEtat(EtatTuile.ASSECHEE);
+            }
+        }
+        jCourant.getTuilesPossibleAssechement().clear();
+        finTour();
+    }
+
+//    public void Assecher(Aventurier av, Tuile tuile) {
+//        grille.TuilesPossiblesDeplacement(av);
+//        av.addTuilesPossibles(av.getPositionCourante());
+//
+//        tuile.setEtat(EtatTuile.ASSECHEE);
+//    }
     //////////////////////////////////OBTENIR TRESOR////////////////////////////
     public void obtenirTresor(Aventurier av, Tuile tuile) {
         if (av.getPositionCourante().getTresor() != null) {
@@ -375,10 +395,10 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
-    public void seDeplacer(Aventurier av) {
+    public void possiblesDeplacer(Aventurier av) {
         grille.TuilesPossiblesDeplacement(av);
         for (Tuile t : av.getTuilesPossibles()) {
-            vuePlateau.getVueGrille().idTuileDeplacement(t.getId());
+            vuePlateau.getVueGrille().idTuileDeplacementPossible(t.getId());
         }
     }
 

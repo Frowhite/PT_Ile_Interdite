@@ -25,7 +25,8 @@ public class VueTuile extends JPanel {
     private Dimension dim = kit.getScreenSize();
     private ArrayList<Pion> pion = new ArrayList<>();
     private boolean possibliteDeplacement = false;
-
+    private boolean possibliteAssechement = false;
+    
     public VueTuile(int idTuile, VueGrille vueGrille) {
         //taille des tuiles qui s'adapte à l'écran
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
@@ -34,20 +35,23 @@ public class VueTuile extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (possibliteDeplacement) {
-                    vueGrille.getVuePlateau().choisirTuile(idTuile);
+                    vueGrille.getVuePlateau().choisirTuileDeplacement(idTuile);
+                }
+                if (possibliteAssechement){
+                    vueGrille.getVuePlateau().choisirTuileAssechement(idTuile);
                 }
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if (possibliteDeplacement) {
+                if (possibliteDeplacement || possibliteAssechement) {
                 actionAvecMouseListener(true);
                 }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if (possibliteDeplacement) {            
+                if (possibliteDeplacement || possibliteAssechement) {            
                 actionAvecMouseListener(false);
             }
             }
@@ -75,6 +79,11 @@ public class VueTuile extends JPanel {
 
     public void tuilePossibleDeplacement() {
         possibliteDeplacement = true;
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
+    }
+    
+    public void tuilePossibleAssechement(){
+        possibliteAssechement = true;
         this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
     }
 
@@ -245,5 +254,11 @@ public class VueTuile extends JPanel {
     public void setPossibliteDeplacement(boolean possibliteDeplacement) {
         this.possibliteDeplacement = possibliteDeplacement;
     }
+
+    public void setPossibliteAssechement(boolean possibliteAssechement) {
+        this.possibliteAssechement = possibliteAssechement;
+    }
+    
+    
 
 }

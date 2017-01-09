@@ -30,7 +30,7 @@ public class Aventurier extends ObjetIdentifie {
         main = new ArrayList();
         tresors = new ArrayList();
         tuilesPossibles = new ArrayList();
-        tuilesPossibles = new ArrayList();
+        tuilesPossibleAssechement = new ArrayList();
         this.positionCourante = positionCourante;
         this.controleur = controleur;
         
@@ -65,7 +65,7 @@ public class Aventurier extends ObjetIdentifie {
     }
     
     public void remTuilesPossiblesAssechement(Tuile t){
-        getTuilesPossibleAssechement().add(t);
+        getTuilesPossibleAssechement().remove(t);
     }
     
     

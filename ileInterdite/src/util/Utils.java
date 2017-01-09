@@ -22,14 +22,15 @@ public class Utils {
         TERMINER("Terminer son tour"),
         RECEVOIR("Recevoir la carte donnée par un autre joueur"), 
         CHOISIR_CARTE("Utiliser une carte trésor"),
-        CHOISIR_TUILE("Sélectionner une tuile"), 
         DEPLACER("Déplacer un autre joueur"),
         VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage"),
         INSCRIRE_JOUEUR("Demande l'inscription de nouveau joueur"),
         COMMENCER_PARTIE("Commence la partie"), 
         QUITTER("Quitte le jeu"),
         ANNULER("Annule l'inscriptions des joueurs"),
-        INFO("Affiche les informations de l'aventurier");
+        INFO("Affiche les informations de l'aventurier"), 
+        CHOISIR_TUILE_DEPLACEMENT("Choisie un tuile pour ce deplacer"), 
+        CHOISIR_TUILE_ASSECHEMENT("Choisie un tuile pour l'assecher");
 
         private final String libelle ;
 

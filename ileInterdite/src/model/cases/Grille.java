@@ -124,52 +124,51 @@ public class Grille {
             return true;
         }
     }
-    
+
     public void TuilesPossiblesAssechement(Aventurier av) {
 
         ArrayList<Tuile> buffer = new ArrayList();
-        
-            buffer.add(av.getPositionCourante());
-            
-        
-            if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() - 1)) {
-                buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1]);
+
+        buffer.add(av.getPositionCourante());
+
+        if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() - 1)) {
+            buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1]);
+        }
+
+        if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() + 1)) {
+            buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() + 1]);
+        }
+
+        if (estSurLePlateau(av.getPositionCourante().getLigne() - 1, av.getPositionCourante().getColonnes())) {
+            buffer.add(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes()]);
+        }
+
+        if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes())) {
+            buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes()]);
+        }
+
+        if (av.getCapacite() == Pion.VERT) {
+
+            if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes() - 1)) {
+                buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() - 1]);
+            }
+            if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes() + 1)) {
+                buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() + 1]);
+            }
+            if (estSurLePlateau(av.getPositionCourante().getLigne() - 1, av.getPositionCourante().getColonnes() + 1)) {
+                buffer.add(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes() + 1]);
+            }
+            if (estSurLePlateau(av.getPositionCourante().getLigne() - 1, av.getPositionCourante().getColonnes() - 1)) {
+                buffer.add(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes() - 1]);
             }
 
-            if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() + 1)) {
-                buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() + 1]);
-            }
+        }
 
-            if (estSurLePlateau(av.getPositionCourante().getLigne() - 1, av.getPositionCourante().getColonnes())) {
-                buffer.add(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes()]);
-            }
-
-            if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes())) {
-                buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes()]);
-            }
-
-            if (av.getCapacite() == Pion.VERT) {
-
-                if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes() - 1)) {
-                    buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() - 1]);
-                }
-                if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes() + 1)) {
-                    buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() + 1]);
-                }
-                if (estSurLePlateau(av.getPositionCourante().getLigne() - 1, av.getPositionCourante().getColonnes() + 1)) {
-                    buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() + 1]);
-                }
-                if (estSurLePlateau(av.getPositionCourante().getLigne() - 1, av.getPositionCourante().getColonnes() - 1)) {
-                    buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() - 1]);
-                }
+        for (Tuile t : buffer) {
+            if (t != null && t.getEtat() == Utils.EtatTuile.INONDEE) {
+                av.addTuilesPossiblesAssechement(t);
 
             }
-
-            for (Tuile t : buffer) {
-                if (t != null && t.getEtat() == Utils.EtatTuile.INONDEE) {
-                    av.addTuilesPossiblesAssechement(t);
-                    
-                }
-            }
-                }
-            }
+        }
+    }
+}

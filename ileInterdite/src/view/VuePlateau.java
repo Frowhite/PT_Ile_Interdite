@@ -9,8 +9,6 @@ import java.util.Observable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import model.cases.Tuile;
-import util.Utils;
 import util.Utils.Commandes;
 
 /**
@@ -91,13 +89,20 @@ public class VuePlateau extends Observable {
         return vueGrille;
     }
 
-    public void choisirTuile(int idTuile) {
+    public void choisirTuileDeplacement(int idTuile) {
         derniereTuileAppuye = idTuile;
         getVueGrille().remiseAZeroDesTuiles();
         setChanged();
-        notifyObservers(Commandes.CHOISIR_TUILE);
+        notifyObservers(Commandes.CHOISIR_TUILE_DEPLACEMENT);
         clearChanged();
-
+    }
+    
+    public void choisirTuileAssechement(int idTuile) {
+        derniereTuileAppuye = idTuile;
+        getVueGrille().remiseAZeroDesTuiles();
+        setChanged();
+        notifyObservers(Commandes.CHOISIR_TUILE_ASSECHEMENT);
+        clearChanged();
     }
 
     public void choisirCarte() {

@@ -56,8 +56,8 @@ public class VueGrille extends JPanel {
         panel.setOpaque(false);
     }
 
-    public void etatTuile(int numTuile, EtatTuile etatTuile) {
-        tuile.get(numTuile).assecheeInondeeOuCouleeTuile(numTuile, etatTuile);
+    public void etatTuile(int idTuile, EtatTuile etatTuile) {
+        tuile.get(idTuile).assecheeInondeeOuCouleeTuile(idTuile, etatTuile);
     }
 
     public void deplacePion(Pion p, int id) {
@@ -76,6 +76,7 @@ public class VueGrille extends JPanel {
     public void remiseAZeroDesTuiles(){
         for (int i = 0; i < tuile.size(); i++) {
             tuile.get(i).setPossibliteDeplacement(false);
+            tuile.get(i).setPossibliteAssechement(false);
             tuile.get(i).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));//bordure
         }
     }
@@ -91,8 +92,11 @@ public class VueGrille extends JPanel {
         g.drawImage(img, 0, 0, null);
     }
 
-    public void idTuileDeplacement(int idTuile) {
+    public void idTuileDeplacementPossible(int idTuile) {
         tuile.get(idTuile).tuilePossibleDeplacement();
+    }
+    public void idTuileAssechementPossible(int idTuile) {
+        tuile.get(idTuile).tuilePossibleAssechement();
     }
 
 }
