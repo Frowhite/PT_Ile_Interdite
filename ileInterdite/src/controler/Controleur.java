@@ -24,6 +24,7 @@ public class Controleur implements Observer {
     private ArrayList<CarteInondation> defausseInondation = new ArrayList<>();
     private ArrayList<CarteInondation> piocheInondation = new ArrayList<>();
     private Integer niveauEau = 0;
+    private Aventurier jCourant;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -94,7 +95,7 @@ public class Controleur implements Observer {
                 switch ((Commandes) arg) {
                     case BOUGER:
                         vueAction.fermerFenetre();
-                        System.out.println("1");
+                        seDeplacer(getjCourant());
                         break;
                     case ASSECHER:
                         vueAction.fermerFenetre();
@@ -127,6 +128,7 @@ public class Controleur implements Observer {
         initialiserCartesInondation();
         for (int i = 0; i < 6; i++) {
             PiocherCarteInondation();
+            System.out.println();
             if (i < 2) {
                 for (Aventurier jCourant : aventuriers) {
                     PiocherCarteTresorDepart(jCourant);
@@ -197,11 +199,11 @@ public class Controleur implements Observer {
         addPiocheTirage(new CarteTresor(38, "Pierre", Tresor.PIERRE));
         addPiocheTirage(new CarteTresor(39, "Pierre", Tresor.PIERRE));
 
-        addPiocheTirage(new CarteTresor(40, "Zephir", Tresor.ZEPHYR)); //A remplacer : "Zephyr"
-        addPiocheTirage(new CarteTresor(41, "Zephir", Tresor.ZEPHYR));
-        addPiocheTirage(new CarteTresor(42, "Zephir", Tresor.ZEPHYR));
-        addPiocheTirage(new CarteTresor(43, "Zephir", Tresor.ZEPHYR));
-        addPiocheTirage(new CarteTresor(44, "Zephir", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(40, "Zephyr", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(41, "Zephyr", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(42, "Zephyr", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(43, "Zephyr", Tresor.ZEPHYR));
+        addPiocheTirage(new CarteTresor(44, "Zephyr", Tresor.ZEPHYR));
 
         addPiocheTirage(new CarteTresor(45, "Cristal", Tresor.CRISTAL));
         addPiocheTirage(new CarteTresor(46, "Cristal", Tresor.CRISTAL));
@@ -247,10 +249,23 @@ public class Controleur implements Observer {
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////LANCEMENT//////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    public void LancementPartie() {
+        for (Aventurier av : aventuriers) {
+            setjCourant(av);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////ACTION POSSIBLE/////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////ASSECHEMENT////////////////////////////////
-    public void Assecher(Tuile tuile) {
+    public void Assecher(Aventurier av,Tuile tuile) {
+        grille.TuilesPossibles(av);
+        av.addTuilesPossibles(av.getPositionCourante());
+        
+        
         tuile.setEtat(EtatTuile.ASSECHEE);
     }
 
@@ -330,6 +345,14 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
+    public void seDeplacer(Aventurier av) {
+        grille.TuilesPossibles(av);
+        for(Tuile t : av.getTuilesPossibles()){
+            vuePlateau.idTuileDeplacement(t.getId());
+        }
+        
+    }
+
     ////////////////////////////////DONNER CARTE////////////////////////////////
     ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
     public void PiocherCarteTresorDepart(Aventurier jCourant) {
@@ -362,6 +385,7 @@ public class Controleur implements Observer {
                 addDefausseInondation(c);
             }
             setPiocheInondation(getDefausseInondation());
+            getDefausseInondation().clear();
 
         }
     }
@@ -369,6 +393,7 @@ public class Controleur implements Observer {
     ///////////////////////////////PIOCHER CARTE INONDATION/////////////////////
     public void PiocherCarteInondation() {
         CarteInondation tuileInonde = getPiocheInondation().get(0);
+        System.out.println(tuileInonde.getNom());
         remPiocheInondation(tuileInonde);
         for (int i = 0; i < getTuile().length; i++) {
             if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
@@ -734,4 +759,27 @@ public class Controleur implements Observer {
         this.vueNiveau = vueNiveau;
     }
 
+    public ArrayList<Tresor> getTresors() {
+        return tresors;
+    }
+
+    public void setTresors(ArrayList<Tresor> tresors) {
+        this.tresors = tresors;
+    }
+
+    public Aventurier getjCourant() {
+        return jCourant;
+    }
+
+    public void setjCourant(Aventurier jCourant) {
+        this.jCourant = jCourant;
+    }
+
+    public VueAction getVueAction() {
+        return vueAction;
+    }
+
+    public void setVueAction(VueAction vueAction) {
+        this.vueAction = vueAction;
+    }
 }

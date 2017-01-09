@@ -9,6 +9,7 @@ import java.util.Observable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import model.cases.Tuile;
 import util.Utils;
 import util.Utils.Commandes;
 
@@ -97,5 +98,9 @@ public class VuePlateau extends Observable {
                 setChanged();
                 notifyObservers(Commandes.CHOISIR_CARTE);
                 clearChanged();
+    }
+    
+    public void idTuileDeplacement(int i){
+        
     }
 }
