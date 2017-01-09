@@ -134,7 +134,7 @@ public class Controleur implements Observer {
                 }
             }
 
-            //LancementPartie();
+            LancementPartie();
         }
     }
 
@@ -251,8 +251,14 @@ public class Controleur implements Observer {
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     public void LancementPartie() {
+        //Boucle Partie Continue?
         for (Aventurier av : aventuriers) {
+            
             setjCourant(av);
+            
+            vueAction = new VueAction();
+            vueAction.addObserver(this);
+            
         }
     }
 
@@ -347,7 +353,7 @@ public class Controleur implements Observer {
     public void seDeplacer(Aventurier av) {
         grille.TuilesPossibles(av);
         for(Tuile t : av.getTuilesPossibles()){
-            vuePlateau.idTuileDeplacement(t.getId());
+            vuePlateau.getVueGrille().idTuileDeplacement(t.getId());
         }
         
     }
@@ -412,8 +418,7 @@ public class Controleur implements Observer {
     public void ouvrirPlateauDeJeu() {
         vuePlateau = new VuePlateau(aventuriers.size());
         vuePlateau.addObserver(this);
-        vueAction = new VueAction();
-        vueAction.addObserver(this);
+        
 
         for (int i = 0; i < aventuriers.size(); i++) {
             switch (i) {

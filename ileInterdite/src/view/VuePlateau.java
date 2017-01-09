@@ -99,8 +99,5 @@ public class VuePlateau extends Observable {
                 notifyObservers(Commandes.CHOISIR_CARTE);
                 clearChanged();
     }
-    
-    public void idTuileDeplacement(int i){
-        
-    }
+
 }
