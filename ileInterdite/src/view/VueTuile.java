@@ -43,6 +43,8 @@ public class VueTuile extends JPanel {
                 }
             }
         });
+        
+        
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
 
     }

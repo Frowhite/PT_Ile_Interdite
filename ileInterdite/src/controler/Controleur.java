@@ -23,9 +23,10 @@ public class Controleur implements Observer {
     private ArrayList<CarteTirage> piocheTirage = new ArrayList<>();
     private ArrayList<CarteInondation> defausseInondation = new ArrayList<>();
     private ArrayList<CarteInondation> piocheInondation = new ArrayList<>();
-    private Integer niveauEau = 0;
+    private Integer niveauEau = 1;
     private Aventurier jCourant;
     private int joueurQuiJoue = 0;
+    private int actionRestante = 3;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -86,7 +87,7 @@ public class Controleur implements Observer {
                         vuePlateau.getVueGrille().deplacePion((aventuriers.get(joueurQuiJoue))
                                 .getCapacite(), vuePlateau.getDerniereTuileAppuye());
                         avancer(aventuriers.get(joueurQuiJoue), vuePlateau.getDerniereTuileAppuye());
-                        joueTour();
+                        debutTour();
                         break;
                     case CHOISIR_CARTE:
                         System.out.println("Carte");
@@ -140,7 +141,7 @@ public class Controleur implements Observer {
             }
 
         }
-        joueTour();
+        debutTour();
     }
 
     ////////////////////////////////GRILLE//////////////////////////////////////
@@ -255,12 +256,31 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
-    public void joueTour() {
+    public void debutTour() {
         //Boucle Partie Continue?
 
-        vueAction = new VueAction();
+        vueAction = new VueAction(aventuriers.get(joueurQuiJoue).getNom(), actionRestante);
         vueAction.addObserver(this);
         setjCourant(aventuriers.get(joueurQuiJoue));
+    }
+
+    public void finTour() {
+        actionRestante -= 1;
+        if (actionRestante == 0) {
+
+            for (int i = 0; i < getNiveauEau(); i++) {
+                PiocherCarteInondation();
+                System.out.println("MA bite sur ton front");
+
+            }
+            PiocherCarteTresor(aventuriers.get(joueurQuiJoue));
+            PiocherCarteTresor(aventuriers.get(joueurQuiJoue));
+            
+            joueurQuiJoue += 1;
+            joueurQuiJoue %= aventuriers.size();
+            actionRestante = 3;
+        }
+
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -359,17 +379,16 @@ public class Controleur implements Observer {
 
     //suppr la dèrnière position du joueur et met la nouvelle
     public void avancer(Aventurier jCourant, int idNvTuile) {
-        
+
         jCourant.getPositionCourante().getAventuriers().remove(jCourant);
         for (int i = 0; i < tuile.length; i++) {
             if (tuile[i].getId() == idNvTuile) {
                 jCourant.setPositionCourante(tuile[i]);
-                
+
             }
         }
         jCourant.getTuilesPossibles().clear();
-        joueurQuiJoue += 1;
-        joueurQuiJoue %= aventuriers.size();
+        finTour();
     }
 
     ////////////////////////////////DONNER CARTE////////////////////////////////

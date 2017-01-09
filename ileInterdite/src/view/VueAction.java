@@ -30,7 +30,7 @@ public class VueAction extends Observable {
     private JLabel tNbDAction;
     private JButton bDeplace, bAssechee, bDonneCarte, bUtiliseCarte, bPrendreTresor;
 
-    public VueAction() {
+    public VueAction(String nomJCourant, int numAction) {
         window = new JFrame();
         window.setSize(300, 100);
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
@@ -40,7 +40,18 @@ public class VueAction extends Observable {
         panelGlobale = new JPanel(new BorderLayout());
         //***Haut***
         //text nb d'action
-        tNbDAction = new JLabel("Nombre d'actions restantes : 3");
+        switch(1){
+            case 1:
+                tNbDAction = new JLabel(nomJCourant+": Action restante : 1");
+                break;
+            case 2:
+                tNbDAction = new JLabel(nomJCourant+": Actions restantes : 2");
+                break;
+            case 3:
+                tNbDAction = new JLabel(nomJCourant+": Actions restantes : 3");
+                break;
+        }
+        
         panelGlobale.add(tNbDAction, BorderLayout.NORTH);
         //***panel centre***
         panelCentre = new JPanel(gl);

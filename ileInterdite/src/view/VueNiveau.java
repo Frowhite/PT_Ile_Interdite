@@ -119,8 +119,8 @@ public class VueNiveau {
             GridBagConstraints gbc = new GridBagConstraints();
             panelDroit.add(labelDroit, gbc);
         }
-//        panelsGauches.get(niveauInitial).setBackground(Color.YELLOW);         --->met un message d'erreur
-//        this.window.setVisible(true);
+        panelsGauches.get(niveauInitial).setBackground(Color.YELLOW); 
+        this.window.setVisible(true);
     }
 
     public void setNiveau(Integer niveau) {
