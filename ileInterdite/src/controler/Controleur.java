@@ -25,6 +25,7 @@ public class Controleur implements Observer {
     private ArrayList<CarteInondation> piocheInondation = new ArrayList<>();
     private Integer niveauEau = 0;
     private Aventurier jCourant;
+    private int joueurQuiJoue=0;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -134,8 +135,8 @@ public class Controleur implements Observer {
                 }
             }
 
-            LancementPartie();
         }
+        joueTour();
     }
 
     ////////////////////////////////GRILLE//////////////////////////////////////
@@ -250,16 +251,15 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
-    public void LancementPartie() {
+    public void joueTour() {
         //Boucle Partie Continue?
-        for (Aventurier av : aventuriers) {
             
-            setjCourant(av);
-            
+        
             vueAction = new VueAction();
             vueAction.addObserver(this);
-            
-        }
+            setjCourant(aventuriers.get(joueurQuiJoue));
+            joueurQuiJoue+=1;
+            joueurQuiJoue %= aventuriers.size();
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -447,7 +447,8 @@ public class Controleur implements Observer {
         }
 
         initialiserPartie();
-        //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
+        vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
+        vuePlateau.getVueGrille().deplacePion(aventuriers.get(1).getCapacite(), 20);
     }
 
     public void ouvrirFenetreInterface() {

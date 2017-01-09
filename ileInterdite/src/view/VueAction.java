@@ -45,7 +45,7 @@ public class VueAction extends Observable {
         //***panel centre***
         panelCentre = new JPanel(gl);
         //boutton déplacer
-        bDeplace = new JButton("Ce déplacer");
+        bDeplace = new JButton("Se déplacer");
         actionListener(bDeplace, Commandes.BOUGER);
         panelCentre.add(bDeplace);
         //boutton assecher
