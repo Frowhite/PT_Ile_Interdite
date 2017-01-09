@@ -18,6 +18,7 @@ public class Aventurier extends ObjetIdentifie {
     private ArrayList<CarteTirage> main;
     private ArrayList<Tresor> tresors;
     private ArrayList<Tuile> tuilesPossibles;
+    private ArrayList<Tuile> tuilesPossibleAssechement;
     private Tuile positionCourante;
     private Controleur controleur;
     
@@ -28,6 +29,7 @@ public class Aventurier extends ObjetIdentifie {
         this.capacite = capacite;
         main = new ArrayList();
         tresors = new ArrayList();
+        tuilesPossibles = new ArrayList();
         tuilesPossibles = new ArrayList();
         this.positionCourante = positionCourante;
         this.controleur = controleur;
@@ -54,6 +56,17 @@ public class Aventurier extends ObjetIdentifie {
         getMain().add((CarteTirage) c);
     }
     
+    public void remTuilesPossibles(Tuile t){
+        getTuilesPossibles().remove(t);
+    }
+    
+    public void addTuilesPossiblesAssechement(Tuile t){
+        getTuilesPossibleAssechement().add(t);
+    }
+    
+    public void remTuilesPossiblesAssechement(Tuile t){
+        getTuilesPossibleAssechement().add(t);
+    }
     
     
     ////////////////////////////////////////////////////////////////////////////
@@ -114,6 +127,22 @@ public class Aventurier extends ObjetIdentifie {
 
     public void setTuilesPossibles(ArrayList<Tuile> tuilesPossibles) {
         this.tuilesPossibles = tuilesPossibles;
+    }
+
+    public ArrayList<Tuile> getTuilesPossibleAssechement() {
+        return tuilesPossibleAssechement;
+    }
+
+    public void setTuilesPossibleAssechement(ArrayList<Tuile> tuilesPossibleAssechement) {
+        this.tuilesPossibleAssechement = tuilesPossibleAssechement;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
     
     
