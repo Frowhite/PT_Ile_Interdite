@@ -359,6 +359,12 @@ public class Controleur implements Observer {
     }
 
     ////////////////////////////////DONNER CARTE////////////////////////////////
+    public void donnerCarte(Aventurier av){
+        
+    }
+    
+    
+    
     ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
     public void PiocherCarteTresorDepart(Aventurier jCourant) {
 
