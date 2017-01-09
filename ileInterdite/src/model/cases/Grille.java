@@ -42,6 +42,7 @@ public class Grille {
             }
             
         }
+        
         /*
         av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1]);
         av.addTuilesPossibles(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes()]);
