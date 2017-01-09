@@ -18,7 +18,7 @@ import util.Utils.Commandes;
  * @author IUT2-Dept Info
  */
 public class VuePlateau extends Observable {
-
+    private int derniereTuileAppuye;
     private ImageIcon plateau;
     private VueGrille vueGrille;
     private VueAventurier aventurier1, aventurier2, aventurier3, aventurier4;
@@ -88,7 +88,8 @@ public class VuePlateau extends Observable {
         return vueGrille;
     }
     
-    public void choisirTuile(){
+    public void choisirTuile(int idTuile){
+                derniereTuileAppuye=idTuile;
                 setChanged();
                 notifyObservers(Commandes.CHOISIR_TUILE);
                 clearChanged();
@@ -100,4 +101,9 @@ public class VuePlateau extends Observable {
                 clearChanged();
     }
 
+    public int getDerniereTuileAppuye() {
+        return derniereTuileAppuye;
+    }
+    
+    
 }

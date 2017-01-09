@@ -35,7 +35,7 @@ public class VueGrille extends JPanel {
 
     public void initialiserPlateau(Tuile[] tuiles) {
         for (int i = 0; i < 24; i++) {
-            VueTuile t = new VueTuile(this);
+            VueTuile t = new VueTuile(tuiles[i].getId(), this);
             tuile.put(tuiles[i].getId(), t);
             t.assecheeInondeeOuCouleeTuile(tuiles[i].getId(), EtatTuile.ASSECHEE);// il calasse du plus petit au plus grand
         }

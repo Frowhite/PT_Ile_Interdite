@@ -61,7 +61,7 @@ public class Grille {
             }
 
             for (Tuile t : buffer) {
-                if (t.getEtat() != Utils.EtatTuile.COULEE) {
+                if (t!=null && t.getEtat() != Utils.EtatTuile.COULEE) {
                     av.addTuilesPossibles(t);
                 }
             }

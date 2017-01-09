@@ -82,7 +82,8 @@ public class Controleur implements Observer {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
                     case CHOISIR_TUILE:
-                        System.out.println("Tuile!!!");
+                        vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), vuePlateau.getDerniereTuileAppuye());
+
                         break;
                     case CHOISIR_CARTE:
                         System.out.println("Carte");
