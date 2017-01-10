@@ -30,7 +30,8 @@ public class Utils {
         ANNULER("Annule l'inscriptions des joueurs"),
         INFO("Affiche les informations de l'aventurier"), 
         CHOISIR_TUILE_DEPLACEMENT("Choisie un tuile pour ce deplacer"), 
-        CHOISIR_TUILE_ASSECHEMENT("Choisie un tuile pour l'assecher");
+        CHOISIR_TUILE_ASSECHEMENT("Choisie un tuile pour l'assecher"),
+        OK_Info("Ferme la page information");
 
         private final String libelle ;
 

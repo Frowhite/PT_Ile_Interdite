@@ -104,7 +104,7 @@ public class Controleur implements Observer {
                         break;
                     case INFO:
                         vueInfo = new VueInfo(aventuriers.get(vuePlateau.getDernierBouttonInfoAppuye()).getCapacite());
-
+                        vueInfo.addObserver(this); 
                         break;
                 }
             }
@@ -132,6 +132,15 @@ public class Controleur implements Observer {
                         vueAction.fermerFenetre();
                         System.out.println("5");
                         break;
+                }
+            }
+        }
+        if (o == vueInfo) {
+            if (arg instanceof Commandes) {
+                if (arg == Commandes.OK_Info) {
+                    vueInfo.fermerFenetre();
+                    
+
                 }
             }
         }

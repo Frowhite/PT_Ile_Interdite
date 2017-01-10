@@ -103,28 +103,28 @@ public class VueAventurier extends JPanel {
 
         switch (p) {
             case BLEU:
-                donnerNomJoueur.setForeground(Color.BLUE);
-                bInfo.setForeground(Color.BLUE);
+                donnerNomJoueur.setForeground(new Color(51,153,255));
+                bInfo.setForeground(new Color(51,153,255));
                 break;
             case JAUNE:
-                donnerNomJoueur.setForeground(Color.YELLOW);
-                bInfo.setForeground(Color.YELLOW);
+                donnerNomJoueur.setForeground(new Color(255,255,102));
+                bInfo.setForeground(new Color(255,255,102));
                 break;
             case ORANGE:
-                donnerNomJoueur.setForeground(Color.ORANGE);
-                bInfo.setForeground(Color.ORANGE);
+                donnerNomJoueur.setForeground(new Color(255,178,102));
+                bInfo.setForeground(new Color(255,178,102));
                 break;
             case ROUGE:
-                donnerNomJoueur.setForeground(Color.RED);
-                bInfo.setForeground(Color.RED);
+                donnerNomJoueur.setForeground(new Color(255,102,102));
+                bInfo.setForeground(new Color(255,102,102));
                 break;
             case VERT:
-                donnerNomJoueur.setForeground(Color.GREEN);
-                bInfo.setForeground(Color.GREEN);
+                donnerNomJoueur.setForeground(new Color(153,255, 153));
+                bInfo.setForeground(new Color(153,255, 153));
                 break;
             case VIOLET:
-                donnerNomJoueur.setForeground(new Color(153, 0, 153));
-                bInfo.setForeground(new Color(153, 0, 153));
+                donnerNomJoueur.setForeground(new Color(178,102, 255));
+                bInfo.setForeground(new Color(178,102, 255));
                 break;
         }
 
