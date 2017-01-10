@@ -271,7 +271,7 @@ public class Controleur implements Observer {
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
-        //uePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
+        //vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
         //Boucle Partie Continue?
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
@@ -285,7 +285,6 @@ public class Controleur implements Observer {
             grille.setCompetenceActiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
             for (int i = 0; i < getNiveauEau(); i++) {
                 piocherCarteInondation();
-                System.out.println("MA ***** sur ton front");
 
             }
             piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
@@ -298,7 +297,7 @@ public class Controleur implements Observer {
             if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
                 actionRestante += 1;
             }
-            vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
+            //vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
         }
 
     }
