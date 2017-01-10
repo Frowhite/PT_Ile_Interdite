@@ -39,7 +39,7 @@ public class Controleur implements Observer {
 
     public Controleur() {
         ouvrirFenetreInterface();
-        créerGrille();
+        creerGrille();
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -146,11 +146,11 @@ public class Controleur implements Observer {
         initialiserCartesTirages();
         initialiserCartesInondation();
         for (int i = 0; i < 6; i++) {
-            PiocherCarteInondation();
+            piocherCarteInondation();
             System.out.println();
             if (i < 2) {
                 for (Aventurier jCourant : aventuriers) {
-                    PiocherCarteTresorDepart(jCourant);
+                    piocherCarteTresorDepart(jCourant);
                 }
             }
 
@@ -159,7 +159,7 @@ public class Controleur implements Observer {
     }
 
     ////////////////////////////////GRILLE//////////////////////////////////////
-    public void créerGrille() {
+    public void creerGrille() {
         tuile = new Tuile[24];
         tuile[0] = new Tuile(0, "Heliport", null);
         tuile[1] = new Tuile(1, "La Caverne des Ombres", Tresor.CRISTAL);
@@ -280,14 +280,14 @@ public class Controleur implements Observer {
     public void finTour() {
         actionRestante -= 1;
         if (actionRestante == 0) {
-            grille.setCompetanceActitiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
+            grille.setCompetenceActiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
             for (int i = 0; i < getNiveauEau(); i++) {
-                PiocherCarteInondation();
+                piocherCarteInondation();
                 System.out.println("MA ***** sur ton front");
 
             }
-            PiocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
-            PiocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
+            piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
+            piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
 
             numJoueurQuiJoue += 1;
             numJoueurQuiJoue %= aventuriers.size();
@@ -305,7 +305,7 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////ASSECHEMENT////////////////////////////////
     public void possiblesAssechement(Aventurier av) {
-        grille.TuilesPossiblesAssechement(av);
+        grille.tuilesPossiblesAssechement(av);
         if (!av.getTuilesPossibleAssechement().isEmpty()) {
             if (av.getCapacite() == Pion.ROUGE && !isCompetanceActitiveRouge()) {//le pion rouge va pouvoir assechee 2 fois (voir update)
                 setCompetanceActitiveRouge(true);
@@ -336,7 +336,7 @@ public class Controleur implements Observer {
     }
 
 //    public void Assecher(Aventurier av, Tuile tuile) {
-//        grille.TuilesPossiblesDeplacement(av);
+//        grille.tuilesPossiblesDeplacement(av);
 //        av.addTuilesPossibles(av.getPositionCourante());
 //
 //        tuile.setEtat(EtatTuile.ASSECHEE);
@@ -418,7 +418,7 @@ public class Controleur implements Observer {
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
     public void possiblesDeplacer(Aventurier av) {
-        grille.TuilesPossiblesDeplacement(av);
+        grille.tuilesPossiblesDeplacement(av);
         for (Tuile t : av.getTuilesPossibles()) {
             vuePlateau.getVueGrille().idTuileDeplacementPossible(t.getId());
         }
@@ -426,8 +426,8 @@ public class Controleur implements Observer {
 
     //suppr la dèrnière position du joueur et met la nouvelle
     public void avancer(Aventurier jCourant, int idNvTuile) {
-        if (jCourant.getCapacite() == Pion.BLEU && getGrille().isCompetanceActitiveBleu()) {
-            competanceBleu(jCourant, idNvTuile);
+        if (jCourant.getCapacite() == Pion.BLEU && getGrille().isCompetenceActiveBleu()) {
+            competenceBleu(jCourant, idNvTuile);
         }
         jCourant.getPositionCourante().getAventuriers().remove(jCourant);
         for (int i = 0; i < tuile.length; i++) {
@@ -439,17 +439,17 @@ public class Controleur implements Observer {
         finTour();
     }
 
-    public void competanceBleu(Aventurier jCourant, int idNvTuile) {
+    public void competenceBleu(Aventurier jCourant, int idNvTuile) {
         int l = jCourant.getPositionCourante().getLigne();
         int c = jCourant.getPositionCourante().getColonnes();
-        getGrille().setCompetanceActitiveBleu(false);
+        getGrille().setCompetenceActiveBleu(false);
         for (int i = 0; i < tuile.length; i++) {
             if (tuile[i].getId() == idNvTuile) {
                 if (tuile[i].getColonnes() == c - 1 && tuile[i].getLigne() == l
                         || tuile[i].getColonnes() == c + 1 && tuile[i].getLigne() == l
                         || tuile[i].getColonnes() == c && tuile[i].getLigne() == l - 1
                         || tuile[i].getColonnes() == c && tuile[i].getLigne() == l + 1) {
-                    getGrille().setCompetanceActitiveBleu(true);
+                    getGrille().setCompetenceActiveBleu(true);
                 }
             }
         }
@@ -462,7 +462,7 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
-    public void PiocherCarteTresorDepart(Aventurier jCourant) {
+    public void piocherCarteTresorDepart(Aventurier jCourant) {
 
         CarteTirage cartePioche = getPiocheTirage().get(0);
         remPiocheTirage(cartePioche);
@@ -473,12 +473,12 @@ public class Controleur implements Observer {
         if (cartePioche.estMontee()) {
             addPiocheTirage(cartePioche);
             setPiocheTirage(melangerTirage(getPiocheTirage())); //Remélanger les cartes
-            PiocherCarteTresorDepart(jCourant);
+            piocherCarteTresorDepart(jCourant);
         }
 
     }
 
-    public void PiocherCarteTresor(Aventurier av) {
+    public void piocherCarteTresor(Aventurier av) {
         CarteTirage cartePioche = getPiocheTirage().get(0);
         remPiocheTirage(cartePioche);
         if (!cartePioche.estMontee()) {
@@ -498,7 +498,7 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////PIOCHER CARTE INONDATION/////////////////////
-    public void PiocherCarteInondation() {
+    public void piocherCarteInondation() {
         CarteInondation tuileInonde = getPiocheInondation().get(0);                 //-->renvoie:ava.lang.IndexOutOfBoundsException:
         System.out.println(tuileInonde.getNom());
         remPiocheInondation(tuileInonde);

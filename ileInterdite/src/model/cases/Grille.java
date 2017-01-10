@@ -19,18 +19,18 @@ import util.Utils.Pion;
 public class Grille {
 
     private Tuile[][] tuiles; // Les tuiles du jeu
-    private boolean competanceActitiveBleu = true;
+    private boolean competanceActiveBleu = true;
 
     public Grille(Tuile[] tuile) {
         this.tuiles = new Tuile[6][6];
         remplirGrille(tuile);
     }
 
-    public void TuilesPossiblesDeplacement(Aventurier av) {
+    public void tuilesPossiblesDeplacement(Aventurier av) {
 
         ArrayList<Tuile> buffer = new ArrayList();
 
-        if (av.getCapacite() == Pion.BLEU && isCompetanceActitiveBleu()) {
+        if (av.getCapacite() == Pion.BLEU && isCompetenceActiveBleu()) {
             for (int l = 0; l < 6; l++) {
                 for (int c = 0; c < 6; c++) {
                     if ((l == 0 && (c == 2 || c == 3))
@@ -50,8 +50,7 @@ public class Grille {
         } else {
             if (av.getCapacite() == Pion.VIOLET) {
                 //Tuile positionRelative = new Tuile(500, "Position Relative", null);
-                int i = 0;
-                plongeur(av.getPositionCourante(), buffer, i);
+                ajoutTuileDepPlongeur(av.getPositionCourante(), buffer, 0); //ajoute les tuiles déplacement du plongeur
 
             }
 
@@ -87,9 +86,7 @@ public class Grille {
                 }
 
             }
-            if (av.getCapacite() == Pion.VIOLET) {
-
-            }
+            buffer.remove(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes()]);
 
             for (Tuile t : buffer) {
                 if (t != null && t.getEtat() != Utils.EtatTuile.COULEE) {
@@ -100,7 +97,7 @@ public class Grille {
         }
     }
 
-    public void plongeur(Tuile t, ArrayList<Tuile> tDep, int i) {
+    public void ajoutTuileDepPlongeur(Tuile t, ArrayList<Tuile> tDep, int i) { 
 
         if (estSurLePlateau(t.getLigne(), t.getColonnes() - 1) && tuiles[t.getLigne()][t.getColonnes() - 1] != null) {
             if (tuiles[t.getLigne()][t.getColonnes() - 1].getEtat() != EtatTuile.ASSECHEE && !tDep.contains(tuiles[t.getLigne()][t.getColonnes() - 1])) {
@@ -124,7 +121,7 @@ public class Grille {
             }
         }
         if (i != tDep.size()) {
-            plongeur(tDep.get(i), tDep, i + 1);
+            ajoutTuileDepPlongeur(tDep.get(i), tDep, i + 1);
         }
     }
 
@@ -156,7 +153,7 @@ public class Grille {
         }
     }
 
-    public void TuilesPossiblesAssechement(Aventurier av) {
+    public void tuilesPossiblesAssechement(Aventurier av) {
 
         ArrayList<Tuile> buffer = new ArrayList();
 
@@ -194,7 +191,6 @@ public class Grille {
             }
 
         }
-
         for (Tuile t : buffer) {
             if (t != null && t.getEtat() == Utils.EtatTuile.INONDEE) {
                 av.addTuilesPossiblesAssechement(t);
@@ -206,12 +202,12 @@ public class Grille {
     ////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////GETTEURS&SETTEURS////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
-    public boolean isCompetanceActitiveBleu() {
-        return competanceActitiveBleu;
+    public boolean isCompetenceActiveBleu() {
+        return competanceActiveBleu;
     }
 
-    public void setCompetanceActitiveBleu(boolean competanceActitiveBleu) {
-        this.competanceActitiveBleu = competanceActitiveBleu;
+    public void setCompetenceActiveBleu(boolean competanceActitiveBleu) {
+        this.competanceActiveBleu = competanceActitiveBleu;
     }
 
 }
