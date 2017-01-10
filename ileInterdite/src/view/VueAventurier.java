@@ -18,8 +18,9 @@ import javax.swing.JPanel;
 import util.Utils.Pion;
 
 public class VueAventurier extends JPanel {
+
     private int idAventurier;
-    private boolean possibliteJoueurDonnerCarte=false;
+    private boolean possibliteJoueurDonnerCarte = false;
     private JButton bInfo;
     private VuePlateau vuePlateau;
     private ArrayList<VueCarte> vueCarte;
@@ -31,12 +32,12 @@ public class VueAventurier extends JPanel {
     private GridLayout gl = new GridLayout(3, 3);
 
     public VueAventurier(int idAventurir, VuePlateau vuePlateau) {
-        this.vuePlateau=vuePlateau;
-        this.idAventurier=idAventurir;
+        this.vuePlateau = vuePlateau;
+        this.idAventurier = idAventurir;
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
         this.setSize(dim.width / 4, 430);
-        this.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.BLACK));
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.BLACK));
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -46,7 +47,7 @@ public class VueAventurier extends JPanel {
             }
         });
         vueCarte = new ArrayList<>();
-        
+
         panelGlobale = new JPanel(new BorderLayout());
         //***panel haut***
         panelHaut = new JPanel(new BorderLayout());
@@ -56,12 +57,12 @@ public class VueAventurier extends JPanel {
         bInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                vuePlateau.infoAventurier(idAventurir-25);
+                vuePlateau.infoAventurier(idAventurir - 25);
             }
         });
-        
+
         panelHaut.add(bInfo, BorderLayout.WEST);
-        
+
         donnerNomJoueur = new JLabel();
         donnerNomJoueur.setFont(font1);//taille de la police
         panelHaut.add(donnerNomJoueur, BorderLayout.CENTER);
@@ -83,18 +84,34 @@ public class VueAventurier extends JPanel {
     }
 
     public void ajouterCarte(int carteRecue) {
-        boolean cartePlacee = false;
-        for (int i = 0; i < vueCarte.size() && !cartePlacee; i++) {
+        /*
+        for (int i = 0; i < vueCarte.size() && vueCarte.get(i).getImg() != null; i++) {
             if (vueCarte.get(i).getImg() == null) {
                 vueCarte.get(i).mettreCarte(carteRecue);
                 cartePlacee = true;
             }
+        }*/
+        for (int i = 0; i < vuePlateau.getAventurier().size(); i++) {
+            vuePlateau.getAventurier().get(i).setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.BLACK));
+            vuePlateau.getAventurier().get(i).setPossibliteJoueurDonnerCarte(false);
         }
+        
+        int i = 0;
+        while(i < vueCarte.size() && vueCarte.get(i).getImg() != null){
+        i++;
+        }
+        vueCarte.get(i).mettreCarte(carteRecue);
     }
 
-    public void enleverCarte(int numEmplacementCarteEnleve) {
-        vueCarte.remove(numEmplacementCarteEnleve-1);        
-        int x=1;
+    public void enleverCarte(int idCarte) {
+        for (int i = 0; i < vueCarte.size() /*&& vueCarte.contains(i)*/; i++) {
+            if (vueCarte.get(i).getIdCarte() == idCarte) {
+                vueCarte.get(i).setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.BLACK));
+                vueCarte.remove(vueCarte.get(i));
+            }
+        }
+
+        int x = 1;
         //trie les cartes
         //enlève un emplacement de carte vide
         for (int i = 0; i < vueCarte.size(); i++) {
@@ -106,8 +123,8 @@ public class VueAventurier extends JPanel {
         }
         //rajoute un emplacement de carte vide
         for (int i = 0; i < x; i++) {
-                VueCarte c = new VueCarte(this);
-                vueCarte.add(c);
+            VueCarte c = new VueCarte(this);
+            vueCarte.add(c);
         }
         panelCentre.removeAll();
         //redessine les cartes possédé
@@ -122,48 +139,53 @@ public class VueAventurier extends JPanel {
 
         switch (p) {
             case BLEU:
-                this.setBackground(new Color(51,153,255));
+                this.setBackground(new Color(51, 153, 255));
                 break;
             case JAUNE:
-                this.setBackground(new Color(255,255,102));
+                this.setBackground(new Color(255, 255, 102));
                 break;
             case ORANGE:
-                this.setBackground(new Color(255,178,102));
+                this.setBackground(new Color(255, 178, 102));
                 break;
             case ROUGE:
-                this.setBackground(new Color(255,102,102));
+                this.setBackground(new Color(255, 102, 102));
                 break;
             case VERT:
-                this.setBackground(new Color(153,255, 153));
+                this.setBackground(new Color(153, 255, 153));
                 break;
             case VIOLET:
-                this.setBackground(new Color(178,102, 255));
+                this.setBackground(new Color(178, 102, 255));
                 break;
         }
     }
 
-    
-    public void aventurierCliquable(){
-        this.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.RED));
-        possibliteJoueurDonnerCarte=true;
-    
+    public void aventurierCliquable() {
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
+        possibliteJoueurDonnerCarte = true;
+
     }
-    
-        public void carteCliquable(int idCate){
-            for (int i = 0; i < vueCarte.size(); i++) {
-                if (vueCarte.get(i).getIdCarte()==idCate){
-                    vueCarte.get(i).setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.RED));
-                    vueCarte.get(i).setPossibliteAssechement(true);
-                }
+
+    public void carteCliquable(int idCate) {
+        for (int i = 0; i < vueCarte.size(); i++) {
+            if (vueCarte.get(i).getIdCarte() == idCate) {
+                vueCarte.get(i).setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
+                vueCarte.get(i).setPossibliteAssechement(true);
             }
         }
-        
-    
-    
-    
+    }
+
     public VuePlateau getVuePlateau() {
         return vuePlateau;
     }
+
+    public ArrayList<VueCarte> getVueCarte() {
+        return vueCarte;
+    }
+
+    public void setPossibliteJoueurDonnerCarte(boolean possibliteJoueurDonnerCarte) {
+        this.possibliteJoueurDonnerCarte = possibliteJoueurDonnerCarte;
+    }
+    
     
     
 }
