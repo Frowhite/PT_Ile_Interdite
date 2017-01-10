@@ -494,7 +494,6 @@ public class Controleur implements Observer {
     }
 
     public void peutDonnerAventurier(Aventurier jDonneur) {
-
         if (jDonneur.getCapacite() == Pion.ORANGE) {
             setJoueurPourDonnerCarte(aventuriers);
             remAventurier(jDonneur);
