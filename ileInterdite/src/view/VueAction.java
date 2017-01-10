@@ -62,22 +62,23 @@ public class VueAction extends Observable {
 
         switch (pion) {
             case BLEU:
-                tNbDAction.setForeground(Color.BLUE);
+                panelGlobale.setBackground(new Color(51,153,255));
+                
                 break;
             case JAUNE:
-                tNbDAction.setForeground(Color.YELLOW);
+                panelGlobale.setBackground(new Color(255,255,102));
                 break;
             case ORANGE:
-                tNbDAction.setForeground(Color.ORANGE);
+                panelGlobale.setBackground(new Color(255,178,102));
                 break;
             case ROUGE:
-                tNbDAction.setForeground(Color.RED);
+                panelGlobale.setBackground(new Color(255,102,102));
                 break;
             case VERT:
-                tNbDAction.setForeground(Color.GREEN);
+                panelGlobale.setBackground(new Color(153,255, 153));
                 break;
             case VIOLET:
-                tNbDAction.setForeground(new Color(153, 0, 153));
+                panelGlobale.setBackground(new Color(178,102, 255));
                 break;
         }
 

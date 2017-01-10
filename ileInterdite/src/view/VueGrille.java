@@ -77,7 +77,7 @@ public class VueGrille extends JPanel {
         for (int i = 0; i < tuile.size(); i++) {
             tuile.get(i).setPossibliteDeplacement(false);
             tuile.get(i).setPossibliteAssechement(false);
-            tuile.get(i).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));//bordure
+            //tuile.get(i).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));//bordure
         }
     }
 
@@ -92,6 +92,15 @@ public class VueGrille extends JPanel {
         g.drawImage(img, 0, 0, null);
     }
 
+    public void allumerJCourant(int idTuile){
+        tuile.get(idTuile).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(153,204,255)));
+    }
+    public void eteindrePlateau(){
+        for (int i = 0; i < tuile.size(); i++) {
+            tuile.get(i).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
+        }
+        
+    }
     public void idTuileDeplacementPossible(int idTuile) {
         tuile.get(idTuile).tuilePossibleDeplacement();
     }

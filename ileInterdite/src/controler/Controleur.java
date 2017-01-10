@@ -1,5 +1,6 @@
 package controler;
 
+import com.sun.org.apache.xpath.internal.FoundIndex;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import model.aventuriers.Aventurier;
@@ -28,6 +29,7 @@ public class Controleur implements Observer {
     private Aventurier jCourant;
     private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
+    private boolean existeVueAction = false;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -104,7 +106,7 @@ public class Controleur implements Observer {
                         break;
                     case INFO:
                         vueInfo = new VueInfo(aventuriers.get(vuePlateau.getDernierBouttonInfoAppuye()).getCapacite());
-
+                        vueInfo.addObserver(this); 
                         break;
                 }
             }
@@ -115,10 +117,12 @@ public class Controleur implements Observer {
                     case BOUGER:
                         vueAction.fermerFenetre();
                         possiblesDeplacer(getjCourant());
+
                         break;
                     case ASSECHER:
                         vueAction.fermerFenetre();
                         possiblesAssechement(getjCourant());
+
                         break;
                     case DONNER:
                         vueAction.fermerFenetre();
@@ -132,6 +136,15 @@ public class Controleur implements Observer {
                         vueAction.fermerFenetre();
                         System.out.println("5");
                         break;
+                }
+            }
+        }
+        if (o == vueInfo) {
+            if (arg instanceof Commandes) {
+                if (arg == Commandes.OK_Info) {
+                    vueInfo.fermerFenetre();
+                    
+
                 }
             }
         }
@@ -271,13 +284,17 @@ public class Controleur implements Observer {
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
+        vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
         //Boucle Partie Continue?
+
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
+        existeVueAction = true;
         setjCourant(aventuriers.get(numJoueurQuiJoue));
     }
 
     public void finTour() {
+        vuePlateau.getVueGrille().eteindrePlateau();
         actionRestante -= 1;
         if (actionRestante == 0) {
             grille.setCompetenceActiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
@@ -295,6 +312,7 @@ public class Controleur implements Observer {
             if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
                 actionRestante += 1;
             }
+            //vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
         }
 
     }
@@ -317,8 +335,8 @@ public class Controleur implements Observer {
         } else if (av.getCapacite() == Pion.ROUGE && isCompetanceActitiveRouge()) {
             setCompetanceActitiveRouge(false);
             finTour();
+            debutTour();
         }
-        debutTour();
 
     }
 
