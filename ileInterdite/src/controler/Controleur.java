@@ -334,13 +334,7 @@ public class Controleur implements Observer {
             finTour();
         }
     }
-
-//    public void Assecher(Aventurier av, Tuile tuile) {
-//        grille.tuilesPossiblesDeplacement(av);
-//        av.addTuilesPossibles(av.getPositionCourante());
-//
-//        tuile.setEtat(EtatTuile.ASSECHEE);
-//    }
+    
     //////////////////////////////////OBTENIR TRESOR////////////////////////////
     public void obtenirTresor(Aventurier av, Tuile tuile) {
         if (av.getPositionCourante().getTresor() != null) {

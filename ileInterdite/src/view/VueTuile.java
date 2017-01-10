@@ -17,6 +17,7 @@ import util.Utils.EtatTuile;
 import util.Utils.Pion;
 
 public class VueTuile extends JPanel {
+
     private int test;
     private ImageIcon img;
     private ImageIcon img2;
@@ -26,7 +27,7 @@ public class VueTuile extends JPanel {
     private ArrayList<Pion> pion = new ArrayList<>();
     private boolean possibliteDeplacement = false;
     private boolean possibliteAssechement = false;
-    
+
     public VueTuile(int idTuile, VueGrille vueGrille) {
         //taille des tuiles qui s'adapte à l'écran
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
@@ -37,38 +38,50 @@ public class VueTuile extends JPanel {
                 if (possibliteDeplacement) {
                     vueGrille.getVuePlateau().choisirTuileDeplacement(idTuile);
                 }
-                if (possibliteAssechement){
+                if (possibliteAssechement) {
                     vueGrille.getVuePlateau().choisirTuileAssechement(idTuile);
                 }
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if (possibliteDeplacement || possibliteAssechement) {
-                actionAvecMouseListener(true);
+                if (possibliteDeplacement) {
+                    actionAvecMouseListenerDeplace(true);
+                } else if (possibliteAssechement) {
+                    actionAvecMouseListenerAsseche(true);
                 }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if (possibliteDeplacement || possibliteAssechement) {            
-                actionAvecMouseListener(false);
-            }
+                if (possibliteDeplacement) {
+                    actionAvecMouseListenerDeplace(false);
+                } else if (possibliteAssechement) {
+                    actionAvecMouseListenerAsseche(false);
+                }
             }
         });
 
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
         this.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
     }
-    
-    public void actionAvecMouseListener(boolean b){
+
+    public void actionAvecMouseListenerDeplace(boolean b) {
         if (b) {
-            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, Color.RED));
-        }else{
-            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
+            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255,153,51)));
+        } else {
+            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,153,51)));
         }
         
-    
+    }  
+
+    public void actionAvecMouseListenerAsseche(boolean b) {
+        if (b) {
+            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255,255,102)));
+        } else {
+            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,255,102)));
+        }
+
     }
 
     public void imageTuile(String image) {
@@ -79,12 +92,12 @@ public class VueTuile extends JPanel {
 
     public void tuilePossibleDeplacement() {
         possibliteDeplacement = true;
-        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,153,51)));
     }
-    
-    public void tuilePossibleAssechement(){
+
+    public void tuilePossibleAssechement() {
         possibliteAssechement = true;
-        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,255,102)));
     }
 
     public void mettrePion(Pion p) {
@@ -151,13 +164,13 @@ public class VueTuile extends JPanel {
     //dessin le fond
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(img.getImage(), 3+10*test, 3, null);
+        g.drawImage(img.getImage(), 3 + 10 * test, 3, null);
     }
 
     public void assecheeInondeeOuCouleeTuile(int idTuile, EtatTuile etatTuile) {
         String img = "/images/tuiles/";
         if (etatTuile == EtatTuile.COULEE) {
-            img+= "Tuile_Coulee.jpg";
+            img += "Tuile_Coulee.jpg";
         } else {
             switch (idTuile) {
                 case 0:
@@ -258,7 +271,5 @@ public class VueTuile extends JPanel {
     public void setPossibliteAssechement(boolean possibliteAssechement) {
         this.possibliteAssechement = possibliteAssechement;
     }
-    
-    
 
 }
