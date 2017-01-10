@@ -29,4 +29,14 @@ public class CarteTresor extends CarteTirage {
     public boolean estTresor(){
         return true;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    
 }
