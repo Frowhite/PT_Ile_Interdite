@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.util.HashMap;
 import java.util.Scanner;
 import javax.swing.BorderFactory;
@@ -32,7 +33,10 @@ public class VueNiveau {
 
         window = new JFrame() ;
         window.setSize(cellWidth*2+Parameters.SWING_BORDERS_HEIGHT, Parameters.HAUTEUR_AUTRES_VUES);        
-        window.setLocation(30, Parameters.TOP_AUTRES_VUES);
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension dim = kit.getScreenSize();
+        window.setLocation(dim.width / 2 + 220, dim.height / 2 - 370);
+        //window.setLocation(30, Parameters.TOP_AUTRES_VUES);
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         
         window.setUndecorated(Parameters.UNDECORATED);
@@ -187,5 +191,8 @@ public class VueNiveau {
         System.out.println("Pour passer au niveau 5, appuyer sur entrée");
         suite = scanner.nextLine();
         vueNiveau.setNiveau(10);
-    }    
+    }  
+    public void fermerFenetre() {
+        window.dispose();
+    }
 }

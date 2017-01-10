@@ -39,7 +39,7 @@ public class Controleur implements Observer {
     private VueInfo vueInfo;
 
     public Controleur() {
-        ouvrirFenetreInterface();
+        ouvrirFenetreDemarrage();
         creerGrille();
     }
 
@@ -72,14 +72,22 @@ public class Controleur implements Observer {
                 switch ((Commandes) arg) {
                     case ANNULER:
                         vueInscription.fermerFenetre();
-                        ouvrirFenetreInterface();
+                        vueNiveau.fermerFenetre();
+                        ouvrirFenetreDemarrage();
                         break;
                     case VALIDER_JOUEURS:
                         vueInscription.fermerFenetre();
+                        vueNiveau.fermerFenetre();
                         ajouteJoueur();
-                        ouvrirFenetreInterface();
+                        ouvrirFenetreDemarrage();
                         break;
                 }
+
+            }
+
+            if (arg instanceof Integer) {
+                setNiveauEau((Integer) arg);
+                vueNiveau.setNiveau(niveauEau);
             }
         }
         if (o == vuePlateau) {
@@ -434,14 +442,13 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
-    public void initialiserPositionJoueur(){
+    public void initialiserPositionJoueur() {
         for (int i = 0; i < aventuriers.size(); i++) {
             aventuriers.get(i).getPositionCourante().getAventuriers().add(aventuriers.get(i));
         }
-    
+
     }
-    
-    
+
     public void possiblesDeplacer(Aventurier av) {
         grille.tuilesPossiblesDeplacement(av);
         for (Tuile t : av.getTuilesPossibles()) {
@@ -532,9 +539,9 @@ public class Controleur implements Observer {
         }
 
         jDonneur.removeCarteMain(carteADonner);
-        
+
         jReceveur.addCarteMain(carteADonner);
-        vuePlateau.getAventurier().get(jReceveur.getId()-25).ajouterCarte(carteADonner.getId());
+        vuePlateau.getAventurier().get(jReceveur.getId() - 25).ajouterCarte(carteADonner.getId());
         finTour();
         debutTour();
 
@@ -626,22 +633,6 @@ public class Controleur implements Observer {
 
         for (int i = 0; i < aventuriers.size(); i++) {
             vuePlateau.getAventurier().get(i).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-
-            /*switch (i) {
-                case 0:
-                    vuePlateau.getAventurier(25).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-                    break;
-                case 1:
-                    vuePlateau.getAventurier(26).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-                    break;
-                case 2:
-                    vuePlateau.getAventurier(27).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-                    break;
-                case 3:
-                    vuePlateau.getAventurier(28).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-                    break;
-                    
-            }*/
             System.out.println("id case = " + aventuriers.get(i).getNom() + ":" + aventuriers.get(i).getPositionCourante().getId());
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
@@ -657,7 +648,7 @@ public class Controleur implements Observer {
         //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
     }
 
-    public void ouvrirFenetreInterface() {
+    public void ouvrirFenetreDemarrage() {
         vueMontrerJoueur = new VueMontrerJoueur();
         //écrire les noms dans vueMontrerJoueur
         int x = 0;
@@ -675,6 +666,7 @@ public class Controleur implements Observer {
     }
 
     public void ouvrirFenetreInscription() {
+        vueNiveau = new VueNiveau(niveauEau);
         vueInscription = new VueInscription();
         vueInscription.addObserver(this);
         if (aventuriers != null) {
