@@ -334,7 +334,7 @@ public class Controleur implements Observer {
             finTour();
         }
     }
-    
+
     //////////////////////////////////OBTENIR TRESOR////////////////////////////
     public void obtenirTresor(Aventurier av, Tuile tuile) {
         if (av.getPositionCourante().getTresor() != null) {
@@ -473,30 +473,32 @@ public class Controleur implements Observer {
     }
 
     public void piocherCarteTresor(Aventurier av) {
-        CarteTirage cartePioche = getPiocheTirage().get(0);
-        remPiocheTirage(cartePioche);
-        if (!cartePioche.estMontee()) {
-            av.addCarteMain(cartePioche);
-            vuePlateau.getAventurier(av.getId()).ajouterCarte(cartePioche.getId());
-        }
-        if (cartePioche.estMontee()) {
-            setNiveauEau(getNiveauEau() + 1);
-            setDefausseInondation(melangerInondation(getDefausseInondation()));
-            for (CarteInondation c : piocheInondation) {
-                addDefausseInondation(c);
+        if (!getPiocheTirage().isEmpty()) {
+            CarteTirage cartePioche = getPiocheTirage().get(0);
+            remPiocheTirage(cartePioche);
+            if (!cartePioche.estMontee()) {
+                av.addCarteMain(cartePioche);
+                vuePlateau.getAventurier(av.getId()).ajouterCarte(cartePioche.getId());
             }
             if (cartePioche.estMontee()) {
                 setNiveauEau(getNiveauEau() + 1);
-                if (!getDefausseInondation().isEmpty()) {
-                    setDefausseInondation(melangerInondation(getDefausseInondation()));
-                    for (CarteInondation c : piocheInondation) {
-                        addDefausseInondation(c);
+                setDefausseInondation(melangerInondation(getDefausseInondation()));
+                for (CarteInondation c : piocheInondation) {
+                    addDefausseInondation(c);
+                }
+                if (cartePioche.estMontee()) {
+                    setNiveauEau(getNiveauEau() + 1);
+                    if (!getDefausseInondation().isEmpty()) {
+                        setDefausseInondation(melangerInondation(getDefausseInondation()));
+                        for (CarteInondation c : piocheInondation) {
+                            addDefausseInondation(c);
+                        }
+                        setPiocheInondation(getDefausseInondation());
+                        getDefausseInondation().clear();
                     }
-                    setPiocheInondation(getDefausseInondation());
-                    getDefausseInondation().clear();
                 }
             }
-        }else{
+        } else {
             setPiocheTirage(melangerTirage(getDéfausseTirage()));
             getDéfausseTirage().clear();
             piocherCarteTresor(av);
@@ -520,7 +522,8 @@ public class Controleur implements Observer {
                 }
             }
         } else {
-            setPiocheInondation(melangerInondation(getDefausseInondation()));
+            setDefausseInondation(melangerInondation(getDefausseInondation()));
+            setPiocheInondation(getDefausseInondation());
             getDefausseInondation().clear();
             piocherCarteInondation();
         }
