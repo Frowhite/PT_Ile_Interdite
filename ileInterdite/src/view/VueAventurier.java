@@ -143,7 +143,7 @@ public class VueAventurier extends JPanel {
 
     
     public void aventurierCliquable(){
-        this.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.DARK_GRAY));
+        this.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.RED));
         possibliteJoueurDonnerCarte=true;
     
     }
@@ -151,7 +151,7 @@ public class VueAventurier extends JPanel {
         public void carteCliquable(int idCate){
             for (int i = 0; i < vueCarte.size(); i++) {
                 if (vueCarte.get(i).getIdCarte()==idCate){
-                    this.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.DARK_GRAY));
+                    vueCarte.get(i).setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.RED));
                     vueCarte.get(i).setPossibliteAssechement(true);
                 }
             }

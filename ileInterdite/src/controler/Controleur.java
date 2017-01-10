@@ -101,9 +101,11 @@ public class Controleur implements Observer {
                         }
                         break;
                     case CHOISIR_CARTE:
+                        peutDonnerAventurier(jCourant);
                         //vuePlateau.getDernierCarteAppuye();
                         break;
                     case CHOISIR_JOUEUR:
+                        donnerCarte(jCourant, vuePlateau.getDernierCarteAppuye(), vuePlateau.getDernierJoueurAppuye());
                         //vuePlateau.getDernierJoueurAppuye();
                         break;
                     case INFO:
@@ -503,6 +505,7 @@ public class Controleur implements Observer {
         }
         for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
+            vuePlateau.getAventurier().get(a.getId()-25).aventurierCliquable();
         }
 
     }
