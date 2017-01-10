@@ -41,6 +41,7 @@ public class VueInscription extends Observable {
     public VueInscription() {
         window = new JFrame();
         window.setSize(300, 230);
+        window.setAlwaysOnTop(true);//met en premier plan
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();

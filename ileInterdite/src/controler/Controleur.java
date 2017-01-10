@@ -101,9 +101,11 @@ public class Controleur implements Observer {
                         }
                         break;
                     case CHOISIR_CARTE:
+                        peutDonnerAventurier(jCourant);
                         //vuePlateau.getDernierCarteAppuye();
                         break;
                     case CHOISIR_JOUEUR:
+                        donnerCarte(jCourant, vuePlateau.getDernierCarteAppuye(), vuePlateau.getDernierJoueurAppuye());
                         //vuePlateau.getDernierJoueurAppuye();
                         break;
                     case INFO:
@@ -158,16 +160,19 @@ public class Controleur implements Observer {
         setNiveauEau(getVueNiveau().getNiveau());
         initialiserCartesTirages();
         initialiserCartesInondation();
+        initialiserPositionJoueur();
         for (int j = 0; j < 2; j++) {
-
             for (Aventurier jCourant : aventuriers) {
                 piocherCarteTresorDepart(jCourant);
             }
-
         }
 
         for (int i = 0; i < 6; i++) {
             piocherCarteInondation();
+        }
+        //le Navigateur a 4 actions
+        if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
+            actionRestante += 1;
         }
         debutTour();
     }
@@ -304,7 +309,6 @@ public class Controleur implements Observer {
                 piocherCarteInondation();
 
             }
-            
 
             numJoueurQuiJoue += 1;
             numJoueurQuiJoue %= aventuriers.size();
@@ -430,6 +434,14 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
+    public void initialiserPositionJoueur(){
+        for (int i = 0; i < aventuriers.size(); i++) {
+            aventuriers.get(i).getPositionCourante().getAventuriers().add(aventuriers.get(i));
+        }
+    
+    }
+    
+    
     public void possiblesDeplacer(Aventurier av) {
         grille.tuilesPossiblesDeplacement(av);
         for (Tuile t : av.getTuilesPossibles()) {
@@ -495,14 +507,14 @@ public class Controleur implements Observer {
 
         if (jDonneur.getCapacite() == Pion.ORANGE) {
             setJoueurPourDonnerCarte(aventuriers);
-            remAventurier(jDonneur);
-        }
-        if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
+            remJoueurPourDonnerCarte(jDonneur);
+        } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
             setJoueurPourDonnerCarte(jDonneur.getPositionCourante().getAventuriers());
-            remAventurier(jDonneur);
+            remJoueurPourDonnerCarte(jDonneur);
         }
         for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
+            vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
         }
 
     }
@@ -523,8 +535,11 @@ public class Controleur implements Observer {
         }
 
         jDonneur.removeCarteMain(carteADonner);
+        
         jReceveur.addCarteMain(carteADonner);
+        vuePlateau.getAventurier().get(jReceveur.getId()-25).ajouterCarte(carteADonner.getId());
         finTour();
+        debutTour();
 
     }
 

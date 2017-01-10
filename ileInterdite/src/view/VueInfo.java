@@ -36,7 +36,7 @@ public class VueInfo extends Observable{
         window.setUndecorated(true);
         window.setAlwaysOnTop(true);//met en premier plan
         
-        panelGlobal = new JPanel();
+        panelGlobal = new JPanel(new BorderLayout());
         panelGlobal.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.BLACK)); //bords noir de la fenêtre
         
         // Définit la taille de la fenêtre en pixels
@@ -101,9 +101,9 @@ public class VueInfo extends Observable{
         nomPersonnage.setFont(new Font("Arial", 0, 30));
         infoPersonnage.setFont(new Font("Arial", 0, 20));
         
-        panelGlobal.add(nomPersonnage);
-        panelGlobal.add(infoPersonnage);
-        panelGlobal.add(btnOk);
+        panelGlobal.add(nomPersonnage, BorderLayout.NORTH);
+        panelGlobal.add(infoPersonnage, BorderLayout.CENTER);
+        panelGlobal.add(btnOk,BorderLayout.SOUTH);
         window.add(panelGlobal);
         window.setVisible(true);
 

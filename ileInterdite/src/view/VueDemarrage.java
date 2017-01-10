@@ -37,6 +37,7 @@ public class VueDemarrage extends Observable {
     public VueDemarrage(int nbJoueur) {
         window = new JFrame();
         window.setSize(340, 430);
+        window.setAlwaysOnTop(true);//met en premier plan
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
