@@ -159,6 +159,8 @@ public class Controleur implements Observer {
         setNiveauEau(getVueNiveau().getNiveau());
         initialiserCartesTirages();
         initialiserCartesInondation();
+        
+        
         for (int i = 0; i < 6; i++) {
             piocherCarteInondation();
             System.out.println();
