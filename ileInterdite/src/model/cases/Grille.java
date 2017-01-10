@@ -88,16 +88,24 @@ public class Grille {
             }
             buffer.remove(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes()]);
 
-            for (Tuile t : buffer) {
-                if (t != null && t.getEtat() != Utils.EtatTuile.COULEE) {
-                    av.addTuilesPossibles(t);
+            if (av.getCapacite() == Pion.VIOLET) {
+                for (Tuile t : buffer) {
+                    if (t != null) {
+                        av.addTuilesPossibles(t);
+                    }
+                }
+            } else {
+                for (Tuile t : buffer) {
+                    if (t != null && t.getEtat() != Utils.EtatTuile.COULEE) {
+                        av.addTuilesPossibles(t);
+                    }
                 }
             }
 
         }
     }
 
-    public void ajoutTuileDepPlongeur(Tuile t, ArrayList<Tuile> tDep, int i) { 
+    public void ajoutTuileDepPlongeur(Tuile t, ArrayList<Tuile> tDep, int i) {
 
         if (estSurLePlateau(t.getLigne(), t.getColonnes() - 1) && tuiles[t.getLigne()][t.getColonnes() - 1] != null) {
             if (tuiles[t.getLigne()][t.getColonnes() - 1].getEtat() != EtatTuile.ASSECHEE && !tDep.contains(tuiles[t.getLigne()][t.getColonnes() - 1])) {
