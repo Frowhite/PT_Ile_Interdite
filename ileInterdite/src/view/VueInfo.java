@@ -34,7 +34,7 @@ public class VueInfo extends Observable{
 
         window = new JFrame();
         window.setUndecorated(true);
-        
+        window.setAlwaysOnTop(true);//met en premier plan
         
         panelGlobal = new JPanel();
         panelGlobal.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.BLACK)); //bords noir de la fenêtre

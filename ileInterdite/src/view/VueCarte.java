@@ -5,6 +5,7 @@
  */
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -20,54 +21,70 @@ import javax.swing.border.BevelBorder;
  * @author asus
  */
 public class VueCarte extends JPanel {
-    private ImageIcon img=null;
+
+    private boolean possibliteAssechement = false;
+    private int idCarte=-1;
+    private ImageIcon img = null;
     private JLabel carte;
 
     public VueCarte(VueAventurier vueAventurier) {
-        this.setPreferredSize(new Dimension(100, 110));//taille
+        this.setPreferredSize(new Dimension(100, 130));//taille
 
         carte = new JLabel();
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                vueAventurier.getVuePlateau().choisirCarte();
-                
+                if (possibliteAssechement) {
+                    vueAventurier.getVuePlateau().choisirCarte(idCarte);
+                }
             }
         });
-        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
+        
+        this.setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.BLACK));
         this.add(carte);
     }
 
-    public void mettreCarte(int numCarte) {
+    public void mettreCarte(int idCarte) {
+        this.idCarte = idCarte;
         String i = "/images/cartes/";
-        if (30 <= numCarte && numCarte <= 34) {
+        if (30 <= idCarte && idCarte <= 34) {
             i += "Calice";
-        } else if (35 <= numCarte && numCarte <= 39) {
+        } else if (35 <= idCarte && idCarte <= 39) {
             i += "Pierre";
-        } else if (40 <= numCarte && numCarte <= 44) {
+        } else if (40 <= idCarte && idCarte <= 44) {
             i += "Zephyr";
-        } else if (45 <= numCarte && numCarte <= 49) {
+        } else if (45 <= idCarte && idCarte <= 49) {
             i += "Cristal";
-        } else if (50 <= numCarte && numCarte <= 51) {
+        } else if (50 <= idCarte && idCarte <= 51) {
             i += "SacsDeSable";
-        } else if (52 <= numCarte && numCarte <= 54) {
+        } else if (52 <= idCarte && idCarte <= 54) {
             i += "Helicoptere";
-        } else if (55 <= numCarte && numCarte <= 56) {
+        } else if (55 <= idCarte && idCarte <= 56) {
             i += "MonteeDesEaux";
         }
 
         i += ".png";
 
-        img = new ImageIcon(new ImageIcon(getClass().getResource(i)).getImage().getScaledInstance(80, 110, Image.SCALE_SMOOTH));
+        img = new ImageIcon(new ImageIcon(getClass().getResource(i)).getImage().getScaledInstance(85, 115, Image.SCALE_SMOOTH));
         carte.setIcon(img);
     }
-    
-    public void supprCarte(){
+
+    public void supprCarte() {
         img = null;
     }
 
     public ImageIcon getImg() {
         return img;
     }
+
+    public int getIdCarte() {
+        return idCarte;
+    }
+
+    public void setPossibliteAssechement(boolean possibliteAssechement) {
+        this.possibliteAssechement = possibliteAssechement;
+    }
+    
+   
 
 }

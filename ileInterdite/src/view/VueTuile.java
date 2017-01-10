@@ -139,7 +139,7 @@ public class VueTuile extends JPanel {
             s += ".png";
 
             img2 = new ImageIcon(new ImageIcon(getClass().getResource(s))
-                    .getImage().getScaledInstance(dim.height / 6 - 90 - (x * 10), dim.height / 6 - 90 - (x * 10), Image.SCALE_SMOOTH));
+                    .getImage().getScaledInstance(dim.height / 6 - 80 - (x * 15), dim.height / 6 - 80 - (x * 15), Image.SCALE_SMOOTH));
             JLabel l = new JLabel();
             l.setIcon(img2);
             labelPion.add(l);

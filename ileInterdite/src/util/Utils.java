@@ -31,7 +31,8 @@ public class Utils {
         INFO("Affiche les informations de l'aventurier"), 
         CHOISIR_TUILE_DEPLACEMENT("Choisie un tuile pour ce deplacer"), 
         CHOISIR_TUILE_ASSECHEMENT("Choisie un tuile pour l'assecher"),
-        OK_Info("Ferme la page information");
+        OK_Info("Ferme la page information"),
+        CHOISIR_JOUEUR("Choisie le joueur à qui on va donner une carte.");
 
         private final String libelle ;
 

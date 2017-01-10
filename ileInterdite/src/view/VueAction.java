@@ -36,6 +36,7 @@ public class VueAction extends Observable {
     public VueAction(String nomJCourant, int numAction, Pion pion) {
         window = new JFrame();
         window.setSize(300, 100);
+        window.setAlwaysOnTop(true);//met en premier plan
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
