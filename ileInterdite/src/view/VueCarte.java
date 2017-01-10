@@ -23,7 +23,7 @@ import javax.swing.border.BevelBorder;
 public class VueCarte extends JPanel {
 
     private boolean possibliteAssechement = false;
-    private int idCarte=-1;
+    private int idCarte = -1;
     private ImageIcon img = null;
     private JLabel carte;
 
@@ -35,12 +35,17 @@ public class VueCarte extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (possibliteAssechement) {
+                    for (int i = 0; i < vueAventurier.getVueCarte().size(); i++) {
+                        vueAventurier.getVueCarte().get(i).setPossibliteAssechement(false);
+                        vueAventurier.getVueCarte().get(i).setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
+                    }
                     vueAventurier.getVuePlateau().choisirCarte(idCarte);
+                    vueAventurier.enleverCarte(idCarte);
                 }
             }
         });
-        
-        this.setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.BLACK));
+
+        this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
         this.add(carte);
     }
 
@@ -84,7 +89,5 @@ public class VueCarte extends JPanel {
     public void setPossibliteAssechement(boolean possibliteAssechement) {
         this.possibliteAssechement = possibliteAssechement;
     }
-    
-   
 
 }

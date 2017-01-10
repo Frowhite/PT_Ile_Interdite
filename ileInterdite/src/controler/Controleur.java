@@ -485,10 +485,8 @@ public class Controleur implements Observer {
     ////////////////////////////////DONNER CARTE////////////////////////////////
     public void peutDonnerCarte(Aventurier jDonneur) {
         if (!jDonneur.getMain().isEmpty()) {
-            System.out.println("0");
             System.out.println(jDonneur.getPositionCourante().getAventuriers().size());
             if ((jDonneur.getCapacite() == Pion.ORANGE) || !jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
-                System.out.println("1");
                 for (CarteTirage c : jDonneur.getMain()) {
                     if (c.estTresor()) {
                         //Donner a la methode l'ide de la carte c
@@ -507,11 +505,10 @@ public class Controleur implements Observer {
 
         if (jDonneur.getCapacite() == Pion.ORANGE) {
             setJoueurPourDonnerCarte(aventuriers);
-            remJoueurPourDonnerCarte(jDonneur);
         } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
             setJoueurPourDonnerCarte(jDonneur.getPositionCourante().getAventuriers());
-            remJoueurPourDonnerCarte(jDonneur);
         }
+        remJoueurPourDonnerCarte(jDonneur);
         for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
             vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
