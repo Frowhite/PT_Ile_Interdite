@@ -270,9 +270,9 @@ public class Controleur implements Observer {
         setPiocheTirage(melangerTirage(getPiocheTirage()));
     }
 
-    public ArrayList melangerTirage(ArrayList<CarteTirage> listeDepart) {
+    public ArrayList<CarteTirage> melangerTirage(ArrayList<CarteTirage> listeDepart) {
 
-        ArrayList<Carte> nouvelle = new ArrayList(listeDepart);
+        ArrayList<CarteTirage> nouvelle = new ArrayList(listeDepart);
         Collections.shuffle(nouvelle);
         return nouvelle;
     }
@@ -286,9 +286,9 @@ public class Controleur implements Observer {
         setPiocheInondation(melangerInondation(getPiocheInondation()));
     }
 
-    public ArrayList melangerInondation(ArrayList<CarteInondation> listeDepart) {
+    public ArrayList<CarteInondation> melangerInondation(ArrayList<CarteInondation> listeDepart) {
 
-        ArrayList<Carte> nouvelle = new ArrayList(listeDepart);
+        ArrayList<CarteInondation> nouvelle = new ArrayList(listeDepart);
         Collections.shuffle(nouvelle);
         return nouvelle;
 
@@ -451,8 +451,12 @@ public class Controleur implements Observer {
 
     public void possiblesDeplacer(Aventurier av) {
         grille.tuilesPossiblesDeplacement(av);
-        for (Tuile t : av.getTuilesPossibles()) {
-            vuePlateau.getVueGrille().idTuileDeplacementPossible(t.getId());
+        if (!av.getTuilesPossibles().isEmpty()) {
+            for (Tuile t : av.getTuilesPossibles()) {
+                vuePlateau.getVueGrille().idTuileDeplacementPossible(t.getId());
+            }
+        } else {
+            debutTour();
         }
     }
 
@@ -492,8 +496,7 @@ public class Controleur implements Observer {
     ////////////////////////////////DONNER CARTE////////////////////////////////
     public void peutDonnerCarte(Aventurier jDonneur) {
         if (!jDonneur.getMain().isEmpty()) {
-            System.out.println(jDonneur.getPositionCourante().getAventuriers().size());
-            if ((jDonneur.getCapacite() == Pion.ORANGE) || !jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
+            if ((jDonneur.getCapacite() == Pion.ORANGE) || (jDonneur.getPositionCourante().getAventuriers().size() > 1)) {
                 for (CarteTirage c : jDonneur.getMain()) {
                     if (c.estTresor()) {
                         //Donner a la methode l'ide de la carte c
@@ -515,10 +518,13 @@ public class Controleur implements Observer {
         } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
             setJoueurPourDonnerCarte(jDonneur.getPositionCourante().getAventuriers());
         }
-        remJoueurPourDonnerCarte(jDonneur);
+        // remJoueurPourDonnerCarte(jDonneur);  --> c'est cette ligne qui fait buger
+
         for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
-            vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
+            if (a != jDonneur) {
+                vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
+            }
         }
 
     }
@@ -541,6 +547,8 @@ public class Controleur implements Observer {
         jDonneur.removeCarteMain(carteADonner);
 
         jReceveur.addCarteMain(carteADonner);
+
+        
         vuePlateau.getAventurier().get(jReceveur.getId() - 25).ajouterCarte(carteADonner.getId());
         finTour();
         debutTour();
@@ -576,6 +584,7 @@ public class Controleur implements Observer {
             }
             if (cartePioche.estMontee()) {
                 setNiveauEau(getNiveauEau() + 1);
+                addDefausseTirage(cartePioche);
                 if (!getDefausseInondation().isEmpty()) {
                     setDefausseInondation(melangerInondation(getDefausseInondation()));
                     for (CarteInondation c : piocheInondation) {
@@ -592,7 +601,11 @@ public class Controleur implements Observer {
                 }
             }
         } else {
-            setPiocheTirage(melangerTirage(getDéfausseTirage()));
+            //   System.out.println("Vide Tirage");
+            setDéfausseTirage(melangerTirage(getDéfausseTirage()));
+            for (CarteTirage t : getDéfausseTirage()) {
+                addPiocheTirage(t);
+            }
             getDéfausseTirage().clear();
             piocherCarteTresor(av);
         }
@@ -602,14 +615,13 @@ public class Controleur implements Observer {
     public void piocherCarteInondation() {
         if (!getPiocheInondation().isEmpty()) {
             CarteInondation tuileInonde = getPiocheInondation().get(0);
-            System.out.println(tuileInonde.getNom());
+
             remPiocheInondation(tuileInonde);
             for (int i = 0; i < getTuile().length; i++) {
                 if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
                     tuile[i].setEtat(EtatTuile.INONDEE);
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
                     addDefausseInondation(tuileInonde);
-                    System.out.println(getDefausseInondation().size());
 
                 } else if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.INONDEE) {
                     tuile[i].setEtat(EtatTuile.COULEE);
@@ -617,8 +629,11 @@ public class Controleur implements Observer {
                 }
             }
         } else {
+
             setDefausseInondation(melangerInondation(getDefausseInondation()));
-            setPiocheInondation(getDefausseInondation());
+            for (CarteInondation c : getDefausseInondation()) {
+                addPiocheInondation(c);
+            }
             getDefausseInondation().clear();
             piocherCarteInondation();
         }
@@ -633,7 +648,9 @@ public class Controleur implements Observer {
 
         for (int i = 0; i < aventuriers.size(); i++) {
             vuePlateau.getAventurier().get(i).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
+
             System.out.println("id case = " + aventuriers.get(i).getNom() + ":" + aventuriers.get(i).getPositionCourante().getId());
+
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
 
