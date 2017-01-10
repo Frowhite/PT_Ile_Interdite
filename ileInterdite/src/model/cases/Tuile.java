@@ -32,7 +32,13 @@ public class Tuile extends ObjetIdentifie {
     
     
     
+    public void addAventuriers(Aventurier a){
+        getAventuriers().add(a);
+    }
     
+    public void remAventurier(Aventurier a){
+        getAventuriers().remove(a);
+    }
     
     
     
