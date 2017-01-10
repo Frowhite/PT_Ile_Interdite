@@ -133,7 +133,7 @@ public class Grille {
         }
     }
 
-    //////////////////////////////////////////
+  
     public void remplirGrille(Tuile[] tuile) {
         int i = 0;
         for (int l = 0; l < 6; l++) {

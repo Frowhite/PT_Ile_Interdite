@@ -1,5 +1,6 @@
 package controler;
 
+import com.sun.org.apache.xpath.internal.FoundIndex;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import model.aventuriers.Aventurier;
@@ -28,6 +29,7 @@ public class Controleur implements Observer {
     private Aventurier jCourant;
     private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
+    private boolean existeVueAction = false;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -104,7 +106,7 @@ public class Controleur implements Observer {
                         break;
                     case INFO:
                         vueInfo = new VueInfo(aventuriers.get(vuePlateau.getDernierBouttonInfoAppuye()).getCapacite());
-
+                        
                         break;
                 }
             }
@@ -115,10 +117,12 @@ public class Controleur implements Observer {
                     case BOUGER:
                         vueAction.fermerFenetre();
                         possiblesDeplacer(getjCourant());
+
                         break;
                     case ASSECHER:
                         vueAction.fermerFenetre();
                         possiblesAssechement(getjCourant());
+
                         break;
                     case DONNER:
                         vueAction.fermerFenetre();
@@ -264,7 +268,6 @@ public class Controleur implements Observer {
         ArrayList<Carte> nouvelle = new ArrayList(listeDepart);
         Collections.shuffle(nouvelle);
         return nouvelle;
-        
 
     }
 
@@ -272,10 +275,12 @@ public class Controleur implements Observer {
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
-        //vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
+        vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
         //Boucle Partie Continue?
+
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
+        existeVueAction = true;
         setjCourant(aventuriers.get(numJoueurQuiJoue));
     }
 
@@ -286,7 +291,6 @@ public class Controleur implements Observer {
             grille.setCompetenceActiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
             for (int i = 0; i < getNiveauEau(); i++) {
                 piocherCarteInondation();
-              
 
             }
             piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
@@ -322,8 +326,8 @@ public class Controleur implements Observer {
         } else if (av.getCapacite() == Pion.ROUGE && isCompetanceActitiveRouge()) {
             setCompetanceActitiveRouge(false);
             finTour();
+            debutTour();
         }
-        debutTour();
 
     }
 
@@ -491,14 +495,14 @@ public class Controleur implements Observer {
                     for (CarteInondation c : piocheInondation) {
                         addDefausseInondation(c);
                     }
-                    
+
                     piocheInondation.clear();
-                    
+
                     for (CarteInondation c : defausseInondation) {
                         addPiocheInondation(c);
                     }
                     getDefausseInondation().clear();
-                    
+
                 }
             }
         } else {
@@ -519,7 +523,7 @@ public class Controleur implements Observer {
                     tuile[i].setEtat(EtatTuile.INONDEE);
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
                     addDefausseInondation(tuileInonde);
-                                System.out.println(getDefausseInondation().size());
+                    System.out.println(getDefausseInondation().size());
 
                 } else if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.INONDEE) {
                     tuile[i].setEtat(EtatTuile.COULEE);
