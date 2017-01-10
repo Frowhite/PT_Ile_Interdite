@@ -264,6 +264,7 @@ public class Controleur implements Observer {
         ArrayList<Carte> nouvelle = new ArrayList(listeDepart);
         Collections.shuffle(nouvelle);
         return nouvelle;
+        
 
     }
 
@@ -283,7 +284,7 @@ public class Controleur implements Observer {
             grille.setCompetenceActiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
             for (int i = 0; i < getNiveauEau(); i++) {
                 piocherCarteInondation();
-                System.out.println("MA ***** sur ton front");
+              
 
             }
             piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
@@ -482,20 +483,19 @@ public class Controleur implements Observer {
             }
             if (cartePioche.estMontee()) {
                 setNiveauEau(getNiveauEau() + 1);
-                setDefausseInondation(melangerInondation(getDefausseInondation()));
-                for (CarteInondation c : piocheInondation) {
-                    addDefausseInondation(c);
-                }
-                if (cartePioche.estMontee()) {
-                    setNiveauEau(getNiveauEau() + 1);
-                    if (!getDefausseInondation().isEmpty()) {
-                        setDefausseInondation(melangerInondation(getDefausseInondation()));
-                        for (CarteInondation c : piocheInondation) {
-                            addDefausseInondation(c);
-                        }
-                        setPiocheInondation(getDefausseInondation());
-                        getDefausseInondation().clear();
+                if (!getDefausseInondation().isEmpty()) {
+                    setDefausseInondation(melangerInondation(getDefausseInondation()));
+                    for (CarteInondation c : piocheInondation) {
+                        addDefausseInondation(c);
                     }
+                    
+                    piocheInondation.clear();
+                    
+                    for (CarteInondation c : defausseInondation) {
+                        addPiocheInondation(c);
+                    }
+                    getDefausseInondation().clear();
+                    
                 }
             }
         } else {
@@ -516,6 +516,8 @@ public class Controleur implements Observer {
                     tuile[i].setEtat(EtatTuile.INONDEE);
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
                     addDefausseInondation(tuileInonde);
+                                System.out.println(getDefausseInondation().size());
+
                 } else if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.INONDEE) {
                     tuile[i].setEtat(EtatTuile.COULEE);
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.COULEE);
