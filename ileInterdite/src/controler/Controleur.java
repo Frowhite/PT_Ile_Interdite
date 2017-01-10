@@ -444,8 +444,12 @@ public class Controleur implements Observer {
     
     public void possiblesDeplacer(Aventurier av) {
         grille.tuilesPossiblesDeplacement(av);
+        if(!av.getTuilesPossibles().isEmpty()){
         for (Tuile t : av.getTuilesPossibles()) {
             vuePlateau.getVueGrille().idTuileDeplacementPossible(t.getId());
+        }
+        }else{
+            debutTour();
         }
     }
 
@@ -486,7 +490,7 @@ public class Controleur implements Observer {
     public void peutDonnerCarte(Aventurier jDonneur) {
         if (!jDonneur.getMain().isEmpty()) {
             System.out.println(jDonneur.getPositionCourante().getAventuriers().size());
-            if ((jDonneur.getCapacite() == Pion.ORANGE) || !jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
+            if ((jDonneur.getCapacite() == Pion.ORANGE) || (jDonneur.getPositionCourante().getAventuriers().size() > 1)) {
                 for (CarteTirage c : jDonneur.getMain()) {
                     if (c.estTresor()) {
                         //Donner a la methode l'ide de la carte c
@@ -503,14 +507,17 @@ public class Controleur implements Observer {
 
     public void peutDonnerAventurier(Aventurier jDonneur) {
 
+       
         if (jDonneur.getCapacite() == Pion.ORANGE) {
             setJoueurPourDonnerCarte(aventuriers);
         } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
             setJoueurPourDonnerCarte(jDonneur.getPositionCourante().getAventuriers());
         }
-        remJoueurPourDonnerCarte(jDonneur);
+       // remJoueurPourDonnerCarte(jDonneur);  --> c'est cette ligne qui fait buger
+       
         for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
+            if(a != jDonneur)
             vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
         }
 
@@ -530,10 +537,12 @@ public class Controleur implements Observer {
                 carteADonner = c;
             }
         }
-
+        
         jDonneur.removeCarteMain(carteADonner);
         
         jReceveur.addCarteMain(carteADonner);
+        
+        
         vuePlateau.getAventurier().get(jReceveur.getId()-25).ajouterCarte(carteADonner.getId());
         finTour();
         debutTour();
