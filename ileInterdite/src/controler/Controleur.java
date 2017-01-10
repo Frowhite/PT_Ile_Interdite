@@ -1010,14 +1010,6 @@ public class Controleur implements Observer {
         this.actionRestante = actionRestante;
     }
 
-    public boolean isExisteVueAction() {
-        return existeVueAction;
-    }
-
-    public void setExisteVueAction(boolean existeVueAction) {
-        this.existeVueAction = existeVueAction;
-    }
-
     public VueInfo getVueInfo() {
         return vueInfo;
     }

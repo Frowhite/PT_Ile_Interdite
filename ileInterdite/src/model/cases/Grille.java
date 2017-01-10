@@ -88,19 +88,12 @@ public class Grille {
             }
             buffer.remove(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes()]);
 
-            if (av.getCapacite() == Pion.VIOLET) {
-                for (Tuile t : buffer) {
-                    if (t != null) {
-                        av.addTuilesPossibles(t);
-                    }
-                }
-            } else {
                 for (Tuile t : buffer) {
                     if (t != null && t.getEtat() != Utils.EtatTuile.COULEE) {
                         av.addTuilesPossibles(t);
                     }
                 }
-            }
+            
 
         }
     }
