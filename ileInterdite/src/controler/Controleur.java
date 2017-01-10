@@ -24,6 +24,7 @@ public class Controleur implements Observer {
     private ArrayList<CarteTirage> piocheTirage = new ArrayList<>();
     private ArrayList<CarteInondation> defausseInondation = new ArrayList<>();
     private ArrayList<CarteInondation> piocheInondation = new ArrayList<>();
+    private ArrayList<Aventurier> joueurPourDonnerCarte = new ArrayList();
     private Integer niveauEau = 1;
     private Aventurier jCourant;
     private int numJoueurQuiJoue = 0;
@@ -485,31 +486,41 @@ public class Controleur implements Observer {
     }
 
     public void peutDonnerAventurier(Aventurier jDonneur) {
-        ArrayList<Aventurier> avi = new ArrayList();
+       
         if (jDonneur.getCapacite() == Pion.ORANGE) {
-            avi = aventuriers;
+            setJoueurPourDonnerCarte(aventuriers);
             remAventurier(jDonneur);
         }
         if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
-            avi = jDonneur.getPositionCourante().getAventuriers();
+            setJoueurPourDonnerCarte(jDonneur.getPositionCourante().getAventuriers());
             remAventurier(jDonneur);
         }
-        for (Aventurier a : avi) {
+        for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
         }
-        debutTour();
+        
 
     }
 
     public void donnerCarte(Aventurier jDonneur, int idCarte, int idReceveur) {
-        for (int i = 0; i < jDonneur.getMain().size(); i++) {
-            if (jDonneur.getPositionCourante().getAventuriers().get(i).getId() == idReceveur) {
-                if (jDonneur.getMain().get(i).getId() == idCarte) {
-
-                }
+        Aventurier jReceveur = null;
+        CarteTirage carteADonner = null;
+        for(Aventurier av : aventuriers){
+            if(av.getId() == idReceveur){
+               jReceveur = av;
             }
         }
-        jDonneur.getMain().remove(jDonneur.getMain().get(idCarte));
+        
+        for(CarteTirage c : jDonneur.getMain()){
+            if(c.getId() == idCarte){
+                carteADonner = c;
+            }
+        }
+        
+        jDonneur.removeCarteMain(carteADonner);
+        jReceveur.addCarteMain(carteADonner);
+        finTour();
+        
     }
 
     ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
@@ -827,6 +838,14 @@ public class Controleur implements Observer {
     public void remDefausseInondation(CarteInondation ci) {
         getDefausseInondation().remove(ci);
     }
+    
+    public void addJoueurPourDonnerCarte(Aventurier av){
+        getJoueurPourDonnerCarte().add(av);
+    }
+    
+    public void remJoueurPourDonnerCarte(Aventurier av){
+        getJoueurPourDonnerCarte().remove(av);
+    }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
@@ -974,5 +993,47 @@ public class Controleur implements Observer {
     public void setCompetanceActitiveRouge(boolean competanceActitiveRouge) {
         this.competanceActitiveRouge = competanceActitiveRouge;
     }
+
+    public int getNumJoueurQuiJoue() {
+        return numJoueurQuiJoue;
+    }
+
+    public void setNumJoueurQuiJoue(int numJoueurQuiJoue) {
+        this.numJoueurQuiJoue = numJoueurQuiJoue;
+    }
+
+    public int getActionRestante() {
+        return actionRestante;
+    }
+
+    public void setActionRestante(int actionRestante) {
+        this.actionRestante = actionRestante;
+    }
+
+    public boolean isExisteVueAction() {
+        return existeVueAction;
+    }
+
+    public void setExisteVueAction(boolean existeVueAction) {
+        this.existeVueAction = existeVueAction;
+    }
+
+    public VueInfo getVueInfo() {
+        return vueInfo;
+    }
+
+    public void setVueInfo(VueInfo vueInfo) {
+        this.vueInfo = vueInfo;
+    }
+
+    public ArrayList<Aventurier> getJoueurPourDonnerCarte() {
+        return joueurPourDonnerCarte;
+    }
+
+    public void setJoueurPourDonnerCarte(ArrayList<Aventurier> joueurPourDonnerCarte) {
+        this.joueurPourDonnerCarte = joueurPourDonnerCarte;
+    }
+    
+    
 
 }
