@@ -479,38 +479,51 @@ public class Controleur implements Observer {
     }
 
     public void PiocherCarteTresor(Aventurier av) {
-        CarteTirage cartePioche = getPiocheTirage().get(0);
-        remPiocheTirage(cartePioche);
-        if (!cartePioche.estMontee()) {
-            av.addCarteMain(cartePioche);
-            vuePlateau.getAventurier(av.getId()).ajouterCarte(cartePioche.getId());
-        }
-        if (cartePioche.estMontee()) {
-            setNiveauEau(getNiveauEau() + 1);
-            setDefausseInondation(melangerInondation(getDefausseInondation()));
-            for (CarteInondation c : piocheInondation) {
-                addDefausseInondation(c);
+        if (!getPiocheTirage().isEmpty()) {
+            CarteTirage cartePioche = getPiocheTirage().get(0);
+            remPiocheTirage(cartePioche);
+            if (!cartePioche.estMontee()) {
+                av.addCarteMain(cartePioche);
+                vuePlateau.getAventurier(av.getId()).ajouterCarte(cartePioche.getId());
             }
-            setPiocheInondation(getDefausseInondation());
-            getDefausseInondation().clear();
-
+            if (cartePioche.estMontee()) {
+                setNiveauEau(getNiveauEau() + 1);
+                if (!getDefausseInondation().isEmpty()) {
+                    setDefausseInondation(melangerInondation(getDefausseInondation()));
+                    for (CarteInondation c : piocheInondation) {
+                        addDefausseInondation(c);
+                    }
+                    setPiocheInondation(getDefausseInondation());
+                    getDefausseInondation().clear();
+                }
+            }
+        }else{
+            setPiocheTirage(melangerTirage(getDéfausseTirage()));
+            getDéfausseTirage().clear();
+            PiocherCarteTresor(av);
         }
     }
 
     ///////////////////////////////PIOCHER CARTE INONDATION/////////////////////
     public void PiocherCarteInondation() {
-        CarteInondation tuileInonde = getPiocheInondation().get(0);                 //-->renvoie:ava.lang.IndexOutOfBoundsException:
-        System.out.println(tuileInonde.getNom());
-        remPiocheInondation(tuileInonde);
-        for (int i = 0; i < getTuile().length; i++) {
-            if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
-                tuile[i].setEtat(EtatTuile.INONDEE);
-                vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
-                addDefausseInondation(tuileInonde);
-            } else if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.INONDEE) {
-                tuile[i].setEtat(EtatTuile.COULEE);
-                vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.COULEE);
+        if (!getPiocheInondation().isEmpty()) {
+            CarteInondation tuileInonde = getPiocheInondation().get(0);                 //-->renvoie:ava.lang.IndexOutOfBoundsException:
+            System.out.println(tuileInonde.getNom());
+            remPiocheInondation(tuileInonde);
+            for (int i = 0; i < getTuile().length; i++) {
+                if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
+                    tuile[i].setEtat(EtatTuile.INONDEE);
+                    vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
+                    addDefausseInondation(tuileInonde);
+                } else if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.INONDEE) {
+                    tuile[i].setEtat(EtatTuile.COULEE);
+                    vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.COULEE);
+                }
             }
+        } else {
+            setPiocheInondation(melangerInondation(getDefausseInondation()));
+            getDefausseInondation().clear();
+            PiocherCarteInondation();
         }
     }
 
@@ -539,7 +552,6 @@ public class Controleur implements Observer {
             System.out.println("id case = " + aventuriers.get(i).getNom() + ":" + aventuriers.get(i).getPositionCourante().getId());
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
-        
 
         //place les pions sur le plateau
         for (int i = 0; i < aventuriers.size(); i++) {
@@ -548,9 +560,8 @@ public class Controleur implements Observer {
         }
         //vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
         initialiserPartie();
-        
-        //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
 
+        //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
     }
 
     public void ouvrirFenetreInterface() {
