@@ -291,11 +291,15 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
         vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
-        //Boucle Partie Continue?
 
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
         setjCourant(aventuriers.get(numJoueurQuiJoue));
+
+        if (jCourant.getMain().size() > 5) {
+            choisirCarteADefausser(jCourant);
+        }
+
     }
 
     public void finTour() {
@@ -309,6 +313,9 @@ public class Controleur implements Observer {
                 piocherCarteInondation();
 
             }
+            if (jCourant.getMain().size() > 5) {
+                choisirCarteADefausser(jCourant);
+            }
 
             numJoueurQuiJoue += 1;
             numJoueurQuiJoue %= aventuriers.size();
@@ -320,6 +327,12 @@ public class Controleur implements Observer {
             //vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
         }
 
+        for (int i = 0; i < tuile.length; i++) {
+            if (tuile[i].getNomTuile() == "Heliport" && tuile[i].getEtat() == EtatTuile.COULEE) {
+                System.out.println("Heliport Coulee");
+
+            }
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -628,6 +641,28 @@ public class Controleur implements Observer {
             getDefausseInondation().clear();
             piocherCarteInondation();
         }
+    }
+
+    ///////////////////////////////DEFAUSSER CARTE//////////////////////////////
+    public void choisirCarteADefausser(Aventurier jDefausseur) {
+        for (CarteTirage c : jDefausseur.getMain()) {
+            //Donner a la methode l'ide de la carte c
+            vuePlateau.getAventurier().get(jDefausseur.getId() - 25).carteCliquable(c.getId());
+        }
+    }
+
+    public void defausser(Aventurier jDefausseur, int idCarte) {
+
+        CarteTirage carteADefausser = null;
+
+        for (CarteTirage c : jDefausseur.getMain()) {
+            if (c.getId() == idCarte) {
+                carteADefausser = c;
+            }
+        }
+
+        jDefausseur.removeCarteMain(carteADefausser);
+        addDefausseTirage(carteADefausser);
     }
 
 ////////////////////////////////////////////////////////////////////////////////
