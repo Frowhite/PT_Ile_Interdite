@@ -271,6 +271,7 @@ public class Controleur implements Observer {
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
+        //uePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
         //Boucle Partie Continue?
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
@@ -278,6 +279,7 @@ public class Controleur implements Observer {
     }
 
     public void finTour() {
+        vuePlateau.getVueGrille().eteindrePlateau();
         actionRestante -= 1;
         if (actionRestante == 0) {
             grille.setCompetenceActiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
@@ -296,6 +298,7 @@ public class Controleur implements Observer {
             if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
                 actionRestante += 1;
             }
+            vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
         }
 
     }
