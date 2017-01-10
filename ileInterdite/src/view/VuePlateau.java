@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -25,7 +26,7 @@ public class VuePlateau extends Observable {
     /////////////////////////////////////////////////
     private ImageIcon plateau;
     private VueGrille vueGrille;
-    private VueAventurier aventurier1, aventurier2, aventurier3, aventurier4;
+    private ArrayList<VueAventurier> aventurier = new ArrayList<>();
 
     private JFrame window;
     private JPanel panelGlobale, panelGauche, panelDroite;
@@ -47,18 +48,18 @@ public class VuePlateau extends Observable {
         //***création des aventuriers de 2 à 4***
         panelGauche = new JPanel(gl);
         panelDroite = new JPanel(gl);
-        aventurier1 = new VueAventurier(25,this);
-        panelGauche.add(aventurier1);
-        aventurier2 = new VueAventurier(26,this);
-        panelDroite.add(aventurier2);
-        if (nbJoueur > 2) {
-            aventurier3 = new VueAventurier(27,this);
-            panelGauche.add(aventurier3);
+        int idAventurier=25;
+        for (int i = 0; i < nbJoueur; i++) {
+            VueAventurier a = new VueAventurier(idAventurier, this);
+            aventurier.add(a);
+            if ((idAventurier-24)%2==0) {
+                panelDroite.add(a);
+            }else{
+                panelGauche.add(a);
+            }
+            idAventurier++;
         }
-        if (nbJoueur == 4) {
-            aventurier4 = new VueAventurier(28,this);
-            panelDroite.add(aventurier4);
-        }
+        
         panelGlobale.add(panelGauche, BorderLayout.WEST);
         panelGlobale.add(panelDroite, BorderLayout.EAST);
 
@@ -69,7 +70,7 @@ public class VuePlateau extends Observable {
         window.setVisible(true);
     }
 
-    public VueAventurier getAventurier(int idJoueur) {
+    /*public VueAventurier getAventurier(int idJoueur) {
         VueAventurier aventurier = aventurier1;
         switch (idJoueur) {
             case 25:
@@ -86,7 +87,7 @@ public class VuePlateau extends Observable {
                 break;
         }
         return aventurier;
-    }
+    }*/
 
     public VueGrille getVueGrille() {
         return vueGrille;
@@ -146,6 +147,11 @@ public class VuePlateau extends Observable {
     public int getDernierJoueurAppuye() {
         return dernierJoueurAppuye;
     }
+
+    public ArrayList<VueAventurier> getAventurier() {
+        return aventurier;
+    }
+    
     
     
 }

@@ -5,6 +5,7 @@
  */
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -22,7 +23,7 @@ import javax.swing.border.BevelBorder;
 public class VueCarte extends JPanel {
 
     private boolean possibliteAssechement = false;
-    private int idCarte;
+    private int idCarte=-1;
     private ImageIcon img = null;
     private JLabel carte;
 
@@ -38,7 +39,8 @@ public class VueCarte extends JPanel {
                 }
             }
         });
-        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));//bordure
+        
+        this.setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.BLACK));
         this.add(carte);
     }
 
@@ -74,5 +76,15 @@ public class VueCarte extends JPanel {
     public ImageIcon getImg() {
         return img;
     }
+
+    public int getIdCarte() {
+        return idCarte;
+    }
+
+    public void setPossibliteAssechement(boolean possibliteAssechement) {
+        this.possibliteAssechement = possibliteAssechement;
+    }
+    
+   
 
 }

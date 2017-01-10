@@ -148,6 +148,17 @@ public class VueAventurier extends JPanel {
     
     }
     
+        public void carteCliquable(int idCate){
+            for (int i = 0; i < vueCarte.size(); i++) {
+                if (vueCarte.get(i).getIdCarte()==idCate){
+                    this.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.DARK_GRAY));
+                    vueCarte.get(i).setPossibliteAssechement(true);
+                }
+            }
+        }
+        
+    
+    
     
     public VuePlateau getVuePlateau() {
         return vuePlateau;
