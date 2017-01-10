@@ -157,7 +157,7 @@ public class VueTuile extends JPanel {
     public void assecheeInondeeOuCouleeTuile(int idTuile, EtatTuile etatTuile) {
         String img = "/images/tuiles/";
         if (etatTuile == EtatTuile.COULEE) {
-            img = "";
+            img+= "Tuile_Coulee.jpg";
         } else {
             switch (idTuile) {
                 case 0:

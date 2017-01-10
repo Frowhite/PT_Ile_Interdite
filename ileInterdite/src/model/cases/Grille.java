@@ -3,6 +3,7 @@ package model.cases;
 import java.util.ArrayList;
 import model.aventuriers.Aventurier;
 import util.Utils;
+import util.Utils.EtatTuile;
 import util.Utils.Pion;
 
 /**
@@ -47,20 +48,26 @@ public class Grille {
             }
 
         } else {
+            if (av.getCapacite() == Pion.VIOLET) {
+                //Tuile positionRelative = new Tuile(500, "Position Relative", null);
+                int i = 0;
+                plongeur(av.getPositionCourante(), buffer, i);
 
-            if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() - 1)) {
+            }
+
+            if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() - 1) && !buffer.contains(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1])) {
                 buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1]);
             }
 
-            if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() + 1)) {
+            if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() + 1) && !buffer.contains(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() + 1])) {
                 buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() + 1]);
             }
 
-            if (estSurLePlateau(av.getPositionCourante().getLigne() - 1, av.getPositionCourante().getColonnes())) {
+            if (estSurLePlateau(av.getPositionCourante().getLigne() - 1, av.getPositionCourante().getColonnes()) && !buffer.contains(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes()])) {
                 buffer.add(tuiles[av.getPositionCourante().getLigne() - 1][av.getPositionCourante().getColonnes()]);
             }
 
-            if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes())) {
+            if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes()) && !buffer.contains(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes()])) {
                 buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes()]);
             }
 
@@ -80,6 +87,9 @@ public class Grille {
                 }
 
             }
+            if (av.getCapacite() == Pion.VIOLET) {
+
+            }
 
             for (Tuile t : buffer) {
                 if (t != null && t.getEtat() != Utils.EtatTuile.COULEE) {
@@ -87,18 +97,38 @@ public class Grille {
                 }
             }
 
-            if (av.getCapacite() == Pion.VIOLET) {
-                Tuile positionRelative = new Tuile(500, "Position Relative", null);
-                for (Tuile t : buffer) {
-                    {
-                        av.addTuilesPossibles(t);
-                    }
-                }
-            }
-
         }
     }
 
+    public void plongeur(Tuile t, ArrayList<Tuile> tDep, int i) {
+
+        if (estSurLePlateau(t.getLigne(), t.getColonnes() - 1) && tuiles[t.getLigne()][t.getColonnes() - 1] != null) {
+            if (tuiles[t.getLigne()][t.getColonnes() - 1].getEtat() != EtatTuile.ASSECHEE && !tDep.contains(tuiles[t.getLigne()][t.getColonnes() - 1])) {
+                tDep.add(tuiles[t.getLigne()][t.getColonnes() - 1]);
+            }
+        }
+
+        if (estSurLePlateau(t.getLigne(), t.getColonnes() + 1) && tuiles[t.getLigne()][t.getColonnes() + 1] != null) {
+            if (tuiles[t.getLigne()][t.getColonnes() + 1].getEtat() != EtatTuile.ASSECHEE && !tDep.contains(tuiles[t.getLigne()][t.getColonnes() + 1])) {
+                tDep.add(tuiles[t.getLigne()][t.getColonnes() + 1]);
+            }
+        }
+        if (estSurLePlateau(t.getLigne() - 1, t.getColonnes()) && tuiles[t.getLigne() - 1][t.getColonnes()] != null) {
+            if (tuiles[t.getLigne() - 1][t.getColonnes()].getEtat() != EtatTuile.ASSECHEE && !tDep.contains(tuiles[t.getLigne() - 1][t.getColonnes()])) {
+                tDep.add(tuiles[t.getLigne() - 1][t.getColonnes()]);
+            }
+        }
+        if (estSurLePlateau(t.getLigne() + 1, t.getColonnes()) && tuiles[t.getLigne() + 1][t.getColonnes()] != null) {
+            if (tuiles[t.getLigne() + 1][t.getColonnes()].getEtat() != EtatTuile.ASSECHEE && !tDep.contains(tuiles[t.getLigne() + 1][t.getColonnes()])) {
+                tDep.add(tuiles[t.getLigne() + 1][t.getColonnes()]);
+            }
+        }
+        if (i != tDep.size()) {
+            plongeur(tDep.get(i), tDep, i + 1);
+        }
+    }
+
+    //////////////////////////////////////////
     public void remplirGrille(Tuile[] tuile) {
         int i = 0;
         for (int l = 0; l < 6; l++) {
@@ -172,11 +202,10 @@ public class Grille {
             }
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////GETTEURS&SETTEURS////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
-
     public boolean isCompetanceActitiveBleu() {
         return competanceActitiveBleu;
     }
@@ -184,5 +213,5 @@ public class Grille {
     public void setCompetanceActitiveBleu(boolean competanceActitiveBleu) {
         this.competanceActitiveBleu = competanceActitiveBleu;
     }
-    
+
 }

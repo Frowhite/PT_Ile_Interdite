@@ -539,15 +539,16 @@ public class Controleur implements Observer {
             System.out.println("id case = " + aventuriers.get(i).getNom() + ":" + aventuriers.get(i).getPositionCourante().getId());
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
-        //vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
+        
 
         //place les pions sur le plateau
         for (int i = 0; i < aventuriers.size(); i++) {
             vuePlateau.getVueGrille().deplacePion(aventuriers.get(i).getCapacite(),
                     aventuriers.get(i).getPositionCourante().getId());
         }
-
+        //vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
         initialiserPartie();
+        
         //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
 
     }
