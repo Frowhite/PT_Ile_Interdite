@@ -125,7 +125,7 @@ public class Controleur implements Observer {
                         break;
                     case DONNER:
                         vueAction.fermerFenetre();
-                        System.out.println("3");
+                        peutDonnerCarte(getjCourant());
                         break;
                     case CHOISIR_CARTE:
                         vueAction.fermerFenetre();
@@ -465,8 +465,44 @@ public class Controleur implements Observer {
     }
 
     ////////////////////////////////DONNER CARTE////////////////////////////////
-    public void donnerCarte(Aventurier av) {
+    public void peutDonnerCarte(Aventurier jDonneur) {
+        if (jDonneur.getCapacite() == Pion.ORANGE || !jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
+            for (CarteTirage c : jDonneur.getMain()) {
+                if (c.estTresor()) {
+                    //Donner a la methode l'ide de la carte c
+                }
+            }
+        }
+        debutTour();
 
+    }
+
+    public void peutDonnerAventurier(Aventurier jDonneur) {
+        ArrayList<Aventurier> avi = new ArrayList();
+        if (jDonneur.getCapacite() == Pion.ORANGE) {
+            avi = aventuriers;
+            remAventurier(jDonneur);
+        }
+        if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
+            avi = jDonneur.getPositionCourante().getAventuriers();
+            remAventurier(jDonneur);
+        }
+        for (Aventurier a : avi) {
+            //donner l'id des aventuriers a la methode coresspondante
+        }
+        debutTour();
+
+    }
+
+    public void donnerCarte(Aventurier jDonneur, int idCarte, int idReceveur) {
+        for (int i = 0; i < jDonneur.getMain().size(); i++) {
+            if (jDonneur.getPositionCourante().getAventuriers().get(i).getId() == idReceveur) {
+                if (jDonneur.getMain().get(i).getId() == idCarte) {
+
+                }
+            }
+        }
+        jDonneur.getMain().remove(jDonneur.getMain().get(idCarte));
     }
 
     ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
