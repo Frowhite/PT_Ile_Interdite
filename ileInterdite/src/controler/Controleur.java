@@ -1,6 +1,6 @@
 package controler;
 
-import com.sun.org.apache.xpath.internal.FoundIndex;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import model.aventuriers.Aventurier;
@@ -29,7 +29,6 @@ public class Controleur implements Observer {
     private Aventurier jCourant;
     private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
-    private boolean existeVueAction = false;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -143,8 +142,6 @@ public class Controleur implements Observer {
             if (arg instanceof Commandes) {
                 if (arg == Commandes.OK_Info) {
                     vueInfo.fermerFenetre();
-                    
-
                 }
             }
         }
@@ -289,7 +286,6 @@ public class Controleur implements Observer {
 
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
-        existeVueAction = true;
         setjCourant(aventuriers.get(numJoueurQuiJoue));
     }
 
@@ -336,8 +332,9 @@ public class Controleur implements Observer {
             setCompetanceActitiveRouge(false);
             finTour();
             debutTour();
+        }else{
+        debutTour();
         }
-
     }
 
     public void assecher(int idTuileAssechee) {

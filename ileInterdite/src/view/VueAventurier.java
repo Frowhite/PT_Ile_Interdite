@@ -8,28 +8,42 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import util.Utils.Pion;
 
 public class VueAventurier extends JPanel {
+    private int idAventurier;
+    private boolean possibliteJoueurDonnerCarte=false;
     private JButton bInfo;
     private VuePlateau vuePlateau;
     private ArrayList<VueCarte> vueCarte;
     private JLabel donnerNomJoueur;
 
-    private Font font1 = new Font("Arial", 0, 25);
-    private Font font2 = new Font("Arial", 0, 18);
+    private Font font1 = new Font("Arial", 0, 20);
+    private Font font2 = new Font("Arial", 0, 25);
     private JPanel panelHaut, panelGlobale, panelCentre;
     private GridLayout gl = new GridLayout(3, 3);
 
-    public VueAventurier(int numAventurier, VuePlateau vuePlateau) {
+    public VueAventurier(int idAventurir, VuePlateau vuePlateau) {
         this.vuePlateau=vuePlateau;
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
         this.setSize(dim.width / 4, 430);
+        this.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.BLACK));
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (possibliteJoueurDonnerCarte) {
+                    getVuePlateau().choisirJoueurDonnerCarte(idAventurier);
+                }
+            }
+        });
         vueCarte = new ArrayList<>();
         
         panelGlobale = new JPanel(new BorderLayout());
@@ -37,10 +51,11 @@ public class VueAventurier extends JPanel {
         panelHaut = new JPanel(new BorderLayout());
         bInfo = new JButton("?");
         bInfo.setSize(10, 5);
+        bInfo.setFont(font2);
         bInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                vuePlateau.infoAventurier(numAventurier);
+                vuePlateau.infoAventurier(idAventurir-25);
             }
         });
         
@@ -58,6 +73,9 @@ public class VueAventurier extends JPanel {
             panelCentre.add(c);
             vueCarte.add(c);
         }
+        panelHaut.setOpaque(false);
+        panelCentre.setOpaque(false);
+        panelGlobale.setOpaque(false);
         panelGlobale.add(panelCentre, BorderLayout.CENTER);
 
         this.add(panelGlobale);
@@ -99,37 +117,38 @@ public class VueAventurier extends JPanel {
 
     public void setNomJoueur(String nomJoueur, Pion p) {
 
-        donnerNomJoueur.setText("Information " + nomJoueur + " :");
+        donnerNomJoueur.setText("Carte de " + nomJoueur + " :");
 
         switch (p) {
             case BLEU:
-                donnerNomJoueur.setForeground(new Color(51,153,255));
-                bInfo.setForeground(new Color(51,153,255));
+                this.setBackground(new Color(51,153,255));
                 break;
             case JAUNE:
-                donnerNomJoueur.setForeground(new Color(255,255,102));
-                bInfo.setForeground(new Color(255,255,102));
+                this.setBackground(new Color(255,255,102));
                 break;
             case ORANGE:
-                donnerNomJoueur.setForeground(new Color(255,178,102));
-                bInfo.setForeground(new Color(255,178,102));
+                this.setBackground(new Color(255,178,102));
                 break;
             case ROUGE:
-                donnerNomJoueur.setForeground(new Color(255,102,102));
-                bInfo.setForeground(new Color(255,102,102));
+                this.setBackground(new Color(255,102,102));
                 break;
             case VERT:
-                donnerNomJoueur.setForeground(new Color(153,255, 153));
-                bInfo.setForeground(new Color(153,255, 153));
+                this.setBackground(new Color(153,255, 153));
                 break;
             case VIOLET:
-                donnerNomJoueur.setForeground(new Color(178,102, 255));
-                bInfo.setForeground(new Color(178,102, 255));
+                this.setBackground(new Color(178,102, 255));
                 break;
         }
-
     }
 
+    
+    public void aventurierCliquable(){
+        this.setBorder(BorderFactory.createMatteBorder(3,3,3,3, Color.DARK_GRAY));
+        possibliteJoueurDonnerCarte=true;
+    
+    }
+    
+    
     public VuePlateau getVuePlateau() {
         return vuePlateau;
     }

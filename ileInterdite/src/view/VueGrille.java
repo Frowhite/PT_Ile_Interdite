@@ -93,7 +93,7 @@ public class VueGrille extends JPanel {
     }
 
     public void allumerJCourant(int idTuile){
-        tuile.get(idTuile).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(153,204,255)));
+        tuile.get(idTuile).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(215,0,51)));
     }
     public void eteindrePlateau(){
         for (int i = 0; i < tuile.size(); i++) {

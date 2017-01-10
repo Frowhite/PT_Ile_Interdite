@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
 import java.util.Observable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,6 +20,8 @@ public class VuePlateau extends Observable {
     ///////////////info a récup//////////////////////
     private int derniereTuileAppuye;
     private int dernierBouttonInfoAppuye;
+    private int dernierCarteAppuye;
+    private int dernierJoueurAppuye;
     /////////////////////////////////////////////////
     private ImageIcon plateau;
     private VueGrille vueGrille;
@@ -44,16 +47,16 @@ public class VuePlateau extends Observable {
         //***création des aventuriers de 2 à 4***
         panelGauche = new JPanel(gl);
         panelDroite = new JPanel(gl);
-        aventurier1 = new VueAventurier(0,this);
+        aventurier1 = new VueAventurier(25,this);
         panelGauche.add(aventurier1);
-        aventurier2 = new VueAventurier(1,this);
+        aventurier2 = new VueAventurier(26,this);
         panelDroite.add(aventurier2);
         if (nbJoueur > 2) {
-            aventurier3 = new VueAventurier(2,this);
+            aventurier3 = new VueAventurier(27,this);
             panelGauche.add(aventurier3);
         }
         if (nbJoueur == 4) {
-            aventurier4 = new VueAventurier(3,this);
+            aventurier4 = new VueAventurier(28,this);
             panelDroite.add(aventurier4);
         }
         panelGlobale.add(panelGauche, BorderLayout.WEST);
@@ -105,13 +108,19 @@ public class VuePlateau extends Observable {
         clearChanged();
     }
 
-    public void choisirCarte() {
+    public void choisirCarte(int idCarte) {
+        dernierCarteAppuye = idCarte;
         setChanged();
         notifyObservers(Commandes.CHOISIR_CARTE);
         clearChanged();
     }
 
-    
+    void choisirJoueurDonnerCarte(int idAventurier) {
+        dernierJoueurAppuye=idAventurier;
+        setChanged();
+        notifyObservers(Commandes.CHOISIR_JOUEUR);
+        clearChanged();
+    }    
 
     public void infoAventurier(int numAventurier) {
         dernierBouttonInfoAppuye=numAventurier;
@@ -129,7 +138,14 @@ public class VuePlateau extends Observable {
     public int getDernierBouttonInfoAppuye() {
         return dernierBouttonInfoAppuye;
     }
-    
+
+    public int getDernierCarteAppuye() {
+        return dernierCarteAppuye;
+    }
+
+    public int getDernierJoueurAppuye() {
+        return dernierJoueurAppuye;
+    }
     
     
 }
