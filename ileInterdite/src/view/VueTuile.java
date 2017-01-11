@@ -18,13 +18,11 @@ import util.Utils.Pion;
 
 public class VueTuile extends JPanel {
 
-    private int test;
     private ImageIcon img;
     private ImageIcon img2;
-    private ArrayList<JLabel> labelPion = new ArrayList<>();
+    private ArrayList<Pion> pion = new ArrayList<>();
     private Toolkit kit = Toolkit.getDefaultToolkit();
     private Dimension dim = kit.getScreenSize();
-    private ArrayList<Pion> pion = new ArrayList<>();
     private boolean possibliteDeplacement = false;
     private boolean possibliteAssechement = false;
 
@@ -66,105 +64,108 @@ public class VueTuile extends JPanel {
         this.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
     }
 
+//////////////////////////////////////BORDER////////////////////////////////////
     public void actionAvecMouseListenerDeplace(boolean b) {
         if (b) {
-            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255,153,51)));
+            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255, 153, 51)));
         } else {
-            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,153,51)));
-        }
-        
-    }  
-
-    public void actionAvecMouseListenerAsseche(boolean b) {
-        if (b) {
-            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255,255,102)));
-        } else {
-            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,255,102)));
+            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 153, 51)));
         }
 
     }
 
-    public void imageTuile(String image) {
-        img = new ImageIcon(new ImageIcon(getClass().getResource(image))
-                .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_SMOOTH));
+    public void actionAvecMouseListenerAsseche(boolean b) {
+        if (b) {
+            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255, 255, 102)));
+        } else {
+            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 255, 102)));
+        }
 
     }
 
     public void tuilePossibleDeplacement() {
-        setPossibliteDeplacement(true);
-        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,153,51)));
+
+        possibliteDeplacement = true;
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 153, 51)));
+
     }
 
     public void tuilePossibleAssechement() {
-        setPossibliteDeplacement(true);
-        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,255,102)));
+        possibliteAssechement = true;
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 255, 102)));
     }
 
+///////////////////////////////////////PION////////////////////////////////////
     public void mettrePion(Pion p) {
-        //prend en compte si il y a plusieur joueur sur la même tuile
         pion.add(p);
-        int x = pion.size();//nombre de pion sur la case
-
-        //efface les pions sur la tuile
-        for (int i = 0; i < labelPion.size(); i++) {
-            img2 = null;
-            labelPion.get(i).setIcon(img2);
-        }
-
-        labelPion.clear();
-        //dessine les pions sur la tuile
-        for (int i = 0; i < pion.size(); i++) {
-
-            String s = "/images/pions/";
-            switch (pion.get(i)) {
-                case BLEU:
-                    s += "pionBleu";
-                    break;
-                case JAUNE:
-                    s += "pionJaune";
-                    break;
-                case ORANGE:
-                    s += "pionBronze";
-                    break;
-                case ROUGE:
-                    s += "pionRouge";
-                    break;
-                case VERT:
-                    s += "pionVert";
-                    break;
-                case VIOLET:
-                    s += "pionViolet";
-                    break;
-            }
-            s += ".png";
-
-            img2 = new ImageIcon(new ImageIcon(getClass().getResource(s))
-                    .getImage().getScaledInstance(dim.height / 6 - 80 - (x * 15), dim.height / 6 - 80 - (x * 15), Image.SCALE_SMOOTH));
-            JLabel l = new JLabel();
-            l.setIcon(img2);
-            labelPion.add(l);
-        }
-        for (int i = 0; i < labelPion.size(); i++) {
-            this.add(labelPion.get(i));
-        }
-
     }
 
     void enlevePion(Pion p) {
-        int x = 0;
-        for (int i = 0; i < pion.size() && pion.get(i) != p; i++) {
-            x++;
-        }
         pion.remove(p);
-        img2 = null;
-        labelPion.get(x).setIcon(img2);
-        labelPion.remove(x);
+    }
+    //dessine le pions sur la tuile
+
+    public void dessinerPion(Pion p) {
+        String s = "/images/pions/";
+        switch (p) {
+            case BLEU:
+                s += "pionBleu";
+                break;
+            case JAUNE:
+                s += "pionJaune";
+                break;
+            case ORANGE:
+                s += "pionBronze";
+                break;
+            case ROUGE:
+                s += "pionRouge";
+                break;
+            case VERT:
+                s += "pionVert";
+                break;
+            case VIOLET:
+                s += "pionViolet";
+                break;
+        }
+        s += ".png";
+
+        img2 = new ImageIcon(new ImageIcon(getClass().getResource(s))
+                .getImage().getScaledInstance(dim.height / 6 - 90, dim.height / 6 - 90, Image.SCALE_SMOOTH));
+
     }
 
+//////////////////////////////////IMAGE FOND////////////////////////////////////
     //dessin le fond
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(img.getImage(), 3 + 10 * test, 3, null);
+        g.drawImage(img.getImage(), 3, 3, null);
+
+        if(pion.size()==1){
+            dessinerPion(pion.get(0));
+            g.drawImage(img2.getImage(), 43, 20, null);        
+        }else{
+        for (int i = 0; i < pion.size(); i++) {
+            switch (i) {
+                case 0:
+                    dessinerPion(pion.get(i));
+                    g.drawImage(img2.getImage(), 10, 10, null);
+                    break;
+                case 1:
+                    dessinerPion(pion.get(i));
+                    g.drawImage(img2.getImage(), 66, 10, null);
+                    break;
+                case 2:
+                    dessinerPion(pion.get(i));
+                    g.drawImage(img2.getImage(), 28, 50, null);
+                    break;
+                case 3:
+                    dessinerPion(pion.get(i));
+                    g.drawImage(img2.getImage(), 84, 50, null);
+                    break;
+            }
+
+        }
+        }
     }
 
     public void assecheeInondeeOuCouleeTuile(int idTuile, EtatTuile etatTuile) {
@@ -256,6 +257,13 @@ public class VueTuile extends JPanel {
         imageTuile(img);
     }
 
+    public void imageTuile(String image) {
+        img = new ImageIcon(new ImageIcon(getClass().getResource(image))
+                .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_SMOOTH));
+
+    }
+
+///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
     public ArrayList<Pion> getPion() {
         return pion;
     }

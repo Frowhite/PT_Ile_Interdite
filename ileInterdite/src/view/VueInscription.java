@@ -10,13 +10,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Hashtable;
 import java.util.Observable;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import util.Utils;
 
 /**
@@ -26,74 +31,114 @@ import util.Utils;
 public class VueInscription extends Observable {
 
     private JFrame window;
-    private JPanel panelGlobale, panelCentre, panelCentre1, panelCentre2, panelBas;
+    private JPanel panelGlobale, panelCentre, panelInscrireNiveau, panelInscrireJoueur, panelRentrerJoueur, panelBas;
     private JButton bValider, bAnnuler;
-    private JLabel titre, textNbJ;
+    private JLabel titre, textNbJ, textNiv;
     private JComboBox nbJoueur;
     private JButton bOk;
     private JTextField joueur1, joueur2, joueur3, joueur4;
+    private JSlider slider;
+    private static final int FPS_MIN = 1;
+    private static final int FPS_MAX = 4;
 
-    private Font font = new Font("Arial", 0, 30);
+    private Font font1 = new Font("Arial", 0, 25);
     private Font font2 = new Font("Arial", 0, 15);
     private GridLayout gl1 = new GridLayout(2, 2);
     private GridLayout gl2 = new GridLayout(1, 2);
 
-    public VueInscription() {
+    public VueInscription(int niveauEau) {
         window = new JFrame();
-        window.setSize(300, 230);
+        window.setSize(340, 370);
+        window.setAlwaysOnTop(true);//met en premier plan
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width / 2 - 150, dim.height / 2 - 265);
+        window.setLocation(dim.width / 2 - 180, dim.height / 2 - 315);
         panelGlobale = new JPanel(new BorderLayout());
 
         //***haut***
-        titre = new JLabel("L'île Interdite");
-        titre.setFont(font);
-        panelGlobale.add(titre, BorderLayout.NORTH);
+        titre = new JLabel(new ImageIcon(getClass().getResource("/images/titre.png")));
+        panelGlobale.add(titre, BorderLayout.PAGE_START);
+
+        //***panel centre**
+        panelCentre = new JPanel(new BorderLayout());
+        //texte "Choisir slider"
+        panelInscrireNiveau = new JPanel(new BorderLayout());
+        textNiv = new JLabel("Choisir niveau :");
+        textNiv.setFont(font1);
+        panelInscrireNiveau.add(textNiv, BorderLayout.NORTH);
+        int FPS_INIT = niveauEau;
+        slider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
+
+       // slider.addChangeListener(this);
+//        slider.setMajorTickSpacing(10);
+//        slider.setPaintTicks(true);
+        //Create the label table
+        Hashtable labelTable = new Hashtable();
+        labelTable.put(new Integer(1), new JLabel("novice"));
+        labelTable.put(new Integer(2), new JLabel("normal"));
+        labelTable.put(new Integer(3), new JLabel("élite"));
+        labelTable.put(new Integer(4), new JLabel("légendaire"));
+        
+        slider.setPaintLabels(true);
+
+        slider.setLabelTable(labelTable);
+        slider.setMajorTickSpacing(4);
+        slider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                setChanged();
+                notifyObservers((Integer) (slider.getValue()));
+                clearChanged();
+            }
+        });
+        panelInscrireNiveau.add(textNiv, BorderLayout.NORTH);
+        panelInscrireNiveau.add(slider, BorderLayout.CENTER);
 
         //***panel centre***
-        panelCentre = new JPanel();
-        //***panel centre 1 (haut du panel centre)***
-        panelCentre1 = new JPanel();
+        panelInscrireJoueur = new JPanel();
+        //***haut du panel centre***
         //texte "Rentrer les joueurs"
         textNbJ = new JLabel("Rentrer les joueurs :");
-        textNbJ.setFont(font2);
-
-        panelCentre1.add(textNbJ, BorderLayout.CENTER);
-
-        panelCentre.add(panelCentre1, BorderLayout.NORTH);
+        textNbJ.setFont(font1);
+        panelInscrireJoueur.add(textNbJ, BorderLayout.NORTH);
         //***panel centre 2 (bas du panel centre)***
         gl1.setVgap(8);
         gl1.setHgap(8);
-        panelCentre2 = new JPanel(gl1);
+        panelRentrerJoueur = new JPanel(gl1);
 
         //JTextField joueur 1
         joueur1 = new JTextField("Nom joueur");
-        joueur1.setPreferredSize(new Dimension(120, 28));
+        joueur1.setPreferredSize(new Dimension(130, 30));
+        joueur1.setFont(font2);
         insiterRentrerNom(joueur1);
-        panelCentre2.add(joueur1);
+        panelRentrerJoueur.add(joueur1);
 
         //JTextField joueur 2
         joueur2 = new JTextField("Nom joueur");
-        joueur2.setPreferredSize(new Dimension(120, 28));
+        joueur2.setPreferredSize(new Dimension(130, 30));
+        joueur2.setFont(font2);
         insiterRentrerNom(joueur2);
-        panelCentre2.add(joueur2);
+        panelRentrerJoueur.add(joueur2);
 
         //JTextField joueur 3
         joueur3 = new JTextField("Nom joueur");
-        joueur3.setPreferredSize(new Dimension(120, 28));
+        joueur3.setPreferredSize(new Dimension(130, 30));
+        joueur3.setFont(font2);
         insiterRentrerNom(joueur3);
-        panelCentre2.add(joueur3);
+        panelRentrerJoueur.add(joueur3);
 
         //JTextField joueur 4
         joueur4 = new JTextField("Nom joueur");
-        joueur4.setPreferredSize(new Dimension(120, 28));
+        joueur4.setPreferredSize(new Dimension(130, 30));
+        joueur4.setFont(font2);
         insiterRentrerNom(joueur4);
-        panelCentre2.add(joueur4);
+        panelRentrerJoueur.add(joueur4);
 
-        panelCentre.add(panelCentre2, BorderLayout.CENTER);
+        panelInscrireJoueur.add(panelRentrerJoueur, BorderLayout.CENTER);
 
+        panelCentre.add(panelInscrireNiveau, BorderLayout.NORTH);
+        panelCentre.add(panelInscrireJoueur, BorderLayout.CENTER);
         panelGlobale.add(panelCentre, BorderLayout.CENTER);
         //***panel Bas***
         gl2.setHgap(50);
@@ -183,20 +228,20 @@ public class VueInscription extends Observable {
     public String nomJoueur4() {
         return joueur4.getText();
     }
-    
-    public void donnerNomJoueur1(String nom){
+
+    public void donnerNomJoueur1(String nom) {
         joueur1.setText(nom);
     }
-    
-    public void donnerNomJoueur2(String nom){
+
+    public void donnerNomJoueur2(String nom) {
         joueur2.setText(nom);
     }
-    
-    public void donnerNomJoueur3(String nom){
+
+    public void donnerNomJoueur3(String nom) {
         joueur3.setText(nom);
     }
-    
-    public void donnerNomJoueur4(String nom){
+
+    public void donnerNomJoueur4(String nom) {
         joueur4.setText(nom);
     }
 

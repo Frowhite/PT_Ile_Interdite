@@ -36,7 +36,8 @@ public class VueDemarrage extends Observable {
 
     public VueDemarrage(int nbJoueur) {
         window = new JFrame();
-        window.setSize(340, 430);
+        window.setSize(340, 370);
+        window.setAlwaysOnTop(true);//met en premier plan
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
@@ -46,7 +47,7 @@ public class VueDemarrage extends Observable {
         titre = new JLabel(new ImageIcon(getClass().getResource("/images/titre.png")));
         panelGlobale.add(titre, BorderLayout.NORTH);
         //***panel centre***
-        gl.setVgap(15);
+        gl.setVgap(5);
         panelCentre = new JPanel(gl);
         panelCentre.add(new JLabel(""));
 

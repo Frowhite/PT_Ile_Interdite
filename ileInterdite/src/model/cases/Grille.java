@@ -1,4 +1,4 @@
-package model.cases;
+ package model.cases;
 
 import java.util.ArrayList;
 import model.aventuriers.Aventurier;

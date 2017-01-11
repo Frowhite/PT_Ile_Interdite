@@ -29,6 +29,7 @@ public class Controleur implements Observer {
     private Aventurier jCourant;
     private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
+    private boolean lActionEstDonnerCarte = false;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -39,7 +40,7 @@ public class Controleur implements Observer {
     private VueInfo vueInfo;
 
     public Controleur() {
-        ouvrirFenetreInterface();
+        ouvrirFenetreDemarrage();
         creerGrille();
     }
 
@@ -72,14 +73,22 @@ public class Controleur implements Observer {
                 switch ((Commandes) arg) {
                     case ANNULER:
                         vueInscription.fermerFenetre();
-                        ouvrirFenetreInterface();
+                        vueNiveau.fermerFenetre();
+                        ouvrirFenetreDemarrage();
                         break;
                     case VALIDER_JOUEURS:
                         vueInscription.fermerFenetre();
+                        vueNiveau.fermerFenetre();
                         ajouteJoueur();
-                        ouvrirFenetreInterface();
+                        ouvrirFenetreDemarrage();
                         break;
                 }
+
+            }
+
+            if (arg instanceof Integer) {
+                setNiveauEau((Integer) arg);
+                vueNiveau.setNiveau(niveauEau);
             }
         }
         if (o == vuePlateau) {
@@ -101,7 +110,12 @@ public class Controleur implements Observer {
                         }
                         break;
                     case CHOISIR_CARTE:
-                        peutDonnerAventurier(jCourant);
+                        if (lActionEstDonnerCarte) {
+                            setlActionEstDonnerCarte(false);
+                            peutDonnerAventurier(jCourant);
+                        } else {
+                            defausser(jCourant, vuePlateau.getDernierCarteAppuye());
+                        }
                         //vuePlateau.getDernierCarteAppuye();
                         break;
                     case CHOISIR_JOUEUR:
@@ -156,20 +170,23 @@ public class Controleur implements Observer {
 //////////////////////////////CREATION & MISE EN PLACE DE LA PARTIE ////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
-        vueNiveau = new VueNiveau(niveauEau);
+      //  vueNiveau = new VueNiveau(niveauEau);
         setNiveauEau(getVueNiveau().getNiveau());
         initialiserCartesTirages();
         initialiserCartesInondation();
+        initialiserPositionJoueur();
         for (int j = 0; j < 2; j++) {
-
             for (Aventurier jCourant : aventuriers) {
                 piocherCarteTresorDepart(jCourant);
             }
-
         }
 
         for (int i = 0; i < 6; i++) {
             piocherCarteInondation();
+        }
+        //le Navigateur a 4 actions
+        if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
+            actionRestante += 1;
         }
         debutTour();
     }
@@ -259,9 +276,9 @@ public class Controleur implements Observer {
         setPiocheTirage(melangerTirage(getPiocheTirage()));
     }
 
-    public ArrayList melangerTirage(ArrayList<CarteTirage> listeDepart) {
+    public ArrayList<CarteTirage> melangerTirage(ArrayList<CarteTirage> listeDepart) {
 
-        ArrayList<Carte> nouvelle = new ArrayList(listeDepart);
+        ArrayList<CarteTirage> nouvelle = new ArrayList(listeDepart);
         Collections.shuffle(nouvelle);
         return nouvelle;
     }
@@ -275,9 +292,9 @@ public class Controleur implements Observer {
         setPiocheInondation(melangerInondation(getPiocheInondation()));
     }
 
-    public ArrayList melangerInondation(ArrayList<CarteInondation> listeDepart) {
+    public ArrayList<CarteInondation> melangerInondation(ArrayList<CarteInondation> listeDepart) {
 
-        ArrayList<Carte> nouvelle = new ArrayList(listeDepart);
+        ArrayList<CarteInondation> nouvelle = new ArrayList(listeDepart);
         Collections.shuffle(nouvelle);
         return nouvelle;
 
@@ -288,11 +305,14 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
         vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
-        //Boucle Partie Continue?
-
+        
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
         setjCourant(aventuriers.get(numJoueurQuiJoue));
+        if (jCourant.getMain().size() > 5) {
+            vueAction.apparaitreDisparaitre(false);
+            choisirCarteADefausser(jCourant);
+        }
     }
 
     public void finTour() {
@@ -306,7 +326,9 @@ public class Controleur implements Observer {
                 piocherCarteInondation();
 
             }
-            
+            if (jCourant.getMain().size() > 5) {
+                choisirCarteADefausser(jCourant);
+            }
 
             numJoueurQuiJoue += 1;
             numJoueurQuiJoue %= aventuriers.size();
@@ -318,6 +340,12 @@ public class Controleur implements Observer {
             //vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
         }
 
+        for (int i = 0; i < tuile.length; i++) {
+            if (tuile[i].getNomTuile() == "Heliport" && tuile[i].getEtat() == EtatTuile.COULEE) {
+                System.out.println("Heliport Coulee");
+
+            }
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -432,10 +460,21 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
+    public void initialiserPositionJoueur() {
+        for (int i = 0; i < aventuriers.size(); i++) {
+            aventuriers.get(i).getPositionCourante().getAventuriers().add(aventuriers.get(i));
+        }
+
+    }
+
     public void possiblesDeplacer(Aventurier av) {
         grille.tuilesPossiblesDeplacement(av);
-        for (Tuile t : av.getTuilesPossibles()) {
-            vuePlateau.getVueGrille().idTuileDeplacementPossible(t.getId());
+        if (!av.getTuilesPossibles().isEmpty()) {
+            for (Tuile t : av.getTuilesPossibles()) {
+                vuePlateau.getVueGrille().idTuileDeplacementPossible(t.getId());
+            }
+        } else {
+            debutTour();
         }
     }
 
@@ -474,17 +513,15 @@ public class Controleur implements Observer {
 
     ////////////////////////////////DONNER CARTE////////////////////////////////
     public void peutDonnerCarte(Aventurier jDonneur) {
-        if (!jDonneur.getMain().isEmpty()) {
-            System.out.println("0");
-            System.out.println(jDonneur.getPositionCourante().getAventuriers().size());
-            if ((jDonneur.getCapacite() == Pion.ORANGE) || !jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
-                System.out.println("1");
+        if (!jDonneur.getMain().isEmpty()) {  //-->si il ne lui reste que une carte hélioco ou sable
+            if ((jDonneur.getCapacite() == Pion.ORANGE) || (jDonneur.getPositionCourante().getAventuriers().size() > 1)) {
                 for (CarteTirage c : jDonneur.getMain()) {
                     if (c.estTresor()) {
                         //Donner a la methode l'ide de la carte c
                         vuePlateau.getAventurier().get(jDonneur.getId() - 25).carteCliquable(c.getId());
                     }
                 }
+                setlActionEstDonnerCarte(true);
             } else {
                 debutTour();
             }
@@ -496,17 +533,17 @@ public class Controleur implements Observer {
     public void peutDonnerAventurier(Aventurier jDonneur) {
         if (jDonneur.getCapacite() == Pion.ORANGE) {
             setJoueurPourDonnerCarte(aventuriers);
-            remAventurier(jDonneur);
-        }
-        if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
+        } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
             setJoueurPourDonnerCarte(jDonneur.getPositionCourante().getAventuriers());
-            remAventurier(jDonneur);
         }
+        // remJoueurPourDonnerCarte(jDonneur);  --> c'est cette ligne qui fait buger
+
         for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
-            vuePlateau.getAventurier().get(a.getId()-25).aventurierCliquable();
+            if (a != jDonneur) {
+                vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
+            }
         }
-
     }
 
     public void donnerCarte(Aventurier jDonneur, int idCarte, int idReceveur) {
@@ -525,8 +562,12 @@ public class Controleur implements Observer {
         }
 
         jDonneur.removeCarteMain(carteADonner);
+
         jReceveur.addCarteMain(carteADonner);
+
+        vuePlateau.getAventurier().get(jReceveur.getId() - 25).ajouterCarte(carteADonner.getId());
         finTour();
+        debutTour();
 
     }
 
@@ -559,6 +600,7 @@ public class Controleur implements Observer {
             }
             if (cartePioche.estMontee()) {
                 setNiveauEau(getNiveauEau() + 1);
+                addDefausseTirage(cartePioche);
                 if (!getDefausseInondation().isEmpty()) {
                     setDefausseInondation(melangerInondation(getDefausseInondation()));
                     for (CarteInondation c : piocheInondation) {
@@ -575,7 +617,11 @@ public class Controleur implements Observer {
                 }
             }
         } else {
-            setPiocheTirage(melangerTirage(getDéfausseTirage()));
+            //   System.out.println("Vide Tirage");
+            setDéfausseTirage(melangerTirage(getDéfausseTirage()));
+            for (CarteTirage t : getDéfausseTirage()) {
+                addPiocheTirage(t);
+            }
             getDéfausseTirage().clear();
             piocherCarteTresor(av);
         }
@@ -585,14 +631,13 @@ public class Controleur implements Observer {
     public void piocherCarteInondation() {
         if (!getPiocheInondation().isEmpty()) {
             CarteInondation tuileInonde = getPiocheInondation().get(0);
-            System.out.println(tuileInonde.getNom());
+
             remPiocheInondation(tuileInonde);
             for (int i = 0; i < getTuile().length; i++) {
                 if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
                     tuile[i].setEtat(EtatTuile.INONDEE);
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
                     addDefausseInondation(tuileInonde);
-                    System.out.println(getDefausseInondation().size());
 
                 } else if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.INONDEE) {
                     tuile[i].setEtat(EtatTuile.COULEE);
@@ -600,10 +645,41 @@ public class Controleur implements Observer {
                 }
             }
         } else {
+
             setDefausseInondation(melangerInondation(getDefausseInondation()));
-            setPiocheInondation(getDefausseInondation());
+            for (CarteInondation c : getDefausseInondation()) {
+                addPiocheInondation(c);
+            }
             getDefausseInondation().clear();
             piocherCarteInondation();
+        }
+    }
+
+    ///////////////////////////////DEFAUSSER CARTE//////////////////////////////
+    public void choisirCarteADefausser(Aventurier jDefausseur) {
+        for (CarteTirage c : jDefausseur.getMain()) {
+            //Donner a la methode l'ide de la carte c
+            vuePlateau.getAventurier().get(jDefausseur.getId() - 25).carteCliquable(c.getId());
+        }
+        
+    }
+
+    public void defausser(Aventurier jDefausseur, int idCarte) {
+
+        CarteTirage carteADefausser = null;
+
+        for (CarteTirage c : jDefausseur.getMain()) {
+            if (c.getId() == idCarte) {
+                carteADefausser = c;
+            }
+        }
+
+        jDefausseur.removeCarteMain(carteADefausser);
+        addDefausseTirage(carteADefausser);
+        if (jCourant.getMain().size() > 5) {
+            choisirCarteADefausser(jCourant);
+        }else{
+            vueAction.apparaitreDisparaitre(true);
         }
     }
 
@@ -617,22 +693,8 @@ public class Controleur implements Observer {
         for (int i = 0; i < aventuriers.size(); i++) {
             vuePlateau.getAventurier().get(i).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
 
-            /*switch (i) {
-                case 0:
-                    vuePlateau.getAventurier(25).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-                    break;
-                case 1:
-                    vuePlateau.getAventurier(26).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-                    break;
-                case 2:
-                    vuePlateau.getAventurier(27).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-                    break;
-                case 3:
-                    vuePlateau.getAventurier(28).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
-                    break;
-                    
-            }*/
             System.out.println("id case = " + aventuriers.get(i).getNom() + ":" + aventuriers.get(i).getPositionCourante().getId());
+
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
 
@@ -647,7 +709,7 @@ public class Controleur implements Observer {
         //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
     }
 
-    public void ouvrirFenetreInterface() {
+    public void ouvrirFenetreDemarrage() {
         vueMontrerJoueur = new VueMontrerJoueur();
         //écrire les noms dans vueMontrerJoueur
         int x = 0;
@@ -665,7 +727,8 @@ public class Controleur implements Observer {
     }
 
     public void ouvrirFenetreInscription() {
-        vueInscription = new VueInscription();
+        vueNiveau = new VueNiveau(niveauEau);
+        vueInscription = new VueInscription(niveauEau);
         vueInscription.addObserver(this);
         if (aventuriers != null) {
             for (int i = 0; i < aventuriers.size(); i++) {
@@ -1031,6 +1094,10 @@ public class Controleur implements Observer {
 
     public void setJoueurPourDonnerCarte(ArrayList<Aventurier> joueurPourDonnerCarte) {
         this.joueurPourDonnerCarte = joueurPourDonnerCarte;
+    }
+
+    public void setlActionEstDonnerCarte(boolean lActionEstDonnerCarte) {
+        this.lActionEstDonnerCarte = lActionEstDonnerCarte;
     }
 
 }
