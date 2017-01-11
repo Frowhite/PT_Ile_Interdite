@@ -351,7 +351,10 @@ public class Controleur implements Observer {
 
         for (int i = 0; i < tuile.length; i++) {
             if (tuile[i].getId() == 0 && tuile[i].getEtat() == EtatTuile.COULEE) {
-                System.out.println("Heliport Coulee");
+                
+               //Faire Disparaitre le Plateau de jeu
+                vueAction.apparaitreDisparaitre(false);
+                VuePerdu vuePerdu = new VuePerdu();
 
             }
         }
@@ -774,7 +777,7 @@ public class Controleur implements Observer {
                     tresorPossedesParEquipe.contains(Tresor.PIERRE) && 
                     tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == 4)){
                     
-                vuePlateau.setVisible(false);
+             //Faire Disparaitre le plateau de jeu
                 vueAction.apparaitreDisparaitre(false);
                 VueGagner vueGagner = new VueGagner();
                 
