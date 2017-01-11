@@ -578,9 +578,33 @@ private int i = 0;
     }
 
     ////////////////////////////////DONNER CARTE////////////////////////////////
+    //vrai si il y a au moin une carte trésore
+    public boolean mainNull(ArrayList<CarteTirage> carteTirage) {
+        for (int i = 0; i < carteTirage.size(); i++) {
+            if (carteTirage.get(i).estTresor()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //vrai si il y a au moin 1 aventuriers sur la case et qu'il a moins de 9 cartes
+    public boolean possibliteDonnerAAventurier(Aventurier jDonneur) {
+        if (jDonneur.getPositionCourante().getAventuriers().size() > 1) {
+            for (int i = 0; i < jDonneur.getPositionCourante().getAventuriers().size(); i++) {
+                if (jDonneur.getPositionCourante().getAventuriers().get(i).getMain().size() != 9
+                        && jDonneur != jDonneur.getPositionCourante().getAventuriers().get(i)) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
     public void peutDonnerCarte(Aventurier jDonneur) {
-        if (!jDonneur.getMain().isEmpty()) {  //-->si il ne lui reste que une carte hélioco ou sable
-            if ((jDonneur.getCapacite() == Pion.ORANGE) || (jDonneur.getPositionCourante().getAventuriers().size() > 1)) {
+        if (mainNull(jDonneur.getMain())) {
+            if ((jDonneur.getCapacite() == Pion.ORANGE) || (possibliteDonnerAAventurier(jDonneur))) {
                 for (CarteTirage c : jDonneur.getMain()) {
                     if (c.estTresor()) {
                         //Donner a la methode l'ide de la carte c
@@ -602,14 +626,18 @@ private int i = 0;
         } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
             setJoueurPourDonnerCarte(jDonneur.getPositionCourante().getAventuriers());
         }
-        // remJoueurPourDonnerCarte(jDonneur);  --> c'est cette ligne qui fait buger
 
+        
         for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
             if (a != jDonneur) {
-                vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
+                //ne peut pas donner au joueur qui on 9 cartes
+                if(a.getMain().size() != 9 ) {
+                    vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
+                }
             }
         }
+
     }
 
     public void donnerCarte(Aventurier jDonneur, int idCarte, int idReceveur) {
@@ -633,6 +661,7 @@ private int i = 0;
         jReceveur.addCarteMain(carteADonner);
 
         vuePlateau.getAventurier().get(jReceveur.getId() - 25).ajouterCarte(carteADonner.getId());
+
         finTour();
         debutTour();
 
