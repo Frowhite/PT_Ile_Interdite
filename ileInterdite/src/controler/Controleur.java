@@ -45,6 +45,7 @@ public class Controleur implements Observer {
     private VueInscription vueInscription;
     private VueAction vueAction;
     private VueInfo vueInfo;
+    private VuePerdu vuePerdu;
 
     public Controleur() {
         ouvrirFenetreDemarrage();
@@ -338,20 +339,27 @@ public class Controleur implements Observer {
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
-        vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
+       
 
-        vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
-        vueAction.addObserver(this);
-        setjCourant(aventuriers.get(numJoueurQuiJoue));
+            vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
 
-        if (jCourant.getMain().size() > 5) {
-            System.out.println("Debut");
-            vueAction.apparaitreDisparaitre(false);
-            choisirCarteADefausser(jCourant);
-        }
+            vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
+            vueAction.addObserver(this);
+            setjCourant(aventuriers.get(numJoueurQuiJoue));
+
+            if (jCourant.getMain().size() > 5) {
+               
+                vueAction.apparaitreDisparaitre(false);
+                choisirCarteADefausser(jCourant);
+
+            }
+        
+           
+        
 
     }
-
+private int i = 0;
+    
     public void finTour() {
         vuePlateau.getVueGrille().eteindrePlateau();
         actionRestante -= 1;
@@ -372,19 +380,29 @@ public class Controleur implements Observer {
             }
             //vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
         }
+         if (perdu()) {
+               //Faire Disparaitre le Plateau de jeu
+                System.out.println("Erreur perdu");
+                vueAction.apparaitreDisparaitre(false);
+                vuePerdu = new VuePerdu();
+                
+         }
+    }
 
-        if (tuile[0].getEtat() == EtatTuile.COULEE
-                || (!TresorRecuperer(Tresor.PIERRE) && tuile[18].getEtat() == EtatTuile.COULEE && tuile[19].getEtat() == EtatTuile.COULEE)
-                || (!TresorRecuperer(Tresor.CRISTAL) && tuile[1].getEtat() == EtatTuile.COULEE && tuile[2].getEtat() == EtatTuile.COULEE)
-                || (!TresorRecuperer(Tresor.CALICE) && tuile[14].getEtat() == EtatTuile.COULEE && tuile[15].getEtat() == EtatTuile.COULEE)
-                || (!TresorRecuperer(Tresor.ZEPHYR) && tuile[10].getEtat() == EtatTuile.COULEE && tuile[11].getEtat() == EtatTuile.COULEE)) {
+    public boolean perdu() {
+        boolean b = false;
+        for (int i = 0; i < tuile.length; i++) {
+            if (tuile[i].getId() == 0 && tuile[i].getEtat() == EtatTuile.COULEE //Heliport couler
 
-            //Faire Disparaitre le Plateau de jeu
-//                vueAction.apparaitreDisparaitre(false);
-//                VuePerdu vuePerdu = new VuePerdu();
-            System.out.println("perdu");
-
+                || (!TresorRecuperer(Tresor.PIERRE) && tuile[i].getId() == 18 && tuile[i].getEtat() == EtatTuile.COULEE &&  tuile[i+1].getEtat() == EtatTuile.COULEE)
+                || (!TresorRecuperer(Tresor.CRISTAL)&&tuile[i].getId() == 1 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i+1].getEtat() == EtatTuile.COULEE)
+                || (!TresorRecuperer(Tresor.CALICE) &&tuile[i].getId() == 14 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i+1].getEtat() == EtatTuile.COULEE)
+                || (!TresorRecuperer(Tresor.ZEPHYR) &&tuile[i].getId() == 10 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i+1].getEtat() == EtatTuile.COULEE))
+                //On a pas recuper le tresor e les 2 tuile on couler)) {
+            b = true;
         }
+        
+        return b ;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -673,7 +691,6 @@ public class Controleur implements Observer {
                 }
             }
         } else {
-            //   System.out.println("Vide Tirage");
             setDéfausseTirage(melangerTirage(getDéfausseTirage()));
             for (CarteTirage t : getDéfausseTirage()) {
                 addPiocheTirage(t);
@@ -772,7 +789,7 @@ public class Controleur implements Observer {
         for (CarteTirage c : jUtilisateur.getMain()) {
             if (c.getId() == idCarte) {
                 if (c.estSac()) {
-                    System.out.println("Utilisation Carte Sac");
+                    
                     utiliserSac();
                 }
                 if (c.estHelico()) {
@@ -792,7 +809,7 @@ public class Controleur implements Observer {
                 vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
             }
         } else {
-            System.out.println("Erreur");
+           
             debutTour();
         }
     }
@@ -850,20 +867,20 @@ public class Controleur implements Observer {
         ArrayList<Aventurier> aventurierHelico = new ArrayList();
         //enlever tous les joueurs sur la tuile de départ de l'Hélico
         for (int i = 0; i < tuile.length; i++) {
-            if (tuile[i].getId()==getIdTuileDepartHelico()){
+            if (tuile[i].getId() == getIdTuileDepartHelico()) {
                 aventurierHelico.addAll(tuile[i].getAventuriers());
                 tuile[i].getAventuriers().removeAll(aventuriers);
             }
         }
         //mettre tous les joueurs sur la tuile de d'arrivé de l'Hélico
         for (int i = 0; i < tuile.length; i++) {
-            if (tuile[i].getId()==idTuileDestinationHelico){
+            if (tuile[i].getId() == idTuileDestinationHelico) {
                 for (int j = 0; j < aventurierHelico.size(); j++) {
                     tuile[i].getAventuriers().add(aventurierHelico.get(j));
                     aventurierHelico.get(j).setPositionCourante(tuile[i]);
                     vuePlateau.getVueGrille().deplacePion(aventurierHelico.get(j).getCapacite(), idTuileDestinationHelico);
                 }
-                
+
             }
         }
         finTour();
@@ -893,8 +910,7 @@ public class Controleur implements Observer {
         for (int i = 0; i < aventuriers.size(); i++) {
             vuePlateau.getAventurier().get(i).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
 
-            System.out.println("id case = " + aventuriers.get(i).getNom() + ":" + aventuriers.get(i).getPositionCourante().getId());
-
+           
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
 
