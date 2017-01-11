@@ -10,19 +10,19 @@ import util.Utils.Tresor;
  */
 public class CarteTresor extends CarteTirage {
     
-     private Tresor tresor;
-
     public CarteTresor(int idCarte,String nom,Tresor tresor) {
         super(idCarte,nom);
-        this.tresor = tresor;
+        setTresor(tresor);
     }
 
+    @Override
     public Tresor getTresor() {
-        return tresor;
+        return super.getTresor();
     }
 
+    @Override
     public void setTresor(Tresor tresor) {
-        this.tresor = tresor;
+         super.setTresor(tresor);
     }
     
      @Override

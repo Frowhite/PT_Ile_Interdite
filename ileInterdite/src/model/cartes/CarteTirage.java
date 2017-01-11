@@ -1,13 +1,20 @@
 package model.cartes;
 
+import util.Utils;
+import util.Utils.Tresor;
+
 /**
  *
  * @author IUT2-Dept Info
  */
 public abstract class CarteTirage extends Carte {
     
+    private Tresor tresor;
+    
     public CarteTirage(String nom){
         super(nom);
+        tresor = null;
+        
     }
     public CarteTirage(int idCarte, String nom){
         super(idCarte, nom);
@@ -27,4 +34,13 @@ public abstract class CarteTirage extends Carte {
     public boolean estSac(){
         return false;
     }
+
+    public Tresor getTresor() {
+        return tresor;
+    }
+
+    public void setTresor(Tresor tresor) {
+        this.tresor = tresor;
+    }
+    
 }
