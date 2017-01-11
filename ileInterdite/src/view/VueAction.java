@@ -129,4 +129,8 @@ public class VueAction extends Observable {
     public void fermerFenetre() {
         window.dispose();
     }
+    
+    public void apparaitreDisparaitre(boolean b){
+            window.setVisible(b);
+    }
 }

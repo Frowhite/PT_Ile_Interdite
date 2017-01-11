@@ -90,4 +90,6 @@ public class VueCarte extends JPanel {
         this.possibliteAssechement = possibliteAssechement;
     }
 
+    
+
 }

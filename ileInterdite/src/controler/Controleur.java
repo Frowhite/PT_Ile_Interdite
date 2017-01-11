@@ -29,6 +29,7 @@ public class Controleur implements Observer {
     private Aventurier jCourant;
     private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
+    private boolean lActionEstDonnerCarte = false;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -109,7 +110,13 @@ public class Controleur implements Observer {
                         }
                         break;
                     case CHOISIR_CARTE:
-                        peutDonnerAventurier(jCourant);
+                        if (lActionEstDonnerCarte) {
+                            setlActionEstDonnerCarte(false);
+                            peutDonnerAventurier(jCourant);
+                        } else {
+                            defausser(jCourant, vuePlateau.getDernierCarteAppuye());
+                        }
+
                         //vuePlateau.getDernierCarteAppuye();
                         break;
                     case CHOISIR_JOUEUR:
@@ -299,15 +306,14 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
         vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
-
+        
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
         setjCourant(aventuriers.get(numJoueurQuiJoue));
-
         if (jCourant.getMain().size() > 5) {
+            vueAction.apparaitreDisparaitre(false);
             choisirCarteADefausser(jCourant);
         }
-
     }
 
     public void finTour() {
@@ -508,7 +514,7 @@ public class Controleur implements Observer {
 
     ////////////////////////////////DONNER CARTE////////////////////////////////
     public void peutDonnerCarte(Aventurier jDonneur) {
-        if (!jDonneur.getMain().isEmpty()) {
+        if (!jDonneur.getMain().isEmpty()) {  //-->si il ne lui reste que une carte hélioco ou sable
             if ((jDonneur.getCapacite() == Pion.ORANGE) || (jDonneur.getPositionCourante().getAventuriers().size() > 1)) {
                 for (CarteTirage c : jDonneur.getMain()) {
                     if (c.estTresor()) {
@@ -516,6 +522,7 @@ public class Controleur implements Observer {
                         vuePlateau.getAventurier().get(jDonneur.getId() - 25).carteCliquable(c.getId());
                     }
                 }
+                setlActionEstDonnerCarte(true);
             } else {
                 debutTour();
             }
@@ -539,7 +546,6 @@ public class Controleur implements Observer {
                 vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
             }
         }
-
     }
 
     public void donnerCarte(Aventurier jDonneur, int idCarte, int idReceveur) {
@@ -561,7 +567,6 @@ public class Controleur implements Observer {
 
         jReceveur.addCarteMain(carteADonner);
 
-        
         vuePlateau.getAventurier().get(jReceveur.getId() - 25).ajouterCarte(carteADonner.getId());
         finTour();
         debutTour();
@@ -658,6 +663,7 @@ public class Controleur implements Observer {
             //Donner a la methode l'ide de la carte c
             vuePlateau.getAventurier().get(jDefausseur.getId() - 25).carteCliquable(c.getId());
         }
+        
     }
 
     public void defausser(Aventurier jDefausseur, int idCarte) {
@@ -672,6 +678,11 @@ public class Controleur implements Observer {
 
         jDefausseur.removeCarteMain(carteADefausser);
         addDefausseTirage(carteADefausser);
+        if (jCourant.getMain().size() > 5) {
+            choisirCarteADefausser(jCourant);
+        }else{
+            vueAction.apparaitreDisparaitre(true);
+        }
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -719,7 +730,7 @@ public class Controleur implements Observer {
 
     public void ouvrirFenetreInscription() {
         vueNiveau = new VueNiveau(niveauEau);
-        vueInscription = new VueInscription();
+        vueInscription = new VueInscription(niveauEau);
         vueInscription.addObserver(this);
         if (aventuriers != null) {
             for (int i = 0; i < aventuriers.size(); i++) {
@@ -1085,6 +1096,10 @@ public class Controleur implements Observer {
 
     public void setJoueurPourDonnerCarte(ArrayList<Aventurier> joueurPourDonnerCarte) {
         this.joueurPourDonnerCarte = joueurPourDonnerCarte;
+    }
+
+    public void setlActionEstDonnerCarte(boolean lActionEstDonnerCarte) {
+        this.lActionEstDonnerCarte = lActionEstDonnerCarte;
     }
 
 }

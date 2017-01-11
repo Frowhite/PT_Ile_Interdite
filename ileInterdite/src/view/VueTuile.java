@@ -22,9 +22,9 @@ public class VueTuile extends JPanel {
     private ImageIcon img;
     private ImageIcon img2;
     private ArrayList<JLabel> labelPion = new ArrayList<>();
+    private ArrayList<Pion> pion = new ArrayList<>();
     private Toolkit kit = Toolkit.getDefaultToolkit();
     private Dimension dim = kit.getScreenSize();
-    private ArrayList<Pion> pion = new ArrayList<>();
     private boolean possibliteDeplacement = false;
     private boolean possibliteAssechement = false;
 
@@ -66,40 +66,36 @@ public class VueTuile extends JPanel {
         this.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
     }
 
+//////////////////////////////////////BORDER////////////////////////////////////
     public void actionAvecMouseListenerDeplace(boolean b) {
         if (b) {
-            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255,153,51)));
+            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255, 153, 51)));
         } else {
-            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,153,51)));
-        }
-        
-    }  
-
-    public void actionAvecMouseListenerAsseche(boolean b) {
-        if (b) {
-            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255,255,102)));
-        } else {
-            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,255,102)));
+            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 153, 51)));
         }
 
     }
 
-    public void imageTuile(String image) {
-        img = new ImageIcon(new ImageIcon(getClass().getResource(image))
-                .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_SMOOTH));
+    public void actionAvecMouseListenerAsseche(boolean b) {
+        if (b) {
+            this.setBorder(BorderFactory.createMatteBorder(7, 7, 7, 7, new Color(255, 255, 102)));
+        } else {
+            this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 255, 102)));
+        }
 
     }
 
     public void tuilePossibleDeplacement() {
         possibliteDeplacement = true;
-        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,153,51)));
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 153, 51)));
     }
 
     public void tuilePossibleAssechement() {
         possibliteAssechement = true;
-        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255,255,102)));
+        this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 255, 102)));
     }
-
+    
+///////////////////////////////////////PION////////////////////////////////////
     public void mettrePion(Pion p) {
         //prend en compte si il y a plusieur joueur sur la même tuile
         pion.add(p);
@@ -161,6 +157,7 @@ public class VueTuile extends JPanel {
         labelPion.remove(x);
     }
 
+//////////////////////////////////IMAGE FOND////////////////////////////////////
     //dessin le fond
     @Override
     public void paintComponent(Graphics g) {
@@ -256,6 +253,13 @@ public class VueTuile extends JPanel {
         imageTuile(img);
     }
 
+    public void imageTuile(String image) {
+        img = new ImageIcon(new ImageIcon(getClass().getResource(image))
+                .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_SMOOTH));
+
+    }
+
+///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
     public ArrayList<Pion> getPion() {
         return pion;
     }

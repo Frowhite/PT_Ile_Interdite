@@ -173,6 +173,8 @@ public class VueAventurier extends JPanel {
             }
         }
     }
+    
+    
 
     public VuePlateau getVuePlateau() {
         return vuePlateau;

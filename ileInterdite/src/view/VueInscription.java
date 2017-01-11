@@ -40,14 +40,13 @@ public class VueInscription extends Observable {
     private JSlider slider;
     private static final int FPS_MIN = 1;
     private static final int FPS_MAX = 4;
-    private static final int FPS_INIT = 1;
 
     private Font font1 = new Font("Arial", 0, 25);
     private Font font2 = new Font("Arial", 0, 15);
     private GridLayout gl1 = new GridLayout(2, 2);
     private GridLayout gl2 = new GridLayout(1, 2);
 
-    public VueInscription() {
+    public VueInscription(int niveauEau) {
         window = new JFrame();
         window.setSize(340, 370);
         window.setAlwaysOnTop(true);//met en premier plan
@@ -68,6 +67,7 @@ public class VueInscription extends Observable {
         textNiv = new JLabel("Choisir niveau :");
         textNiv.setFont(font1);
         panelInscrireNiveau.add(textNiv, BorderLayout.NORTH);
+        int FPS_INIT = niveauEau;
         slider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
 
        // slider.addChangeListener(this);
