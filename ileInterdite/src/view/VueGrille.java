@@ -84,7 +84,6 @@ public class VueGrille extends JPanel {
         for (int i = 0; i < tuile.size(); i++) {
             tuile.get(i).setPossibliteDeplacement(false);
             tuile.get(i).setPossibliteAssechement(false);
-            //tuile.get(i).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));//bordure
         }
     }
 

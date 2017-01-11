@@ -107,6 +107,7 @@ public class VuePlateau extends Observable {
         notifyObservers(Commandes.INFO);
         clearChanged();
     }
+
     
     
 /////////////////GETTEURS&SETTEURS//////////////////   
