@@ -199,7 +199,7 @@ public class Controleur implements Observer {
         initialiserCartesTirages();
         initialiserCartesInondation();
         initialiserPositionJoueur();
-        for (int j = 0; j < 6; j++) {//2
+        for (int j = 0; j < 2; j++) {
             for (Aventurier jCourant : aventuriers) {
                 piocherCarteTresorDepart(jCourant);
             }
