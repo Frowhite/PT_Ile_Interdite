@@ -154,6 +154,12 @@ public class Controleur implements Observer {
                         vueAction.fermerFenetre();
                         System.out.println("5");
                         break;
+                    case PASSER_TOUR:
+                        vueAction.fermerFenetre();
+                        setActionRestante(1);
+                        finTour();
+                        debutTour();
+                        break;
                 }
             }
         }
