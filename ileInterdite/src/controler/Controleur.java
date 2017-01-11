@@ -48,8 +48,8 @@ public class Controleur implements Observer {
     private VuePerdu vuePerdu;
 
     public Controleur() {
-        ouvrirFenetreDemarrage();
-        creerGrille();
+        ouvrirFenetreDemarrage();           //Creer l'ihm
+        creerGrille();                      //Creer le modele avec la grille;
     }
 
 ////////////////////////////////////////////////////////////////////////////////

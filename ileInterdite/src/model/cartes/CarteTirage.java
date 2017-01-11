@@ -8,33 +8,41 @@ import util.Utils.Tresor;
  * @author IUT2-Dept Info
  */
 public abstract class CarteTirage extends Carte {
-    
+
     private Tresor tresor;
-    
-    public CarteTirage(String nom){
+
+    public CarteTirage(String nom) {
         super(nom);
         tresor = null;
-        
+
     }
-    public CarteTirage(int idCarte, String nom){
+
+    public CarteTirage(int idCarte, String nom) {
         super(idCarte, nom);
     }
-    
-    public boolean estTresor(){
-        return false;
-    }
-    
-    public boolean estMontee(){
-        return false;
-    }
-    
-    public boolean estHelico(){
-        return false;
-    }
-    public boolean estSac(){
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////IDENTIFICATION CLASSE///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    public boolean estTresor() {
         return false;
     }
 
+    public boolean estMontee() {
+        return false;
+    }
+
+    public boolean estHelico() {
+        return false;
+    }
+
+    public boolean estSac() {
+        return false;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////GETTERS&SETTERS///////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public Tresor getTresor() {
         return tresor;
     }
@@ -42,5 +50,5 @@ public abstract class CarteTirage extends Carte {
     public void setTresor(Tresor tresor) {
         this.tresor = tresor;
     }
-    
+
 }
