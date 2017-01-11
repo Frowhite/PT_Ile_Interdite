@@ -29,10 +29,12 @@ public class Controleur implements Observer {
     private Aventurier jCourant;
     private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
-    private boolean actionDonnerCarte = false;
+    private boolean lActionEstDonnerCarte = false;
+    private boolean piocheCarteMonteEau = false;
     private boolean actionDefausser = false;
     private boolean actionUtiliserSac = false;
     private boolean actionCarteHelico = false;
+    private boolean actionDonnerCarte = false;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -197,7 +199,7 @@ public class Controleur implements Observer {
         initialiserCartesTirages();
         initialiserCartesInondation();
         initialiserPositionJoueur();
-        for (int j = 0; j < 2; j++) {
+        for (int j = 0; j < 6; j++) {//2
             for (Aventurier jCourant : aventuriers) {
                 piocherCarteTresorDepart(jCourant);
             }
@@ -415,15 +417,20 @@ public class Controleur implements Observer {
     public void obtenirTresor(Aventurier av) {
         if (av.getPositionCourante().getTresor() != null) {
             if (peutPrendreTresor(av.getMain(), av.getPositionCourante())) {
+
                 av.addTresor(av.getPositionCourante().getTresor());
                 vuePlateau.getVueGrille().donnerTresor(av.getPositionCourante().getTresor());
+
+                Tuile secondeTuile = rechercherTresor(av);
+                defausseCarteTresor(av, av.getPositionCourante().getTresor());
+                av.getPositionCourante().setTresor(null);
+                secondeTuile.setTresor(null);
             }
-            Tuile secondeTuile = rechercherTresor(av);
-            defausseCarteTresor(av, av.getPositionCourante().getTresor());
-            av.getPositionCourante().setTresor(null);
-            secondeTuile.setTresor(null);
+
         }
 
+        finTour();
+        debutTour();
     }
 
     public Boolean peutPrendreTresor(ArrayList<CarteTirage> main, Tuile tuile) {
@@ -434,20 +441,20 @@ public class Controleur implements Observer {
         int zephyr = 0;
 
         for (int i = 0; i < main.size(); i++) {
-            if (main.get(i) == carteTresor) {
-                if (carteTresor.getTresor() == Tresor.CALICE) {
+            if (main.get(i).estTresor()) {
+                if ((main.get(i).getTresor() == Tresor.CALICE)) {
                     calice = calice + 1;
                 }
 
-                if (carteTresor.getTresor() == Tresor.CRISTAL) {
+                if (main.get(i).getTresor() == Tresor.CRISTAL) {
                     cristal = cristal + 1;
                 }
 
-                if (carteTresor.getTresor() == Tresor.PIERRE) {
+                if (main.get(i).getTresor() == Tresor.PIERRE) {
                     pierre = pierre + 1;
                 }
 
-                if (carteTresor.getTresor() == Tresor.ZEPHYR) {
+                if (main.get(i).getTresor() == Tresor.ZEPHYR) {
                     zephyr = zephyr + 1;
                 }
 
@@ -482,6 +489,9 @@ public class Controleur implements Observer {
         }
         for (int j = 0; j < cartesTresor.size(); j++) {
             if (cartesTresor.get(j).getTresor() == tresor) {
+                
+                vuePlateau.getAventurier().get(av.getId()-25).enleverCarte(cartesTresor.get(j).getId());
+                
                 av.removeCarteMain(cartesTresor.get(j));
             }
         }
@@ -628,7 +638,14 @@ public class Controleur implements Observer {
                 //vuePlateau.getAventurier(av.getId()).ajouterCarte(cartePioche.getId());
             }
             if (cartePioche.estMontee()) {
-                setNiveauEau(getNiveauEau() + 1);
+
+                if (!piocheCarteMonteEau) {//tout les 2 cartes monte des l'eaux augmente le niveau de l'eau de 1
+                    setPiocheCarteMonteEau(true);
+                } else {
+                    setNiveauEau(getNiveauEau() + 1);
+                    setPiocheCarteMonteEau(false);
+                }
+
                 addDefausseTirage(cartePioche);
                 if (!getDefausseInondation().isEmpty()) {
                     setDefausseInondation(melangerInondation(getDefausseInondation()));
@@ -705,7 +722,7 @@ public class Controleur implements Observer {
                 carteADefausser = c;
             }
         }
-        System.out.println("Z");
+
         jDefausseur.removeCarteMain(carteADefausser);
         addDefausseTirage(carteADefausser);
         if (jCourant.getMain().size() > 5) {
@@ -1242,6 +1259,14 @@ public class Controleur implements Observer {
 
     public void setActionDonnerCarte(boolean actionDonnerCarte) {
         this.actionDonnerCarte = actionDonnerCarte;
+    }
+
+    public boolean isPiocheCarteMonteEau() {
+        return piocheCarteMonteEau;
+    }
+
+    public void setPiocheCarteMonteEau(boolean piocheCarteMonteEau) {
+        this.piocheCarteMonteEau = piocheCarteMonteEau;
     }
 
     public boolean isActionDefausser() {

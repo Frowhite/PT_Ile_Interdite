@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -66,25 +67,6 @@ public class VuePlateau extends Observable {
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setVisible(true);
     }
-
-    /*public VueAventurier getAventurier(int idJoueur) {
-        VueAventurier aventurier = aventurier1;
-        switch (idJoueur) {
-            case 25:
-                aventurier = aventurier1;
-                break;
-            case 26:
-                aventurier = aventurier2;
-                break;
-            case 27:
-                aventurier = aventurier3;
-                break;
-            case 28:
-                aventurier = aventurier4;
-                break;
-        }
-        return aventurier;
-    }*/
 
     public VueGrille getVueGrille() {
         return vueGrille;

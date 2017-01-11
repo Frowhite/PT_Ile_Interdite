@@ -139,7 +139,7 @@ public class VueAction extends Observable {
         if (b) {
             window.setAlwaysOnTop(true);//met en premier plan
         } else {
-            window.setAlwaysOnTop(false);//met en premier plan
+            window.setAlwaysOnTop(false);
         }
         window.setVisible(b);
 
