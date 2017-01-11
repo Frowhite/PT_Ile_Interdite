@@ -820,7 +820,6 @@ public class Controleur implements Observer {
 
             }
         } else {
-            setActionCarteHelico(true);
             for (int i = 0; i < tuile.length; i++) {
                 if (!tuile[i].getAventuriers().isEmpty()) {
                     vuePlateau.getVueGrille().idTuileDeplacementPossible(tuile[i].getId());
