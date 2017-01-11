@@ -64,23 +64,23 @@ public class VueAction extends Observable {
 
         switch (pion) {
             case BLEU:
-                panelGlobale.setBackground(new Color(51,153,255));
-                
+                panelGlobale.setBackground(new Color(51, 153, 255));
+
                 break;
             case JAUNE:
-                panelGlobale.setBackground(new Color(255,255,102));
+                panelGlobale.setBackground(new Color(255, 255, 102));
                 break;
             case ORANGE:
-                panelGlobale.setBackground(new Color(255,178,102));
+                panelGlobale.setBackground(new Color(255, 178, 102));
                 break;
             case ROUGE:
-                panelGlobale.setBackground(new Color(255,102,102));
+                panelGlobale.setBackground(new Color(255, 102, 102));
                 break;
             case VERT:
-                panelGlobale.setBackground(new Color(153,255, 153));
+                panelGlobale.setBackground(new Color(153, 255, 153));
                 break;
             case VIOLET:
-                panelGlobale.setBackground(new Color(178,102, 255));
+                panelGlobale.setBackground(new Color(178, 102, 255));
                 break;
         }
 
@@ -105,24 +105,20 @@ public class VueAction extends Observable {
         actionListener(bUtiliseCarte, Commandes.CHOISIR_CARTE);
         panelCentre.add(bUtiliseCarte);
 
-        
-
         //boutton recup le tresor
         bPrendreTresor = new JButton("Recupérer le trésor");
         actionListener(bPrendreTresor, Commandes.RECUPERER_TRESOR);
         panelCentre.add(bPrendreTresor);
-        
-        
-         //boutton passe tour       
+
+        //boutton passe tour       
         bPasserTour = new JButton("Passer le tour");
         actionListener(bPasserTour, Commandes.PASSER_TOUR);
         panelCentre.add(bPasserTour);
-        
-        
+
         panelGlobale.add(panelCentre, BorderLayout.CENTER);
-            window.add(panelGlobale);
-            window.setVisible(true);
-        }
+        window.add(panelGlobale);
+        window.setVisible(true);
+    }
 
     public void actionListener(JButton button, Commandes c) {
         button.addActionListener(new ActionListener() {
@@ -138,8 +134,14 @@ public class VueAction extends Observable {
     public void fermerFenetre() {
         window.dispose();
     }
-    
-    public void apparaitreDisparaitre(boolean b){
-            window.setVisible(b);
+
+    public void apparaitreDisparaitre(boolean b) {
+        if (b) {
+            window.setAlwaysOnTop(true);//met en premier plan
+        } else {
+            window.setAlwaysOnTop(false);//met en premier plan
+        }
+        window.setVisible(b);
+
     }
 }

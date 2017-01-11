@@ -152,7 +152,7 @@ public class Controleur implements Observer {
                         break;
                     case RECUPERER_TRESOR:
                         vueAction.fermerFenetre();
-                        System.out.println("5");
+                        obtenirTresor(jCourant);
                         break;
                     case PASSER_TOUR:
                         vueAction.fermerFenetre();
@@ -334,12 +334,6 @@ public class Controleur implements Observer {
             piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
             for (int i = 0; i < getNiveauEau(); i++) {
                 piocherCarteInondation();
-
-            }
-            if (jCourant.getMain().size() > 5) {
-            System.out.println("Debut");
-            vueAction.apparaitreDisparaitre(false);
-            choisirCarteADefausser(jCourant);
             }
 
             numJoueurQuiJoue += 1;
@@ -397,10 +391,11 @@ public class Controleur implements Observer {
     }
 
     //////////////////////////////////OBTENIR TRESOR////////////////////////////
-    public void obtenirTresor(Aventurier av, Tuile tuile) {
+    public void obtenirTresor(Aventurier av) {
         if (av.getPositionCourante().getTresor() != null) {
             if (peutPrendreTresor(av.getMain(), av.getPositionCourante())) {
                 av.addTresor(av.getPositionCourante().getTresor());
+                 vuePlateau.getVueGrille().donnerTresor(av.getPositionCourante().getTresor());
             }
             Tuile secondeTuile = rechercherTresor(av);
             defausseCarteTresor(av, av.getPositionCourante().getTresor());

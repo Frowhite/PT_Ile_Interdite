@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import model.cases.Tuile;
+import util.Utils;
 import util.Utils.EtatTuile;
 import util.Utils.Pion;
 
@@ -107,6 +108,11 @@ public class VueGrille extends JPanel {
                 .getImage().getScaledInstance(dim.width / 6 - 210, dim.height / 6 - 30, Image.SCALE_SMOOTH));
         tresorZephyr = new ImageIcon(new ImageIcon(getClass().getResource("/images/tresors/zephyr.png"))
                 .getImage().getScaledInstance(dim.width / 6 - 190, dim.height / 6 - 30, Image.SCALE_SMOOTH));
+    }
+    
+    public void donnerTresor(Utils.Tresor t){
+        
+    
     }
 
     public void allumerJCourant(int idTuile){
