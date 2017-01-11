@@ -33,7 +33,7 @@ public class VueMontrerJoueur {
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit =  Toolkit.getDefaultToolkit(); 
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width / 2 + 180, dim.height / 2 - 215);
+        window.setLocation(dim.width*41 / 100 +360, dim.height*21 / 100 + 100);
         panelGlobale = new JPanel(gl);
         
         panelGlobale.add(new JLabel("Joueur :"));

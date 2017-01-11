@@ -35,7 +35,6 @@ public class VueGrille extends JPanel {
     public VueGrille(VuePlateau vuePlateau) {
         
         this.vuePlateau = vuePlateau;
-        this.setPreferredSize(new Dimension(600, 600));
         panelGlobale = new JPanel();
         panelGlobale.setLayout(new GridBagLayout());
 
