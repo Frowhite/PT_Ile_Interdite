@@ -1,4 +1,4 @@
- package model.cases;
+package model.cases;
 
 import java.util.ArrayList;
 import model.aventuriers.Aventurier;
@@ -88,12 +88,11 @@ public class Grille {
             }
             buffer.remove(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes()]);
 
-                for (Tuile t : buffer) {
-                    if (t != null && t.getEtat() != Utils.EtatTuile.COULEE) {
-                        av.addTuilesPossibles(t);
-                    }
+            for (Tuile t : buffer) {
+                if (t != null && t.getEtat() != Utils.EtatTuile.COULEE) {
+                    av.addTuilesPossibles(t);
                 }
-            
+            }
 
         }
     }
@@ -126,7 +125,26 @@ public class Grille {
         }
     }
 
-  
+    public ArrayList<Tuile> tuilesPossiblesDeplacementHelico() {
+        ArrayList<Tuile> buffer = new ArrayList();
+        for (int l = 0; l < 6; l++) {
+            for (int c = 0; c < 6; c++) {
+                if ((l == 0 && (c == 2 || c == 3))
+                        || (l == 1 && (c == 1 || c == 2 || c == 3 || c == 4))
+                        || (l == 2 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))
+                        || (l == 3 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))
+                        || (l == 4 && (c == 1 || c == 2 || c == 3 || c == 4))
+                        || (l == 5 && (c == 2 || c == 3))) {
+                    if (tuiles[l][c].getEtat() != Utils.EtatTuile.COULEE) {
+                        buffer.add(tuiles[l][c]);
+                    }
+                }
+            }
+
+        }
+        return buffer;
+    }
+
     public void remplirGrille(Tuile[] tuile) {
         int i = 0;
         for (int l = 0; l < 6; l++) {
@@ -199,24 +217,24 @@ public class Grille {
             }
         }
     }
-    
-    public ArrayList<Tuile> CasesInonder(){
+
+    public ArrayList<Tuile> CasesInonder() {
         ArrayList<Tuile> casesInonde = new ArrayList();
-        
+
         for (int l = 0; l < 6; l++) {
-                for (int c = 0; c < 6; c++) {
-                    if ((l == 0 && (c == 2 || c == 3))
-                            || (l == 1 && (c == 1 || c == 2 || c == 3 || c == 4))
-                            || (l == 2 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))
-                            || (l == 3 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))
-                            || (l == 4 && (c == 1 || c == 2 || c == 3 || c == 4))
-                            || (l == 5 && (c == 2 || c == 3))) {
-                        if (tuiles[l][c].getEtat() == Utils.EtatTuile.INONDEE) {
-                            casesInonde.add(tuiles[l][c]);
-                        }
+            for (int c = 0; c < 6; c++) {
+                if ((l == 0 && (c == 2 || c == 3))
+                        || (l == 1 && (c == 1 || c == 2 || c == 3 || c == 4))
+                        || (l == 2 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))
+                        || (l == 3 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))
+                        || (l == 4 && (c == 1 || c == 2 || c == 3 || c == 4))
+                        || (l == 5 && (c == 2 || c == 3))) {
+                    if (tuiles[l][c].getEtat() == Utils.EtatTuile.INONDEE) {
+                        casesInonde.add(tuiles[l][c]);
                     }
                 }
             }
+        }
         return casesInonde;
     }
 
