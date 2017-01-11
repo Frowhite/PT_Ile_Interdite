@@ -36,7 +36,7 @@ public class VueAventurier extends JPanel {
         this.idAventurier = idAventurir;
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        this.setSize(dim.width / 4, 430);
+        this.setSize(dim.width / 4, dim.height / 2);
         this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.BLACK));
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -92,13 +92,13 @@ public class VueAventurier extends JPanel {
             }
         }*/
         for (int i = 0; i < vuePlateau.getAventurier().size(); i++) {
-            vuePlateau.getAventurier().get(i).setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.BLACK));
+            vuePlateau.getAventurier().get(i).setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
             vuePlateau.getAventurier().get(i).setPossibliteJoueurDonnerCarte(false);
         }
-        
+
         int i = 0;
-        while(i < vueCarte.size() && vueCarte.get(i).getImg() != null){
-        i++;
+        while (i < vueCarte.size() && vueCarte.get(i).getImg() != null) {
+            i++;
         }
         vueCarte.get(i).mettreCarte(carteRecue);
     }
@@ -106,7 +106,7 @@ public class VueAventurier extends JPanel {
     public void enleverCarte(int idCarte) {
         for (int i = 0; i < vueCarte.size() /*&& vueCarte.contains(i)*/; i++) {
             if (vueCarte.get(i).getIdCarte() == idCarte) {
-                vueCarte.get(i).setBorder(BorderFactory.createMatteBorder(2,2,2,2, Color.BLACK));
+                vueCarte.get(i).setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
                 vueCarte.remove(vueCarte.get(i));
             }
         }
@@ -159,13 +159,11 @@ public class VueAventurier extends JPanel {
         }
     }
 
-
     public void aventurierCliquable() {
         this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
         possibliteJoueurDonnerCarte = true;
 
     }
-    
 
     public void carteCliquable(int idCate) {
         for (int i = 0; i < vueCarte.size(); i++) {
@@ -175,8 +173,6 @@ public class VueAventurier extends JPanel {
             }
         }
     }
-    
-    
 
     public VuePlateau getVuePlateau() {
         return vuePlateau;
@@ -189,7 +185,5 @@ public class VueAventurier extends JPanel {
     public void setPossibliteJoueurDonnerCarte(boolean possibliteJoueurDonnerCarte) {
         this.possibliteJoueurDonnerCarte = possibliteJoueurDonnerCarte;
     }
-    
-    
-    
+
 }

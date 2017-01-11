@@ -41,7 +41,7 @@ public class VueDemarrage extends Observable {
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width / 2 - 180, dim.height / 2 - 315);
+        window.setLocation(dim.width*41 / 100, dim.height*21 / 100);
         panelGlobale = new JPanel(new BorderLayout());
         //***haut***
         titre = new JLabel(new ImageIcon(getClass().getResource("/images/titre.png")));

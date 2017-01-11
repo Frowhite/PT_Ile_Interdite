@@ -35,7 +35,8 @@ public class VueNiveau {
         window.setSize(cellWidth*2+Parameters.SWING_BORDERS_HEIGHT, Parameters.HAUTEUR_AUTRES_VUES);        
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width / 2 + 220, dim.height / 2 - 370);
+        window.setLocation(dim.width*41 / 100 +390, dim.height*21 / 100 -55);
+        window.setAlwaysOnTop(true);//met en premier plan
         //window.setLocation(30, Parameters.TOP_AUTRES_VUES);
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         

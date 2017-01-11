@@ -18,7 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import util.Utils;
 import util.Utils.Commandes;
 import util.Utils.Pion;
 
@@ -41,7 +40,7 @@ public class VueAction extends Observable {
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width / 2 + 250, dim.height / 2 + 280);
+        window.setLocation(dim.width*64/ 100, dim.height*82/100);
         panelGlobale = new JPanel(new BorderLayout());
         //***Haut***
         //text nb d'action
