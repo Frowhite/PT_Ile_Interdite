@@ -24,7 +24,7 @@ public class VuePlateau extends Observable {
     private int dernierCarteAppuye;
     private int dernierJoueurAppuye;
     /////////////////////////////////////////////////
-    private ImageIcon plateau;
+    
     private VueGrille vueGrille;
     private ArrayList<VueAventurier> aventurier = new ArrayList<>();
 
@@ -35,14 +35,11 @@ public class VuePlateau extends Observable {
     public VuePlateau(int nbJoueur) {
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension dim = kit.getScreenSize();
-        plateau = new ImageIcon(new ImageIcon(getClass().getResource("/images/eau.jpg"))
-                .getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_DEFAULT));
+        
 
         panelGlobale = new JPanel(new BorderLayout());
         //***création de la grille de jeu***
-        vueGrille = new VueGrille(plateau.getImage(), this);
+        vueGrille = new VueGrille(this);
         panelGlobale.add(vueGrille, BorderLayout.CENTER);
 
         //***création des aventuriers de 2 à 4***

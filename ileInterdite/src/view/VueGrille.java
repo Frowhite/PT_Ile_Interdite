@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import model.cases.Tuile;
@@ -21,15 +22,14 @@ public class VueGrille extends JPanel {
     private HashMap<Integer, VueTuile> tuile = new HashMap<>();
 
     private VuePlateau vuePlateau;
-    private Image img;
     private JPanel panelGlobale;
     private GridBagConstraints gbc = new GridBagConstraints();
+    private ImageIcon plateau, tresorCalice, tresorCristal, tresorPierre, tresorZephyr;
 
-    public VueGrille(Image img, VuePlateau vuePlateau) {
+    public VueGrille(VuePlateau vuePlateau) {
         this.vuePlateau = vuePlateau;
-        this.img = img;
         this.setPreferredSize(new Dimension(600, 600));
-
+        imageFond();
         panelGlobale = new JPanel();
         panelGlobale.setLayout(new GridBagLayout());
 
@@ -87,9 +87,26 @@ public class VueGrille extends JPanel {
 
     //dessin le fond
     public void paintComponent(Graphics g) {
-        Toolkit kit = Toolkit.getDefaultToolkit();
+        g.drawImage(plateau.getImage(), 0, 0, null);
+        g.drawImage(tresorCalice.getImage(), 70, 70, null);
+        g.drawImage(tresorCristal.getImage(), 1090, 70, null);
+        g.drawImage(tresorPierre.getImage(), 70, 800, null);
+        g.drawImage(tresorZephyr.getImage(), 1090, 800, null);
+    }
+    
+    public void imageFond(){
+    Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        g.drawImage(img, 0, 0, null);
+        plateau = new ImageIcon(new ImageIcon(getClass().getResource("/images/eau.jpg"))
+                .getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
+        tresorCalice = new ImageIcon(new ImageIcon(getClass().getResource("/images/tresors/calice.png"))
+                .getImage().getScaledInstance(dim.height / 6 - 90, dim.height / 6 - 30, Image.SCALE_SMOOTH));
+        tresorCristal = new ImageIcon(new ImageIcon(getClass().getResource("/images/tresors/cristal.png"))
+                .getImage().getScaledInstance(dim.width / 6 - 200, dim.height / 6 - 30, Image.SCALE_SMOOTH));
+        tresorPierre = new ImageIcon(new ImageIcon(getClass().getResource("/images/tresors/pierre.png"))
+                .getImage().getScaledInstance(dim.width / 6 - 210, dim.height / 6 - 30, Image.SCALE_SMOOTH));
+        tresorZephyr = new ImageIcon(new ImageIcon(getClass().getResource("/images/tresors/zephyr.png"))
+                .getImage().getScaledInstance(dim.width / 6 - 190, dim.height / 6 - 30, Image.SCALE_SMOOTH));
     }
 
     public void allumerJCourant(int idTuile){
