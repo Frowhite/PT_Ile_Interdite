@@ -127,6 +127,10 @@ public class VuePlateau extends Observable {
         clearChanged();
     }
     
+    public void setVisible(boolean b){
+        this.setVisible(b);
+    }
+    
     
 /////////////////GETTEURS&SETTEURS//////////////////   
     

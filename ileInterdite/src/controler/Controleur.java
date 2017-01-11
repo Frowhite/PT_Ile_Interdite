@@ -773,7 +773,10 @@ public class Controleur implements Observer {
                     tresorPossedesParEquipe.contains(Tresor.ZEPHYR) && 
                     tresorPossedesParEquipe.contains(Tresor.PIERRE) && 
                     tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == 4)){
-                    //Partie Gagner
+                    
+                vuePlateau.setVisible(false);
+                vueAction.apparaitreDisparaitre(false);
+                VueGagner vueGagner = new VueGagner();
                 
             }
         }else{
