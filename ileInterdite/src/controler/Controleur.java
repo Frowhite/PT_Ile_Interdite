@@ -171,7 +171,7 @@ public class Controleur implements Observer {
 //////////////////////////////CREATION & MISE EN PLACE DE LA PARTIE ////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
-        vueNiveau = new VueNiveau(niveauEau);
+      //  vueNiveau = new VueNiveau(niveauEau);
         setNiveauEau(getVueNiveau().getNiveau());
         initialiserCartesTirages();
         initialiserCartesInondation();
