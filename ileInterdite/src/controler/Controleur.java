@@ -171,7 +171,7 @@ public class Controleur implements Observer {
 //////////////////////////////CREATION & MISE EN PLACE DE LA PARTIE ////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
-      //  vueNiveau = new VueNiveau(niveauEau);
+        //  vueNiveau = new VueNiveau(niveauEau);
         setNiveauEau(getVueNiveau().getNiveau());
         initialiserCartesTirages();
         initialiserCartesInondation();
@@ -306,14 +306,18 @@ public class Controleur implements Observer {
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
         vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
-        
+
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
         setjCourant(aventuriers.get(numJoueurQuiJoue));
+        
+        
         if (jCourant.getMain().size() > 5) {
+            System.out.println("Debut");
             vueAction.apparaitreDisparaitre(false);
             choisirCarteADefausser(jCourant);
         }
+        
     }
 
     public void finTour() {
@@ -328,7 +332,9 @@ public class Controleur implements Observer {
 
             }
             if (jCourant.getMain().size() > 5) {
-                choisirCarteADefausser(jCourant);
+            System.out.println("Debut");
+            vueAction.apparaitreDisparaitre(false);
+            choisirCarteADefausser(jCourant);
             }
 
             numJoueurQuiJoue += 1;
@@ -660,10 +666,11 @@ public class Controleur implements Observer {
     ///////////////////////////////DEFAUSSER CARTE//////////////////////////////
     public void choisirCarteADefausser(Aventurier jDefausseur) {
         for (CarteTirage c : jDefausseur.getMain()) {
+            System.out.println("A");
             //Donner a la methode l'ide de la carte c
             vuePlateau.getAventurier().get(jDefausseur.getId() - 25).carteCliquable(c.getId());
         }
-        
+
     }
 
     public void defausser(Aventurier jDefausseur, int idCarte) {
@@ -675,12 +682,12 @@ public class Controleur implements Observer {
                 carteADefausser = c;
             }
         }
-
+System.out.println("Z");
         jDefausseur.removeCarteMain(carteADefausser);
         addDefausseTirage(carteADefausser);
         if (jCourant.getMain().size() > 5) {
             choisirCarteADefausser(jCourant);
-        }else{
+        } else {
             vueAction.apparaitreDisparaitre(true);
         }
     }
