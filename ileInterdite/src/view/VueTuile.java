@@ -84,8 +84,10 @@ public class VueTuile extends JPanel {
     }
 
     public void tuilePossibleDeplacement() {
+
         possibliteDeplacement = true;
         this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 153, 51)));
+
     }
 
     public void tuilePossibleAssechement() {

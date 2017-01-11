@@ -8,6 +8,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -29,12 +30,12 @@ public class VueAction extends Observable {
 
     private JFrame window;
     private JPanel panelGlobale, panelCentre;
-    private GridLayout gl = new GridLayout(2, 2);
+    private GridLayout gl = new GridLayout(3, 2);
     private JLabel tNbDAction;
-    private JButton bDeplace, bAssechee, bDonneCarte, bUtiliseCarte, bPrendreTresor;
+    private JButton bDeplace, bAssechee, bDonneCarte, bUtiliseCarte, bPrendreTresor, bPasserTour;
 
     public VueAction(String nomJCourant, int numAction, Pion pion) {
-        window = new JFrame();
+        window = new JFrame("Action");
         window.setSize(300, 100);
         window.setAlwaysOnTop(true);//met en premier plan
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
@@ -83,6 +84,7 @@ public class VueAction extends Observable {
                 break;
         }
 
+        tNbDAction.setFont(new Font("Arial", 0, 17));
         panelGlobale.add(tNbDAction, BorderLayout.NORTH);
         //***panel centre***
         panelCentre = new JPanel(gl);
@@ -103,17 +105,24 @@ public class VueAction extends Observable {
         actionListener(bUtiliseCarte, Commandes.CHOISIR_CARTE);
         panelCentre.add(bUtiliseCarte);
 
-        panelGlobale.add(panelCentre, BorderLayout.CENTER);
+        
 
-        //***Bas***
-        //boutton prendre tresor
+        //boutton recup le tresor
         bPrendreTresor = new JButton("Recupérer le trésor");
         actionListener(bPrendreTresor, Commandes.RECUPERER_TRESOR);
-        panelGlobale.add(bPrendreTresor, BorderLayout.SOUTH);
-
-        window.add(panelGlobale);
-        window.setVisible(true);
-    }
+        panelCentre.add(bPrendreTresor);
+        
+        
+         //boutton passe tour       
+        bPasserTour = new JButton("Passer le tour");
+        actionListener(bPasserTour, Commandes.PASSER_TOUR);
+        panelCentre.add(bPasserTour);
+        
+        
+        panelGlobale.add(panelCentre, BorderLayout.CENTER);
+            window.add(panelGlobale);
+            window.setVisible(true);
+        }
 
     public void actionListener(JButton button, Commandes c) {
         button.addActionListener(new ActionListener() {

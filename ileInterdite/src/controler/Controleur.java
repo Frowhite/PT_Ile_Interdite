@@ -116,7 +116,6 @@ public class Controleur implements Observer {
                         } else {
                             defausser(jCourant, vuePlateau.getDernierCarteAppuye());
                         }
-
                         //vuePlateau.getDernierCarteAppuye();
                         break;
                     case CHOISIR_JOUEUR:
@@ -154,6 +153,12 @@ public class Controleur implements Observer {
                     case RECUPERER_TRESOR:
                         vueAction.fermerFenetre();
                         System.out.println("5");
+                        break;
+                    case PASSER_TOUR:
+                        vueAction.fermerFenetre();
+                        setActionRestante(1);
+                        finTour();
+                        debutTour();
                         break;
                 }
             }
@@ -538,7 +543,6 @@ public class Controleur implements Observer {
     }
 
     public void peutDonnerAventurier(Aventurier jDonneur) {
-
         if (jDonneur.getCapacite() == Pion.ORANGE) {
             setJoueurPourDonnerCarte(aventuriers);
         } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
