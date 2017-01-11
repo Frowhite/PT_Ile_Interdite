@@ -30,6 +30,8 @@ public class Controleur implements Observer {
     private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
     private boolean lActionEstDonnerCarte = false;
+    private boolean actionDefausser = false;
+    private boolean actionUtiliserSac = false;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -113,8 +115,10 @@ public class Controleur implements Observer {
                         if (lActionEstDonnerCarte) {
                             setlActionEstDonnerCarte(false);
                             peutDonnerAventurier(jCourant);
-                        } else {
+                        } else if (actionDefausser) {
                             defausser(jCourant, vuePlateau.getDernierCarteAppuye());
+                        } else if(actionUtiliserSac) {
+                            UtiliserSac(jCourant);
                         }
                         //vuePlateau.getDernierCarteAppuye();
                         break;
@@ -148,7 +152,7 @@ public class Controleur implements Observer {
                         break;
                     case CHOISIR_CARTE:
                         vueAction.fermerFenetre();
-                        System.out.println("4");
+                        choisirCarteAUtiliser(jCourant);
                         break;
                     case RECUPERER_TRESOR:
                         vueAction.fermerFenetre();
@@ -315,14 +319,13 @@ public class Controleur implements Observer {
         vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
         vueAction.addObserver(this);
         setjCourant(aventuriers.get(numJoueurQuiJoue));
-        
-        
+
         if (jCourant.getMain().size() > 5) {
             System.out.println("Debut");
             vueAction.apparaitreDisparaitre(false);
             choisirCarteADefausser(jCourant);
         }
-        
+
     }
 
     public void finTour() {
@@ -337,9 +340,9 @@ public class Controleur implements Observer {
 
             }
             if (jCourant.getMain().size() > 5) {
-            System.out.println("Debut");
-            vueAction.apparaitreDisparaitre(false);
-            choisirCarteADefausser(jCourant);
+                System.out.println("Debut");
+                vueAction.apparaitreDisparaitre(false);
+                choisirCarteADefausser(jCourant);
             }
 
             numJoueurQuiJoue += 1;
@@ -397,7 +400,7 @@ public class Controleur implements Observer {
     }
 
     //////////////////////////////////OBTENIR TRESOR////////////////////////////
-    public void obtenirTresor(Aventurier av, Tuile tuile) {
+    public void obtenirTresor(Aventurier av) {
         if (av.getPositionCourante().getTresor() != null) {
             if (peutPrendreTresor(av.getMain(), av.getPositionCourante())) {
                 av.addTresor(av.getPositionCourante().getTresor());
@@ -672,6 +675,7 @@ public class Controleur implements Observer {
         for (CarteTirage c : jDefausseur.getMain()) {
             System.out.println("A");
             //Donner a la methode l'ide de la carte c
+            setActionDefausser(true);
             vuePlateau.getAventurier().get(jDefausseur.getId() - 25).carteCliquable(c.getId());
         }
 
@@ -686,7 +690,7 @@ public class Controleur implements Observer {
                 carteADefausser = c;
             }
         }
-System.out.println("Z");
+        System.out.println("Z");
         jDefausseur.removeCarteMain(carteADefausser);
         addDefausseTirage(carteADefausser);
         if (jCourant.getMain().size() > 5) {
@@ -694,6 +698,66 @@ System.out.println("Z");
         } else {
             vueAction.apparaitreDisparaitre(true);
         }
+    }
+
+    ///////////////////////////////UTILISATION CARTE SPECIAL////////////////////
+    public void choisirCarteAUtiliser(Aventurier jUtilisateur) {
+        if (!jUtilisateur.getMain().isEmpty()) {
+
+            ArrayList<CarteTirage> verifSiCarte = new ArrayList();
+
+            for (CarteTirage c : jUtilisateur.getMain()) {
+                if (c.estSac() || c.estHelico()) {
+                    verifSiCarte.add(c);
+                }
+            }
+
+            if (!verifSiCarte.isEmpty()) {
+                for (CarteTirage c : jUtilisateur.getMain()) {
+                    if (c.estHelico() || c.estSac()) {
+                        //Donner a la methode l'ide de la carte c
+                        setActionUtiliserSac(true);
+                        vuePlateau.getAventurier().get(jUtilisateur.getId() - 25).carteCliquable(c.getId());
+                    }
+                }
+            } else {
+                debutTour();
+            }
+        } else {
+            debutTour();
+        }
+    }
+
+    public void UtiliserCarte(Aventurier jUtilisateur, int idCarte) {
+
+        for (CarteTirage c : jUtilisateur.getMain()) {
+            if (c.getId() == idCarte) {
+                if (c.estSac()) {
+                    System.out.println("Utilisation Carte Sac");
+                    UtiliserSac(jUtilisateur);
+                }
+                if (c.estHelico()) {
+                    UtiliserHelico();
+                }
+            }
+        }
+    }
+
+    public void UtiliserSac(Aventurier jUtilisateur) {
+        ArrayList<Tuile> casesInondee = new ArrayList();
+        casesInondee = grille.CasesInonder();
+        if (!casesInondee.isEmpty()) {
+            for (Tuile t : casesInondee) {
+                vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
+            }
+        } else {
+            System.out.println("Erreur");
+            debutTour();
+        }
+    }
+
+    public void UtiliserHelico() {
+
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1113,4 +1177,21 @@ System.out.println("Z");
         this.lActionEstDonnerCarte = lActionEstDonnerCarte;
     }
 
+    public boolean isActionDefausser() {
+        return actionDefausser;
+    }
+
+    public void setActionDefausser(boolean ActionDefausser) {
+        this.actionDefausser = ActionDefausser;
+    }
+
+    public boolean isActionUtiliserSac() {
+        return actionUtiliserSac;
+    }
+
+    public void setActionUtiliserSac(boolean actionUtiliserSac) {
+        this.actionUtiliserSac = actionUtiliserSac;
+    }
+
+    
 }
