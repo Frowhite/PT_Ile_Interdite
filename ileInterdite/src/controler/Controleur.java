@@ -29,9 +29,10 @@ public class Controleur implements Observer {
     private Aventurier jCourant;
     private int numJoueurQuiJoue = 0;
     private int actionRestante = 3;
-    private boolean lActionEstDonnerCarte = false;
+    private boolean actionDonnerCarte = false;
     private boolean actionDefausser = false;
     private boolean actionUtiliserSac = false;
+    private boolean actionCarteHelico = false;
 
     private VueNiveau vueNiveau;
     private VueDemarrage vueDemarrage;
@@ -112,13 +113,24 @@ public class Controleur implements Observer {
                         }
                         break;
                     case CHOISIR_CARTE:
-                        if (lActionEstDonnerCarte) {
-                            setlActionEstDonnerCarte(false);
-                            peutDonnerAventurier(jCourant);
-                        } else if (actionDefausser) {
-                            defausser(jCourant, vuePlateau.getDernierCarteAppuye());
-                        } else if (actionUtiliserSac) {
-                            utiliserSac();
+                        for (CarteTirage c : jCourant.getMain()) {
+                            if (c.getId() == vuePlateau.getDernierCarteAppuye()) {
+                                if (c.estHelico()) {
+                                    setActionCarteHelico(true);
+                                } else if (c.estSac()) {
+                                    setActionUtiliserSac(true);
+                                }
+                            }
+                        }
+                            if (actionDonnerCarte) {
+                                peutDonnerAventurier(jCourant);
+                            } else if (actionDefausser) {
+                                defausser(jCourant, vuePlateau.getDernierCarteAppuye());
+                            } else if (actionUtiliserSac) {
+                                utiliserSac();
+                            } else if (actionCarteHelico) {
+                                utiliserHelico(jCourant);
+                            
                         }
                         //vuePlateau.getDernierCarteAppuye();
                         break;
@@ -349,14 +361,17 @@ public class Controleur implements Observer {
             //vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
         }
 
-        for (int i = 0; i < tuile.length; i++) {
-            if (tuile[i].getId() == 0 && tuile[i].getEtat() == EtatTuile.COULEE) {
-                
-               //Faire Disparaitre le Plateau de jeu
-                vueAction.apparaitreDisparaitre(false);
-                VuePerdu vuePerdu = new VuePerdu();
+        if (tuile[0].getEtat() == EtatTuile.COULEE
+                || (!TresorRecuperer(Tresor.PIERRE) && tuile[18].getEtat() == EtatTuile.COULEE && tuile[19].getEtat() == EtatTuile.COULEE)
+                || (!TresorRecuperer(Tresor.CRISTAL) && tuile[1].getEtat() == EtatTuile.COULEE && tuile[2].getEtat() == EtatTuile.COULEE)
+                || (!TresorRecuperer(Tresor.CALICE) && tuile[14].getEtat() == EtatTuile.COULEE && tuile[15].getEtat() == EtatTuile.COULEE)
+                || (!TresorRecuperer(Tresor.ZEPHYR) && tuile[10].getEtat() == EtatTuile.COULEE && tuile[11].getEtat() == EtatTuile.COULEE)) {
 
-            }
+            //Faire Disparaitre le Plateau de jeu
+//                vueAction.apparaitreDisparaitre(false);
+//                VuePerdu vuePerdu = new VuePerdu();
+            System.out.println("perdu");
+
         }
     }
 
@@ -534,7 +549,7 @@ public class Controleur implements Observer {
                         vuePlateau.getAventurier().get(jDonneur.getId() - 25).carteCliquable(c.getId());
                     }
                 }
-                setlActionEstDonnerCarte(true);
+                setActionDonnerCarte(true);
             } else {
                 debutTour();
             }
@@ -560,6 +575,7 @@ public class Controleur implements Observer {
     }
 
     public void donnerCarte(Aventurier jDonneur, int idCarte, int idReceveur) {
+        setActionDonnerCarte(false);
         Aventurier jReceveur = null;
         CarteTirage carteADonner = null;
         for (Aventurier av : aventuriers) {
@@ -647,6 +663,7 @@ public class Controleur implements Observer {
 
             remPiocheInondation(tuileInonde);
             for (int i = 0; i < getTuile().length; i++) {
+
                 if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
                     tuile[i].setEtat(EtatTuile.INONDEE);
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
@@ -680,7 +697,7 @@ public class Controleur implements Observer {
     }
 
     public void defausser(Aventurier jDefausseur, int idCarte) {
-
+        setActionDefausser(false);
         CarteTirage carteADefausser = null;
 
         for (CarteTirage c : jDefausseur.getMain()) {
@@ -700,6 +717,7 @@ public class Controleur implements Observer {
 
     ///////////////////////////////UTILISATION CARTE SPECIAL////////////////////
     public void choisirCarteAUtiliser(Aventurier jUtilisateur) {
+        boolean t = true;
         if (!jUtilisateur.getMain().isEmpty()) {
 
             ArrayList<CarteTirage> verifSiCarte = new ArrayList();
@@ -711,13 +729,13 @@ public class Controleur implements Observer {
             }
 
             if (!verifSiCarte.isEmpty()) {
-                for (CarteTirage c : jUtilisateur.getMain()) {
-                    if (c.estHelico() || c.estSac()) {
-                        //Donner a la methode l'ide de la carte c
-                        setActionUtiliserSac(true);
+                for (CarteTirage c : verifSiCarte) {
+                    
+
                         vuePlateau.getAventurier().get(jUtilisateur.getId() - 25).carteCliquable(c.getId());
-                    }
+                    
                 }
+
             } else {
                 debutTour();
             }
@@ -742,6 +760,7 @@ public class Controleur implements Observer {
     }
 
     public void utiliserSac() {
+        setActionUtiliserSac(false);
         ArrayList<Tuile> casesInondee = new ArrayList();
         casesInondee = grille.CasesInonder();
         if (!casesInondee.isEmpty()) {
@@ -756,6 +775,7 @@ public class Controleur implements Observer {
     }
 
     public void utiliserHelico(Aventurier jUtilisateur) {
+        setActionCarteHelico(false);
         if (jUtilisateur.getId() == 0) {
             ArrayList<Tresor> tresorPossedesParEquipe = new ArrayList();
             for (Aventurier av : aventuriers) {
@@ -772,21 +792,39 @@ public class Controleur implements Observer {
                     tresorPossedesParEquipe.add(Tresor.ZEPHYR);
                 }
             }
-            if(tresorPossedesParEquipe.contains(Tresor.CALICE) && 
-                    tresorPossedesParEquipe.contains(Tresor.ZEPHYR) && 
-                    tresorPossedesParEquipe.contains(Tresor.PIERRE) && 
-                    tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == 4)){
-                    
-             //Faire Disparaitre le plateau de jeu
+            if (tresorPossedesParEquipe.contains(Tresor.CALICE)
+                    && tresorPossedesParEquipe.contains(Tresor.ZEPHYR)
+                    && tresorPossedesParEquipe.contains(Tresor.PIERRE)
+                    && tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == 4)) {
+
+                //Faire Disparaitre le plateau de jeu
                 vueAction.apparaitreDisparaitre(false);
                 VueGagner vueGagner = new VueGagner();
-                
+
             }
-        }else{
-            
-            
+        } else {
+            setActionCarteHelico(true);
+            for (int i = 0; i < tuile.length; i++) {
+                if (!tuile[i].getAventuriers().isEmpty()) {
+                    vuePlateau.getVueGrille().idTuileDeplacementPossible(tuile[i].getId());
+                }
+
+            }
         }
 
+    }
+
+    ////////////////////////////////AUTRE///////////////////////////////////////
+    public boolean TresorRecuperer(Tresor tresor) {
+        int i = 0;
+        boolean t = false;
+        while (t = false || i < tuile.length) {
+            if (tuile[i].getTresor() == tresor) {
+                t = true;
+            }
+            i++;
+        }
+        return t;
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1202,8 +1240,8 @@ public class Controleur implements Observer {
         this.joueurPourDonnerCarte = joueurPourDonnerCarte;
     }
 
-    public void setlActionEstDonnerCarte(boolean lActionEstDonnerCarte) {
-        this.lActionEstDonnerCarte = lActionEstDonnerCarte;
+    public void setActionDonnerCarte(boolean actionDonnerCarte) {
+        this.actionDonnerCarte = actionDonnerCarte;
     }
 
     public boolean isActionDefausser() {
@@ -1220,6 +1258,14 @@ public class Controleur implements Observer {
 
     public void setActionUtiliserSac(boolean actionUtiliserSac) {
         this.actionUtiliserSac = actionUtiliserSac;
+    }
+
+    public boolean isActionCarteHelico() {
+        return actionCarteHelico;
+    }
+
+    public void setActionCarteHelico(boolean actionCarteHelico) {
+        this.actionCarteHelico = actionCarteHelico;
     }
 
 }

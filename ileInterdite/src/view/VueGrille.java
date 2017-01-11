@@ -124,8 +124,18 @@ public class VueGrille extends JPanel {
         }
         
     }
+    
+//    public void selectJoueurPourHelico(){
+//        for (int i = 0; i < tuile.size(); i++) {
+//            if (!tuile.get(i).getPion().isEmpty()) {
+//                tuile.get(i).setPossibliteDeplacement(true);
+//            }
+//        }
+//    }
+    
     public void idTuileDeplacementPossible(int idTuile) {
         tuile.get(idTuile).tuilePossibleDeplacement();
+        
     }
     public void idTuileAssechementPossible(int idTuile) {
         tuile.get(idTuile).tuilePossibleAssechement();
