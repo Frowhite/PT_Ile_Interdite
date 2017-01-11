@@ -33,6 +33,10 @@ public class VueGrille extends JPanel {
     private Dimension dim = kit.getScreenSize();
 
     public VueGrille(VuePlateau vuePlateau) {
+        tresors.add(Tresor.PIERRE);
+        tresors.add(Tresor.CALICE);
+        tresors.add(Tresor.CRISTAL);
+        tresors.add(Tresor.ZEPHYR);
         this.vuePlateau = vuePlateau;
         this.setPreferredSize(new Dimension(600, 600));
         panelGlobale = new JPanel();
@@ -84,6 +88,7 @@ public class VueGrille extends JPanel {
         for (int i = 0; i < tuile.size(); i++) {
             tuile.get(i).setPossibliteDeplacement(false);
             tuile.get(i).setPossibliteAssechement(false);
+            //tuile.get(i).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));//bordure
         }
     }
 
@@ -98,22 +103,22 @@ public class VueGrille extends JPanel {
             switch (tresors.get(i)) {
                 case CALICE:
                     dessinerTresor(tresors.get(i));
-                    g.drawImage(imgTresor.getImage(), 10, 10, null);
+                    g.drawImage(imgTresor.getImage(), 0, 5, null);
                     System.out.println("CALICE");
                     break;
                 case CRISTAL:
                     dessinerTresor(tresors.get(i));
-                    g.drawImage(imgTresor.getImage(), 66, 10, null);
+                    g.drawImage(imgTresor.getImage(), 90, 5, null);
                     System.out.println("CRISTAL");
                     break;
                 case PIERRE:
                     dessinerTresor(tresors.get(i));
-                    g.drawImage(imgTresor.getImage(), 28, 50, null);
+                    g.drawImage(imgTresor.getImage(), 180, 5, null);
                     System.out.println("PIERRE");
                     break;
                 case ZEPHYR:
                     dessinerTresor(tresors.get(i));
-                    g.drawImage(imgTresor.getImage(), 84, 50, null);
+                    g.drawImage(imgTresor.getImage(), 270, 5, null);
                     System.out.println("ZEPHYR");
                     break;
             }
@@ -161,6 +166,7 @@ public class VueGrille extends JPanel {
 
     public void donnerTresor(Tresor t) {
         tresors.add(t);
+        repaint ();
     }
 
     public void allumerJCourant(int idTuile) {

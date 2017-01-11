@@ -186,7 +186,7 @@ public class Controleur implements Observer {
         initialiserCartesTirages();
         initialiserCartesInondation();
         initialiserPositionJoueur();
-        for (int j = 0; j < 5; j++) {//mettre 2
+        for (int j = 0; j < 6; j++) {//2
             for (Aventurier jCourant : aventuriers) {
                 piocherCarteTresorDepart(jCourant);
             }
@@ -473,6 +473,9 @@ public class Controleur implements Observer {
         }
         for (int j = 0; j < cartesTresor.size(); j++) {
             if (cartesTresor.get(j).getTresor() == tresor) {
+                
+                vuePlateau.getAventurier().get(av.getId()-25).enleverCarte(cartesTresor.get(j).getId());
+                
                 av.removeCarteMain(cartesTresor.get(j));
             }
         }
@@ -701,7 +704,7 @@ public class Controleur implements Observer {
                 carteADefausser = c;
             }
         }
-        System.out.println("Z");
+
         jDefausseur.removeCarteMain(carteADefausser);
         addDefausseTirage(carteADefausser);
         if (jCourant.getMain().size() > 5) {
