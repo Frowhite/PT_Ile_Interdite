@@ -117,8 +117,8 @@ public class Controleur implements Observer {
                             peutDonnerAventurier(jCourant);
                         } else if (actionDefausser) {
                             defausser(jCourant, vuePlateau.getDernierCarteAppuye());
-                        } else if(actionUtiliserSac) {
-                            UtiliserSac(jCourant);
+                        } else if (actionUtiliserSac) {
+                            utiliserSac();
                         }
                         //vuePlateau.getDernierCarteAppuye();
                         break;
@@ -156,7 +156,7 @@ public class Controleur implements Observer {
                         break;
                     case RECUPERER_TRESOR:
                         vueAction.fermerFenetre();
-                        System.out.println("5");
+                        obtenirTresor(jCourant);
                         break;
                     case PASSER_TOUR:
                         vueAction.fermerFenetre();
@@ -337,12 +337,6 @@ public class Controleur implements Observer {
             piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
             for (int i = 0; i < getNiveauEau(); i++) {
                 piocherCarteInondation();
-
-            }
-            if (jCourant.getMain().size() > 5) {
-                System.out.println("Debut");
-                vueAction.apparaitreDisparaitre(false);
-                choisirCarteADefausser(jCourant);
             }
 
             numJoueurQuiJoue += 1;
@@ -356,7 +350,7 @@ public class Controleur implements Observer {
         }
 
         for (int i = 0; i < tuile.length; i++) {
-            if (tuile[i].getNomTuile() == "Heliport" && tuile[i].getEtat() == EtatTuile.COULEE) {
+            if (tuile[i].getId() == 0 && tuile[i].getEtat() == EtatTuile.COULEE) {
                 System.out.println("Heliport Coulee");
 
             }
@@ -404,6 +398,7 @@ public class Controleur implements Observer {
         if (av.getPositionCourante().getTresor() != null) {
             if (peutPrendreTresor(av.getMain(), av.getPositionCourante())) {
                 av.addTresor(av.getPositionCourante().getTresor());
+                vuePlateau.getVueGrille().donnerTresor(av.getPositionCourante().getTresor());
             }
             Tuile secondeTuile = rechercherTresor(av);
             defausseCarteTresor(av, av.getPositionCourante().getTresor());
@@ -728,25 +723,26 @@ public class Controleur implements Observer {
         }
     }
 
-    public void UtiliserCarte(Aventurier jUtilisateur, int idCarte) {
+    public void utiliserCarte(Aventurier jUtilisateur, int idCarte) {
 
         for (CarteTirage c : jUtilisateur.getMain()) {
             if (c.getId() == idCarte) {
                 if (c.estSac()) {
                     System.out.println("Utilisation Carte Sac");
-                    UtiliserSac(jUtilisateur);
+                    utiliserSac();
                 }
                 if (c.estHelico()) {
-                    UtiliserHelico();
+                    utiliserHelico(jUtilisateur);
                 }
             }
         }
     }
 
-    public void UtiliserSac(Aventurier jUtilisateur) {
+    public void utiliserSac() {
         ArrayList<Tuile> casesInondee = new ArrayList();
         casesInondee = grille.CasesInonder();
         if (!casesInondee.isEmpty()) {
+            actionRestante++;
             for (Tuile t : casesInondee) {
                 vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
             }
@@ -756,7 +752,34 @@ public class Controleur implements Observer {
         }
     }
 
-    public void UtiliserHelico() {
+    public void utiliserHelico(Aventurier jUtilisateur) {
+        if (jUtilisateur.getId() == 0) {
+            ArrayList<Tresor> tresorPossedesParEquipe = new ArrayList();
+            for (Aventurier av : aventuriers) {
+                if (av.getTresors().contains(Tresor.CALICE)) {
+                    tresorPossedesParEquipe.add(Tresor.CALICE);
+                }
+                if (av.getTresors().contains(Tresor.CRISTAL)) {
+                    tresorPossedesParEquipe.add(Tresor.CRISTAL);
+                }
+                if (av.getTresors().contains(Tresor.PIERRE)) {
+                    tresorPossedesParEquipe.add(Tresor.PIERRE);
+                }
+                if (av.getTresors().contains(Tresor.ZEPHYR)) {
+                    tresorPossedesParEquipe.add(Tresor.ZEPHYR);
+                }
+            }
+            if(tresorPossedesParEquipe.contains(Tresor.CALICE) && 
+                    tresorPossedesParEquipe.contains(Tresor.ZEPHYR) && 
+                    tresorPossedesParEquipe.contains(Tresor.PIERRE) && 
+                    tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == 4)){
+                    //Partie Gagner
+                
+            }
+        }else{
+            
+            
+        }
 
     }
 
@@ -1193,5 +1216,4 @@ public class Controleur implements Observer {
         this.actionUtiliserSac = actionUtiliserSac;
     }
 
-    
 }

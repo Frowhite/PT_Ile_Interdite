@@ -127,6 +127,7 @@ public class VuePlateau extends Observable {
         clearChanged();
     }
     
+    
 /////////////////GETTEURS&SETTEURS//////////////////   
     
     public int getDerniereTuileAppuye() {
