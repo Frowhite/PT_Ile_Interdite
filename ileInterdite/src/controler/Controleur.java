@@ -365,7 +365,7 @@ public class Controleur implements Observer {
             }
 
             numJoueurQuiJoue += 1;                                                                  //Change le jCourant
-            numJoueurQuiJoue %= aventuriers.size();                                                 
+            numJoueurQuiJoue %= aventuriers.size();
             actionRestante = 3;
             //le Navigateur a 4 actions
             if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
@@ -388,8 +388,7 @@ public class Controleur implements Observer {
                     || (!TresorRecuperer(Tresor.PIERRE) && tuile[i].getId() == 18 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE)
                     || (!TresorRecuperer(Tresor.CRISTAL) && tuile[i].getId() == 1 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE)
                     || (!TresorRecuperer(Tresor.CALICE) && tuile[i].getId() == 14 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE)
-                    || (!TresorRecuperer(Tresor.ZEPHYR) && tuile[i].getId() == 10 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE))
-                //On a pas recuper le tresor e les 2 tuile on couler)) {
+                    || (!TresorRecuperer(Tresor.ZEPHYR) && tuile[i].getId() == 10 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE)) //On a pas recuper le tresor e les 2 tuile on couler)) {
             {
                 b = true;
             }
@@ -684,7 +683,7 @@ public class Controleur implements Observer {
             if (!cartePioche.estMontee()) {
                 av.addCarteMain(cartePioche);
                 vuePlateau.getAventurier().get(av.getId() - 25).ajouterCarte(cartePioche.getId());
-               
+
             }
             if (cartePioche.estMontee()) {
 
@@ -925,48 +924,28 @@ public class Controleur implements Observer {
 ////////////////////Partie IHM /////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void ouvrirPlateauDeJeu() {
-        vuePlateau = new VuePlateau(aventuriers.size());
+        vuePlateau = new VuePlateau(aventuriers.size());                        //ouvre le plateau avec comme parametre le nombre d'aventurier
         vuePlateau.addObserver(this);
 
-        for (int i = 0; i < aventuriers.size(); i++) {
-            vuePlateau.getAventurier().get(i).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
+        for (int i = 0; i < aventuriers.size(); i++) {                          
+            vuePlateau.getAventurier().get(i).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());  //met la couleur et les noms dans la vue VueAventurier
 
         }
-        vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
+        vuePlateau.getVueGrille().initialiserPlateau(tuile);                    //met les tuiles sur le plateau
 
-        //place les pions sur le plateau
+        
         for (int i = 0; i < aventuriers.size(); i++) {
-            vuePlateau.getVueGrille().deplacePion(aventuriers.get(i).getCapacite(),
+            vuePlateau.getVueGrille().deplacePion(aventuriers.get(i).getCapacite(),//place les pions sur le plateau
                     aventuriers.get(i).getPositionCourante().getId());
         }
-        //vuePlateau.getVueGrille().etatTuile(5, EtatTuile.INONDEE);
-        initialiserPartie();
-
-        //vuePlateau.getVueGrille().deplacePion(aventuriers.get(0).getCapacite(), 20);
-    }
-
-    public void ouvrirFenetreDemarrage() {
-        vueMontrerJoueur = new VueMontrerJoueur();
-        //écrire les noms dans vueMontrerJoueur
-        int x = 0;
-        for (int i = 0; i < aventuriers.size(); i++) {
-            vueMontrerJoueur.ecrireNom(i + 1, aventuriers.get(i).getNom());
-            x++;
-        }
-        for (int i = 0; i < 4 - x; i++) {
-            vueMontrerJoueur.ecrireNom(i + x + 1, "");
-        }
-
-        vueDemarrage = new VueDemarrage(aventuriers.size());
-        vueDemarrage.addObserver(this);
-
+        initialiserPartie();                                                    //lance l'initialisation de partie
     }
 
     public void ouvrirFenetreInscription() {
-        vueNiveau = new VueNiveau(niveauEau);
-        vueInscription = new VueInscription(niveauEau);
+        vueNiveau = new VueNiveau(niveauEau);                                   //ouvre la vue qui montre les niveaux
+        vueInscription = new VueInscription(niveauEau);                         //ouvre VueInscription: inscrire les joueurs et le niveaux
         vueInscription.addObserver(this);
-        if (aventuriers != null) {
+        if (aventuriers != null) {                                              //met les noms des joueurs si ils sont déjà engistrer
             for (int i = 0; i < aventuriers.size(); i++) {
                 switch (i) {
                     case 0:
@@ -989,12 +968,30 @@ public class Controleur implements Observer {
 
     }
 
+    public void ouvrirFenetreDemarrage() {                                      
+        vueMontrerJoueur = new VueMontrerJoueur();                              //ouvre la fenêtre  pour montrer les joueurs
+                                                                                //écrire les noms dans vueMontrerJoueur: va écrire tous les noms et après va
+                                                                                                                        //mettre du texte vide dans les JLabel restant    
+        int x = 0;                                                              
+        for (int i = 0; i < aventuriers.size(); i++) {                          //parcoure tous les aventuriers
+            vueMontrerJoueur.ecrireNom(i + 1, aventuriers.get(i).getNom());     //écrit les nom :ecrireNom(int numJoueur, String nom)
+            x++;
+        }
+        for (int i = 0; i < 4 - x; i++) {                                       //parcoure les jJLabel qui reste
+            vueMontrerJoueur.ecrireNom(i + x + 1, "");                          //met vide au JLabel où il n'y a pas de nom
+        }
+
+        vueDemarrage = new VueDemarrage(aventuriers.size());                    //ouvre la fenêtre de démarage de la partie
+        vueDemarrage.addObserver(this);
+
+    }
+
     public void ajouteJoueur() {
-        aventuriers.clear();
-        Pion p;
-        if (!"".equals(vueInscription.nomJoueur1()) && !"Nom joueur".equals(vueInscription.nomJoueur1())) {
-            p = couleurPion();
-            aventuriers.add(new Aventurier(vueInscription.nomJoueur1(), p, positionJoueurDebut(p), this));
+        aventuriers.clear();                                                                                //supprime tous joueurs pour remettres les nouveaux qui sont dans les JTextFild
+        Pion p;                                                                                             
+        if (!"".equals(vueInscription.nomJoueur1()) && !"Nom joueur".equals(vueInscription.nomJoueur1())) { //si le JTextFild n'est pas vide ou n'a  plus "Nom joueur"(texte de base mis dans le JTextFild)
+            p = couleurPion();                                                                              
+            aventuriers.add(new Aventurier(vueInscription.nomJoueur1(), p, positionJoueurDebut(p), this));  //crée un nouveau joueur : Aventurier(String nom, Pion capacite, Tuile positionCourante, Controleur controleur)
         }
         if (!"".equals(vueInscription.nomJoueur2()) && !"Nom joueur".equals(vueInscription.nomJoueur2())) {
             p = couleurPion();
@@ -1009,8 +1006,7 @@ public class Controleur implements Observer {
             aventuriers.add(new Aventurier(vueInscription.nomJoueur4(), p, positionJoueurDebut(p), this));
         }
 
-        //donner un id aux aventuriers
-        for (int i = 0; i < aventuriers.size(); i++) {
+        for (int i = 0; i < aventuriers.size(); i++) {                          //donne un id au aventurier: de 25 à 28
             switch (i) {
                 case 0:
                     aventuriers.get(i).setId(25);
@@ -1028,41 +1024,8 @@ public class Controleur implements Observer {
         }
 
     }
-
-    public Tuile positionJoueurDebut(Pion pion) {
-        Tuile t = tuile[0];
-        int idTuile = 0;
-
-        //met l'id de la tuile où le joueur commence
-        switch (pion) {
-            case BLEU:
-                idTuile = 0;
-                break;
-            case JAUNE:
-                idTuile = 8;
-                break;
-            case ORANGE:
-                idTuile = 7;
-                break;
-            case ROUGE:
-                idTuile = 4;
-                break;
-            case VERT:
-                idTuile = 5;
-                break;
-            case VIOLET:
-                idTuile = 6;
-                break;
-        }
-        for (int i = 0; i < 24; i++) {
-            if (tuile[i].getId() == idTuile) {
-                t = tuile[i];
-            }
-        }
-        return t;
-    }
-
-    public Pion couleurPion() {
+    
+    public Pion couleurPion() {                                                 //met une couleur aléatoir au pion
         boolean personneNACePion;
         Pion p = Pion.BLEU;
         Random rand = new Random();
@@ -1070,7 +1033,7 @@ public class Controleur implements Observer {
         do {
             personneNACePion = true;
             //donne une couleur
-            int nombreAleatoire = rand.nextInt(6 - 1 + 1) + 1;//variable aléatoire entre 1 et 6
+            int nombreAleatoire = rand.nextInt(6 - 1 + 1) + 1;                  //variable aléatoire entre 1 et 6: suivant le résultat détermine la couleur du pion
             switch (nombreAleatoire) {
                 case 1:
                     p = Pion.BLEU;
@@ -1092,16 +1055,50 @@ public class Controleur implements Observer {
                     break;
             }
 
-            //vérifie que personne n'a déjà ce pion
-            for (int i = 0; i < aventuriers.size(); i++) {
+            
+            for (int i = 0; i < aventuriers.size(); i++) {                      //vérifie que personne n'a déjà ce pion
                 if (aventuriers.get(i).getCapacite() == p) {
                     personneNACePion = false;
                 }
             }
-        } while (!personneNACePion);
+        } while (!personneNACePion);                                            //si quelqu'un a déja ce pion, relance la variable aléatoire
         return p;
     }
 
+
+    public Tuile positionJoueurDebut(Pion pion) {                               //détermine la position de départ du pion en prenant id de la tuile
+        Tuile t = tuile[0];
+        int idTuile = 0;
+                                                                                //id de la case:
+        switch (pion) {
+            case BLEU:
+                idTuile = 0;                                                    //0:Heliport
+                break;
+            case JAUNE:
+                idTuile = 8;                                                    //8:"La Porte d'Or
+                break;
+            case ORANGE:
+                idTuile = 7;                                                    //7:La Porte d'Argent
+                break;
+            case ROUGE:
+                idTuile = 4;                                                    //4:La Porte de Bronze
+                break;
+            case VERT:
+                idTuile = 5;                                                    //5:La Porte de Cuivre
+                break;
+            case VIOLET:
+                idTuile = 6;                                                    //6:La Porte de fer
+                break;
+        }
+        for (int i = 0; i < tuile.length; i++) {
+            if (tuile[i].getId() == idTuile) {
+                t = tuile[i];                                                   //On détermine l'objet tuile corespondant idTuile où ce trouve le joueur
+            }
+        }
+        return t;
+    }
+
+    
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////ADD & REMOVE//////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////    
