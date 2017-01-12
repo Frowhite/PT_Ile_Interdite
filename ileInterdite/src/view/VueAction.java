@@ -43,7 +43,7 @@ public class VueAction extends Observable {
         window.setLocation(dim.width*64/ 100, dim.height*82/100);
         panelGlobale = new JPanel(new BorderLayout());
         //***Haut***
-        //text nb d'action
+        //text nb d'action 
         tNbDAction = new JLabel();
 
         switch (numAction) {
@@ -60,7 +60,8 @@ public class VueAction extends Observable {
                 tNbDAction = new JLabel(nomJCourant + ": Actions restantes : 4");
                 break;
         }
-
+        
+        //la fenetre prend la couleur du pion
         switch (pion) {
             case BLEU:
                 panelGlobale.setBackground(new Color(51, 153, 255));
@@ -83,7 +84,7 @@ public class VueAction extends Observable {
                 break;
         }
 
-        tNbDAction.setFont(new Font("Arial", 0, 17));
+        tNbDAction.setFont(new Font("Arial", 0, 17));//met une police au texte
         panelGlobale.add(tNbDAction, BorderLayout.NORTH);
         //***panel centre***
         panelCentre = new JPanel(gl);
@@ -103,12 +104,10 @@ public class VueAction extends Observable {
         bUtiliseCarte = new JButton("Utiliser carte");
         actionListener(bUtiliseCarte, Commandes.CHOISIR_CARTE);
         panelCentre.add(bUtiliseCarte);
-
         //boutton recup le tresor
         bPrendreTresor = new JButton("Recupérer le trésor");
         actionListener(bPrendreTresor, Commandes.RECUPERER_TRESOR);
         panelCentre.add(bPrendreTresor);
-
         //boutton passe tour       
         bPasserTour = new JButton("Passer le tour");
         actionListener(bPasserTour, Commandes.PASSER_TOUR);
@@ -118,7 +117,8 @@ public class VueAction extends Observable {
         window.add(panelGlobale);
         window.setVisible(true);
     }
-
+    
+    //va renvoyer au controleur le bouton appuyer
     public void actionListener(JButton button, Commandes c) {
         button.addActionListener(new ActionListener() {
             @Override
@@ -130,15 +130,17 @@ public class VueAction extends Observable {
         });
     }
 
+    //ferme la fenetre
     public void fermerFenetre() {
         window.dispose();
     }
 
+    //rend la fenêtre visible et invisible
     public void apparaitreDisparaitre(boolean b) {
         if (b) {
             window.setAlwaysOnTop(true);//met en premier plan
         } else {
-            window.setAlwaysOnTop(false);
+            window.setAlwaysOnTop(false);//met en arrière plan (pour des souci de beug graphique)
         }
         window.setVisible(b);
 

@@ -14,7 +14,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
 
 /**
  *
@@ -36,11 +35,12 @@ public class VueCarte extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (possibliteAssechement) {
                     for (int i = 0; i < vueAventurier.getVueCarte().size(); i++) {
+                        //met toutes les cartes du joueur en non cliquable et remet les bordures en noir
                         vueAventurier.getVueCarte().get(i).setPossibliteAssechement(false);
                         vueAventurier.getVueCarte().get(i).setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
                     }
-                    vueAventurier.getVuePlateau().choisirCarte(idCarte);
-                    vueAventurier.enleverCarte(idCarte);
+                    vueAventurier.getVuePlateau().choisirCarte(idCarte);//envoie au controleur l'information que l'on a cliqué sur la carte
+                    vueAventurier.enleverCarte(idCarte);//enlève la carte du joueur
                 }
             }
         });
@@ -49,6 +49,7 @@ public class VueCarte extends JPanel {
         this.add(carte);
     }
 
+    //met l'image de la carte dans l'emplacement carte
     public void mettreCarte(int idCarte) {
         this.idCarte = idCarte;
         String i = "/images/cartes/";
@@ -74,9 +75,12 @@ public class VueCarte extends JPanel {
         carte.setIcon(img);
     }
 
+    //supprime la carte
     public void supprCarte() {
         img = null;
     }
+    
+    /////////////////GETTEURS&SETTEURS////////////////// 
 
     public ImageIcon getImg() {
         return img;

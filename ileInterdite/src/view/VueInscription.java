@@ -45,18 +45,20 @@ public class VueInscription extends Observable {
     private Font font2 = new Font("Arial", 0, 15);
     private GridLayout gl1 = new GridLayout(2, 2);
     private GridLayout gl2 = new GridLayout(1, 2);
+    private Toolkit kit = Toolkit.getDefaultToolkit();
+    private Dimension dim = kit.getScreenSize();
 
     public VueInscription(int niveauEau) {
         window = new JFrame();
         window.setSize(340, 370);
         window.setAlwaysOnTop(true);//met en premier plan
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension dim = kit.getScreenSize();
+        
         window.setLocation(dim.width*41 / 100, dim.height*21 / 100);
         panelGlobale = new JPanel(new BorderLayout());
 
         //***haut***
+        //met l'image du qui affiche le titre
         titre = new JLabel(new ImageIcon(getClass().getResource("/images/titre.png")));
         panelGlobale.add(titre, BorderLayout.PAGE_START);
 
@@ -67,13 +69,11 @@ public class VueInscription extends Observable {
         textNiv = new JLabel("Choisir niveau :");
         textNiv.setFont(font1);
         panelInscrireNiveau.add(textNiv, BorderLayout.NORTH);
-        int FPS_INIT = niveauEau;
+        //slider niveau
+        int FPS_INIT = niveauEau;//valeur de base
         slider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
-
-       // slider.addChangeListener(this);
-//        slider.setMajorTickSpacing(10);
-//        slider.setPaintTicks(true);
-        //Create the label table
+        
+        //met les noms des niveaux
         Hashtable labelTable = new Hashtable();
         labelTable.put(new Integer(1), new JLabel("novice"));
         labelTable.put(new Integer(2), new JLabel("normal"));
@@ -84,6 +84,7 @@ public class VueInscription extends Observable {
 
         slider.setLabelTable(labelTable);
         slider.setMajorTickSpacing(4);
+        //va changer automatiquement les niveau dans la VueNiveau
         slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -175,7 +176,8 @@ public class VueInscription extends Observable {
         window.setVisible(true);
     }
 
-    //le texte "Nom" s'affiche avant de sésire un texte
+    //le texte "Nom joueur" s'affiche avant de sésire un texte:
+    //si on clic dessus pour enlever le texte
     public void insiterRentrerNom(JTextField jtf) {
 
         jtf.getFont().deriveFont(Font.ITALIC);

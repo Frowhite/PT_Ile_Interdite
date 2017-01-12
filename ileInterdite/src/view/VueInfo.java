@@ -63,7 +63,7 @@ public class VueInfo extends Observable{
         
       
         
-
+        //donne des informations suivant le joueur
         switch (pion) {
             case BLEU:
                 panelGlobal.setBackground(new Color(51,153,255));
@@ -117,64 +117,3 @@ public class VueInfo extends Observable{
     }
 
 }
- 
-
-        /*
-        
-        nomPersonnage = new JLabel("<html><u><B>Règle du morpion:</B></u></html>");//souligne et en gras
-        
-        
-        
-        nomPersonnage.setFont(new Font("Mistral", 0, 25));
-        panelGlobal.add(nomPersonnage, BorderLayout.NORTH);
-        //regles
-        infoPersonnage = new JLabel();
-        //infoAventurier.setText("<html>Les joueurs inscrivent tour à tour<br>leur symbole sur une grille. Le<br>premier qui parvient à aligner trois<br>de ses symboles horizontalement,<br> verticalement ou en diagonale<br>gagne la manche.</html>");
-        infoPersonnage.setFont(new Font("Mistral", 0, 17));
-        panelGlobal.add(infoPersonnage, BorderLayout.CENTER);
-
-        window.add(panelGlobal);
-        window.setVisible(true);
-    }
-    
-    public void couleur(Pion pion){
-    
-         switch (pion) {
-            case BLEU:
-                nomPersonnage.setForeground(Color.BLUE);
-                infoPersonnage.setForeground(Color.BLUE);
-                numPersonnages=1;
-                break;
-            case JAUNE:
-                nomPersonnage.setForeground(Color.YELLOW);
-                infoPersonnage.setForeground(Color.YELLOW);
-                numPersonnages=2;
-                break;
-            case ORANGE:
-                nomPersonnage.setForeground(Color.ORANGE);
-                infoPersonnage.setForeground(Color.ORANGE);
-                numPersonnages=3;
-                break;
-            case ROUGE:
-                nomPersonnage.setForeground(Color.RED);
-                infoPersonnage.setForeground(Color.RED);
-                numPersonnages=4;
-                break;
-            case VERT:
-                nomPersonnage.setForeground(Color.GREEN);
-                infoPersonnage.setForeground(Color.GREEN);
-                numPersonnages=5;
-                break;
-            case VIOLET:
-                nomPersonnage.setForeground(new Color(153, 0, 153));
-                infoPersonnage.setForeground(new Color(153, 0, 153));
-                numPersonnages=6;
-                break;
-        }
-    
-    
-    }
-    
-    
-}
-*/

@@ -36,7 +36,7 @@ public class VueAventurier extends JPanel {
         this.idAventurier = idAventurir;
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        this.setSize(dim.width / 4, dim.height / 2);
+        this.setSize(dim.width / 4, dim.height / 2);//dimention fenêtre(suivant l'écran)
         this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.BLACK));
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -50,6 +50,7 @@ public class VueAventurier extends JPanel {
 
         panelGlobale = new JPanel(new BorderLayout());
         //***panel haut***
+        //bouton ?: affiche info joueur
         panelHaut = new JPanel(new BorderLayout());
         bInfo = new JButton("?");
         bInfo.setSize(10, 5);
@@ -57,24 +58,27 @@ public class VueAventurier extends JPanel {
         bInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                vuePlateau.infoAventurier(idAventurir - 25);
+                vuePlateau.infoAventurier(idAventurir - 25);//les id des joueurs commencent à 25
             }
         });
 
         panelHaut.add(bInfo, BorderLayout.WEST);
 
+        //entre le nom du joueur
         donnerNomJoueur = new JLabel();
         donnerNomJoueur.setFont(font1);//taille de la police
         panelHaut.add(donnerNomJoueur, BorderLayout.CENTER);
         panelGlobale.add(panelHaut, BorderLayout.NORTH);
         //***panel centre***
         panelCentre = new JPanel(gl);
-
+        //crée les 9 emplacements de cartes
         for (int i = 0; i < 9; i++) {
             VueCarte c = new VueCarte(this);
             panelCentre.add(c);
             vueCarte.add(c);
         }
+
+        //enlève l'opacité des panel, pour que l'on voie le fond en couleur (qui serai caché par les JPanel)
         panelHaut.setOpaque(false);
         panelCentre.setOpaque(false);
         panelGlobale.setOpaque(false);
@@ -83,56 +87,7 @@ public class VueAventurier extends JPanel {
         this.add(panelGlobale);
     }
 
-    public void ajouterCarte(int carteRecue) {
-        /*
-        for (int i = 0; i < vueCarte.size() && vueCarte.get(i).getImg() != null; i++) {
-            if (vueCarte.get(i).getImg() == null) {
-                vueCarte.get(i).mettreCarte(carteRecue);
-                cartePlacee = true;
-            }
-        }*/
-        for (int i = 0; i < vuePlateau.getAventurier().size(); i++) {
-            vuePlateau.getAventurier().get(i).setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
-            vuePlateau.getAventurier().get(i).setPossibliteJoueurDonnerCarte(false);
-        }
-
-        int i = 0;
-        while (i < vueCarte.size() && vueCarte.get(i).getImg() != null) {
-            i++;
-        }
-        vueCarte.get(i).mettreCarte(carteRecue);
-    }
-
-    public void enleverCarte(int idCarte) {
-        for (int i = 0; i < vueCarte.size() /*&& vueCarte.contains(i)*/; i++) {
-            if (vueCarte.get(i).getIdCarte() == idCarte) {
-                vueCarte.get(i).setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
-                vueCarte.remove(vueCarte.get(i));
-            }
-        }
-
-        int x = 1;
-        //trie les cartes
-        //enlève un emplacement de carte vide
-        for (int i = 0; i < vueCarte.size(); i++) {
-            if (vueCarte.get(i).getImg() == null) {
-                vueCarte.remove(i);
-                i--;
-                x++;
-            }
-        }
-        //rajoute un emplacement de carte vide
-        for (int i = 0; i < x; i++) {
-            VueCarte c = new VueCarte(this);
-            vueCarte.add(c);
-        }
-        panelCentre.removeAll();
-        //redessine les cartes possédé
-        for (int i = 0; i < vueCarte.size(); i++) {
-            panelCentre.add(vueCarte.get(i));
-        }
-    }
-
+    //met le nom du joueur
     public void setNomJoueur(String nomJoueur, Pion p) {
 
         donnerNomJoueur.setText("Carte de " + nomJoueur + " :");
@@ -159,12 +114,63 @@ public class VueAventurier extends JPanel {
         }
     }
 
+    //ajoute la carte dans la main du joueur
+    public void ajouterCarte(int carteRecue) {
+        //remet toutes les bordures à leur couleur d'origine(noir)
+        for (int i = 0; i < vuePlateau.getAventurier().size(); i++) {
+            vuePlateau.getAventurier().get(i).setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
+            vuePlateau.getAventurier().get(i).setPossibliteJoueurDonnerCarte(false);
+        }
+
+        int i = 0;
+        //trouve le premier emplacement libre pour mettre la carte
+        while (i < vueCarte.size() && vueCarte.get(i).getImg() != null) {
+            i++;
+        }
+        vueCarte.get(i).mettreCarte(carteRecue);//affiche la carte
+    }
+
+    //enlève la carte de la main du joueur
+    public void enleverCarte(int idCarte) {
+        //supprime la carte en question
+        for (int i = 0; i < vueCarte.size(); i++) {
+            if (vueCarte.get(i).getIdCarte() == idCarte) {
+                vueCarte.get(i).setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
+                vueCarte.remove(vueCarte.get(i));
+            }
+        }
+
+        int x = 1;
+        //***trie carte pour qu'elle ce décale tous vers en haut à gauche :***
+
+        //enlève un emplacement de carte vide ce qui va mettre les cartes restantes en haut à gauche
+        for (int i = 0; i < vueCarte.size(); i++) {
+            if (vueCarte.get(i).getImg() == null) {
+                vueCarte.remove(i);
+                i--;
+                x++;
+            }
+        }
+        //rajoute un emplacement de carte vide (donc à la suite des cartes non vide)
+        for (int i = 0; i < x; i++) {
+            VueCarte c = new VueCarte(this);
+            vueCarte.add(c);
+        }
+        panelCentre.removeAll();
+
+        //redessine les cartes possédé
+        for (int i = 0; i < vueCarte.size(); i++) {
+            panelCentre.add(vueCarte.get(i));
+        }
+    }
+
+    //met l'aventurier cliquable pour que l'on puisse lui donner une carte
     public void aventurierCliquable() {
         this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.RED));
         possibliteJoueurDonnerCarte = true;
-
     }
-
+    
+    //met la catre cliquable pour que l'on puisse la choisir (ex:lors de l'actions donner une carte)
     public void carteCliquable(int idCate) {
         for (int i = 0; i < vueCarte.size(); i++) {
             if (vueCarte.get(i).getIdCarte() == idCate) {
@@ -173,6 +179,9 @@ public class VueAventurier extends JPanel {
             }
         }
     }
+    
+    
+    /////////////////GETTEURS&SETTEURS////////////////// 
 
     public VuePlateau getVuePlateau() {
         return vuePlateau;
