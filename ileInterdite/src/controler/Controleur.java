@@ -459,8 +459,6 @@ public class Controleur implements Observer {
             }
 
         }
-
-        finTour();
         debutTour();
     }
 
@@ -518,6 +516,7 @@ public class Controleur implements Observer {
 
             }
         }
+        System.out.println("Carte Defausser");
         for (int j = 0; j < cartesTresor.size(); j++) {
             if (cartesTresor.get(j).getTresor() == tresor) {               // Si la carte correspond au tresor voulu alors on la defausse
 
