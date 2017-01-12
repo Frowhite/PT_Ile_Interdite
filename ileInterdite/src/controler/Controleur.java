@@ -875,7 +875,7 @@ public class Controleur implements Observer {
 
     }
 
-    public void destinationHelico() {
+    public void destinationHelico() {       //Donnes a la VueGrille toutes les destinations possible pour l'Helico
         ArrayList<Tuile> depPossible = new ArrayList<>();
         depPossible = getGrille().tuilesPossiblesDeplacementHelico();
         for (int i = 0; i < depPossible.size(); i++) {
@@ -909,7 +909,7 @@ public class Controleur implements Observer {
     }
 
     ////////////////////////////////AUTRE///////////////////////////////////////
-    public boolean TresorRecuperer(Tresor tresor) {
+    public boolean TresorRecuperer(Tresor tresor) {     //Verifie Si les joueur on recuperer le tresor
         int i = 0;
         boolean t = false;
         while (t = false || i < tuile.length) {
