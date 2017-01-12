@@ -33,23 +33,24 @@ public class VueDemarrage extends Observable {
     private JLabel titre;
     private Font font = new Font("Arial", 0, 25);
     private GridLayout gl = new GridLayout(4, 1);
+    private Toolkit kit = Toolkit.getDefaultToolkit();
+    private Dimension dim = kit.getScreenSize();
 
     public VueDemarrage(int nbJoueur) {
         window = new JFrame();
         window.setSize(340, 370);
         window.setAlwaysOnTop(true);//met en premier plan
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width*41 / 100, dim.height*21 / 100);
+        window.setLocation(dim.width * 41 / 100, dim.height * 21 / 100);
         panelGlobale = new JPanel(new BorderLayout());
         //***haut***
+        //met l'image du qui affiche le titre
         titre = new JLabel(new ImageIcon(getClass().getResource("/images/titre.png")));
         panelGlobale.add(titre, BorderLayout.NORTH);
         //***panel centre***
         gl.setVgap(5);
         panelCentre = new JPanel(gl);
-        panelCentre.add(new JLabel(""));
+        panelCentre.add(new JLabel(""));//ajoute un espace
 
         //boutton commencer partie
         bCommencerPartie = new JButton("Commencer partie");
@@ -59,7 +60,7 @@ public class VueDemarrage extends Observable {
             public void actionPerformed(ActionEvent e) {
                 //affiche un message d'erreur si il n'y a pas minimum 2 joueurs
                 if (nbJoueur < 2) {
-                    JOptionPane.showMessageDialog(window, "Il n'y a pas assez de joueur (de 2 à 4 joueurs)", "Attention!!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(window, "Il n'y a pas assez de joueurs (de 2 à 4 joueurs)", "Attention!!", JOptionPane.ERROR_MESSAGE);
                 } else {
                     setChanged();
                     notifyObservers(Commandes.COMMENCER_PARTIE);
@@ -102,10 +103,12 @@ public class VueDemarrage extends Observable {
         window.setVisible(true);
     }
 
+    //quitte le logicel
     public void quitterJeu() {
         System.exit(0);
     }
 
+    //ferme la fenêtre
     public void fermerFenetre() {
         window.dispose();
     }

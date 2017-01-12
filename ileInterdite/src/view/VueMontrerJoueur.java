@@ -37,7 +37,7 @@ public class VueMontrerJoueur {
         panelGlobale = new JPanel(gl);
         
         panelGlobale.add(new JLabel("Joueur :"));
-        
+        //affiche le nom des joueurs dans les labels
         j1 = new JLabel();
         j1.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
         panelGlobale.add(j1);

@@ -31,6 +31,7 @@ public class VueTuile extends JPanel {
         this.setPreferredSize(new Dimension(dim.height / 6 - 25, dim.height / 6 - 25));
 
         this.addMouseListener(new MouseAdapter() {
+            //envoie l'information au controleur que le joueur a cliqué sur une tuile
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (possibliteDeplacement) {
@@ -41,6 +42,7 @@ public class VueTuile extends JPanel {
                 }
             }
 
+            //quand on met la souris dessus: change les bordures
             @Override
             public void mouseEntered(MouseEvent e) {
                 if (possibliteDeplacement) {
@@ -50,6 +52,7 @@ public class VueTuile extends JPanel {
                 }
             }
 
+            //quand on enlève la souris : remet les bordures dans leur etat initial
             @Override
             public void mouseExited(MouseEvent e) {
                 if (possibliteDeplacement) {
@@ -84,25 +87,27 @@ public class VueTuile extends JPanel {
     }
 
     public void tuilePossibleDeplacement() {
-        possibliteDeplacement = true;
+        possibliteDeplacement = true;//rend la tuile cliquable
         this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 153, 51)));
     }
 
     public void tuilePossibleAssechement() {
-        possibliteAssechement = true;
+        possibliteAssechement = true;//rend la tuile cliquable
         this.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, new Color(255, 255, 102)));
     }
 
 ///////////////////////////////////////PION////////////////////////////////////
+    //ajoute un pion à la tuile
     public void mettrePion(Pion p) {
         pion.add(p);
     }
 
+    //enlève un pion à la tuile
     void enlevePion(Pion p) {
         pion.remove(p);
     }
-    //dessine le pions sur la tuile
-
+    
+    //donne l'image au pion
     public void dessinerPion(Pion p) {
         String s = "/images/pions/";
         switch (p) {
@@ -132,40 +137,9 @@ public class VueTuile extends JPanel {
 
     }
 
-//////////////////////////////////IMAGE FOND////////////////////////////////////
-    //dessin le fond
-    @Override
-    public void paintComponent(Graphics g) {
-        g.drawImage(img.getImage(), 3, 3, null);
-
-        if(pion.size()==1){
-            dessinerPion(pion.get(0));
-            g.drawImage(img2.getImage(), 43, 20, null);        
-        }else{
-        for (int i = 0; i < pion.size(); i++) {
-            switch (i) {
-                case 0:
-                    dessinerPion(pion.get(i));
-                    g.drawImage(img2.getImage(), 10, 10, null);
-                    break;
-                case 1:
-                    dessinerPion(pion.get(i));
-                    g.drawImage(img2.getImage(), 66, 10, null);
-                    break;
-                case 2:
-                    dessinerPion(pion.get(i));
-                    g.drawImage(img2.getImage(), 28, 50, null);
-                    break;
-                case 3:
-                    dessinerPion(pion.get(i));
-                    g.drawImage(img2.getImage(), 84, 50, null);
-                    break;
-            }
-
-        }
-        }
-    }
-
+/////////////////////////////////////TUILE//////////////////////////////////////
+    
+    //donne l'image à la tuile
     public void assecheeInondeeOuCouleeTuile(int idTuile, EtatTuile etatTuile) {
         String img = "/images/tuiles/";
         if (etatTuile == EtatTuile.COULEE) {
@@ -255,13 +229,51 @@ public class VueTuile extends JPanel {
         imageTuile(img);
     }
 
+//////////////////////////////////IMAGE FOND////////////////////////////////////
+    //dessin le fond
+    @Override
+    public void paintComponent(Graphics g) {
+        //dessine la tuile
+        g.drawImage(img.getImage(), 3, 3, null);
+
+        //dessine les joueurs en fonction du nombre de joueur qu'il y a sur la tuile
+        if (pion.size() == 1) {
+            dessinerPion(pion.get(0));
+            g.drawImage(img2.getImage(), 43, 20, null);
+        } else {
+            for (int i = 0; i < pion.size(); i++) {
+                switch (i) {
+                    case 0:
+                        dessinerPion(pion.get(i));
+                        g.drawImage(img2.getImage(), 10, 10, null);
+                        break;
+                    case 1:
+                        dessinerPion(pion.get(i));
+                        g.drawImage(img2.getImage(), 66, 10, null);
+                        break;
+                    case 2:
+                        dessinerPion(pion.get(i));
+                        g.drawImage(img2.getImage(), 28, 50, null);
+                        break;
+                    case 3:
+                        dessinerPion(pion.get(i));
+                        g.drawImage(img2.getImage(), 84, 50, null);
+                        break;
+                }
+
+            }
+        }
+    }
+
     public void imageTuile(String image) {
         img = new ImageIcon(new ImageIcon(getClass().getResource(image))
                 .getImage().getScaledInstance(dim.height / 6 - 32, dim.height / 6 - 32, Image.SCALE_SMOOTH));
 
     }
+    
+    
+    /////////////////GETTEURS&SETTEURS////////////////// 
 
-///////////////////////////GETTEURS&SETTEURS////////////////////////////////////
     public ArrayList<Pion> getPion() {
         return pion;
     }
@@ -277,7 +289,5 @@ public class VueTuile extends JPanel {
     public void setPossibliteAssechement(boolean possibliteAssechement) {
         this.possibliteAssechement = possibliteAssechement;
     }
-    
-    
 
 }

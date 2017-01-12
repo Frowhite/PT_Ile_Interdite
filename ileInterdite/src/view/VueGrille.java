@@ -33,12 +33,13 @@ public class VueGrille extends JPanel {
     private Dimension dim = kit.getScreenSize();
 
     public VueGrille(VuePlateau vuePlateau) {
-        
+
         this.vuePlateau = vuePlateau;
         panelGlobale = new JPanel();
         panelGlobale.setLayout(new GridBagLayout());
 
         this.add(panelGlobale);
+        //enregistre l'image de l'eau en font
         plateau = new ImageIcon(new ImageIcon(getClass().getResource("/images/eau.jpg"))
                 .getImage().getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
     }
@@ -49,10 +50,10 @@ public class VueGrille extends JPanel {
             tuile.put(tuiles[i].getId(), t);
             t.assecheeInondeeOuCouleeTuile(tuiles[i].getId(), EtatTuile.ASSECHEE);// il calasse du plus petit au plus grand
         }
-        affichePlateau(panelGlobale, tuiles);
+        affichePlateau(panelGlobale, tuiles);//crée le plateau
     }
 
-    //crée le plateau
+    //crée le plateau: utilise un GridBagLayout
     public void affichePlateau(JPanel panel, Tuile[] tuiles) {
         for (int i = 0; i < tuile.size(); i++) {
             gbc.gridx = tuiles[i].getColonnes();
@@ -63,12 +64,14 @@ public class VueGrille extends JPanel {
         panel.setOpaque(false);
     }
 
+    //change l'etat d'une tuile (ex : etat assechée)
     public void etatTuile(int idTuile, EtatTuile etatTuile) {
         tuile.get(idTuile).assecheeInondeeOuCouleeTuile(idTuile, etatTuile);
     }
 
-    public void deplacePion(Pion p, int id) {
-        //enlève le pion de la dernière tuile
+    //deplace le pion sur la nouvelle tuile
+    public void deplacePion(Pion p, int idTuile) {
+        //enlève le pion de sa dernière tuile
         for (int i = 0; i < tuile.size(); i++) {
             for (int j = 0; j < tuile.get(i).getPion().size(); j++) {
                 if (tuile.get(i).getPion().get(j) == p) {
@@ -77,9 +80,10 @@ public class VueGrille extends JPanel {
             }
         }
         //rajoute le pion sur la nouvelle tuile
-        tuile.get(id).mettrePion(p);
+        tuile.get(idTuile).mettrePion(p);
     }
 
+    //remet à zero tout le plateau: on le peut plus cliqué dessus
     public void remiseAZeroDesTuiles() {
         for (int i = 0; i < tuile.size(); i++) {
             tuile.get(i).setPossibliteDeplacement(false);
@@ -88,13 +92,11 @@ public class VueGrille extends JPanel {
         }
     }
 
-    public VuePlateau getVuePlateau() {
-        return vuePlateau;
-    }
-
     //dessin le fond
     public void paintComponent(Graphics g) {
+        //met l'image de font : eau
         g.drawImage(plateau.getImage(), 0, 0, null);
+        //met l'image des trésores quand les joueurs en possèdent
         for (int i = 0; i < tresors.size(); i++) {
             switch (tresors.get(i)) {
                 case CALICE:
@@ -122,6 +124,7 @@ public class VueGrille extends JPanel {
         }
     }
 
+    //selectionne la bonne image du trésor
     public void dessinerTresor(Tresor t) {
 
         String s = "/images/tresors/";
@@ -138,46 +141,45 @@ public class VueGrille extends JPanel {
             case ZEPHYR:
                 s += "zephyr";
                 break;
-                
+
         }
         s += ".png";
-        
+
         imgTresor = new ImageIcon(new ImageIcon(getClass().getResource(s))
                 .getImage().getScaledInstance(dim.width / 6 - 200, dim.height / 6 - 30, Image.SCALE_SMOOTH));
 
     }
 
+    //ajoute un trésor
     public void donnerTresor(Tresor t) {
         tresors.add(t);
-        repaint ();
+        repaint();//repaint le font (avec le trésore ajouté)
     }
 
+    //met en rouge la case du joueur qui joue
     public void allumerJCourant(int idTuile) {
         tuile.get(idTuile).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, new Color(215, 0, 51)));
     }
 
+    //remet tout le plateau dans sa couleur initial
     public void eteindrePlateau() {
         for (int i = 0; i < tuile.size(); i++) {
             tuile.get(i).setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.BLACK));
         }
 
     }
-    
-//    public void selectJoueurPourHelico(){
-//        for (int i = 0; i < tuile.size(); i++) {
-//            if (!tuile.get(i).getPion().isEmpty()) {
-//                tuile.get(i).setPossibliteDeplacement(true);
-//            }
-//        }
-//    }
-    
+
     public void idTuileDeplacementPossible(int idTuile) {
         tuile.get(idTuile).tuilePossibleDeplacement();
-        
+
     }
 
     public void idTuileAssechementPossible(int idTuile) {
         tuile.get(idTuile).tuilePossibleAssechement();
+    }
+
+    public VuePlateau getVuePlateau() {
+        return vuePlateau;
     }
 
 }

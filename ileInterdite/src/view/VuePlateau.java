@@ -19,13 +19,14 @@ import util.Utils.Commandes;
  * @author IUT2-Dept Info
  */
 public class VuePlateau extends Observable {
+
     ///////////////info a récup//////////////////////
     private int derniereTuileAppuye;
     private int dernierBouttonInfoAppuye;
     private int dernierCarteAppuye;
     private int dernierJoueurAppuye;
     /////////////////////////////////////////////////
-    
+
     private VueGrille vueGrille;
     private ArrayList<VueAventurier> aventurier = new ArrayList<>();
 
@@ -36,7 +37,6 @@ public class VuePlateau extends Observable {
     public VuePlateau(int nbJoueur) {
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        
 
         panelGlobale = new JPanel(new BorderLayout());
         //***création de la grille de jeu***
@@ -46,32 +46,30 @@ public class VuePlateau extends Observable {
         //***création des aventuriers de 2 à 4***
         panelGauche = new JPanel(gl);
         panelDroite = new JPanel(gl);
-        int idAventurier=25;
+        int idAventurier = 25;
         for (int i = 0; i < nbJoueur; i++) {
             VueAventurier a = new VueAventurier(idAventurier, this);
             aventurier.add(a);
-            if ((idAventurier-24)%2==0) {
+            //met les joueurs a la droite et la gauche de l'écran
+            if ((idAventurier - 24) % 2 == 0) {
                 panelDroite.add(a);
-            }else{
+            } else {
                 panelGauche.add(a);
             }
             idAventurier++;
         }
-        
+
         panelGlobale.add(panelGauche, BorderLayout.WEST);
         panelGlobale.add(panelDroite, BorderLayout.EAST);
 
         window.setContentPane(panelGlobale);
-        //mettre en plein écran
-        //window.setAlwaysOnTop(true);
+
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setVisible(true);
     }
 
-    public VueGrille getVueGrille() {
-        return vueGrille;
-    }
-
+/////////////////ENVOIE AU CONTROLEUR//////////////////
+    //met les derniers éléments appuyer pour que le controleur puisse les prendres
     public void choisirTuileDeplacement(int idTuile) {
         derniereTuileAppuye = idTuile;
         getVueGrille().remiseAZeroDesTuiles();
@@ -79,7 +77,7 @@ public class VuePlateau extends Observable {
         notifyObservers(Commandes.CHOISIR_TUILE_DEPLACEMENT);
         clearChanged();
     }
-    
+
     public void choisirTuileAssechement(int idTuile) {
         derniereTuileAppuye = idTuile;
         getVueGrille().remiseAZeroDesTuiles();
@@ -96,29 +94,30 @@ public class VuePlateau extends Observable {
     }
 
     void choisirJoueurDonnerCarte(int idAventurier) {
-        dernierJoueurAppuye=idAventurier;
+        dernierJoueurAppuye = idAventurier;
         setChanged();
         notifyObservers(Commandes.CHOISIR_JOUEUR);
         clearChanged();
-    }    
+    }
 
     public void infoAventurier(int numAventurier) {
-        dernierBouttonInfoAppuye=numAventurier;
+        dernierBouttonInfoAppuye = numAventurier;
         setChanged();
         notifyObservers(Commandes.INFO);
         clearChanged();
     }
 
-    
-    
 /////////////////GETTEURS&SETTEURS//////////////////   
-    
     public int getDerniereTuileAppuye() {
         return derniereTuileAppuye;
     }
 
     public int getDernierBouttonInfoAppuye() {
         return dernierBouttonInfoAppuye;
+    }
+
+    public VueGrille getVueGrille() {
+        return vueGrille;
     }
 
     public int getDernierCarteAppuye() {
@@ -132,7 +131,5 @@ public class VuePlateau extends Observable {
     public ArrayList<VueAventurier> getAventurier() {
         return aventurier;
     }
-    
-    
-    
+
 }
