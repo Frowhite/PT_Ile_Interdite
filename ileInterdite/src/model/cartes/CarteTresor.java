@@ -2,19 +2,20 @@ package model.cartes;
 
 import util.Utils.Tresor;
 
-
-
 /**
  *
  * @author IUT2-Dept Info
  */
 public class CarteTresor extends CarteTirage {
-    
-    public CarteTresor(int idCarte,String nom,Tresor tresor) {
-        super(idCarte,nom);
+
+    public CarteTresor(int idCarte, String nom, Tresor tresor) {
+        super(idCarte, nom);
         setTresor(tresor);
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////GETTERS&SETTERS//////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     @Override
     public Tresor getTresor() {
         return super.getTresor();
@@ -22,11 +23,11 @@ public class CarteTresor extends CarteTirage {
 
     @Override
     public void setTresor(Tresor tresor) {
-         super.setTresor(tresor);
+        super.setTresor(tresor);
     }
-    
-     @Override
-    public boolean estTresor(){
+
+    @Override
+    public boolean estTresor() {
         return true;
     }
 
@@ -37,6 +38,5 @@ public class CarteTresor extends CarteTirage {
     public void setId(Integer id) {
         this.id = id;
     }
-    
-    
+
 }

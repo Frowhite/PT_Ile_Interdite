@@ -11,8 +11,8 @@ import controler.Controleur;
  *
  * @author IUT2-Dept Info
  */
-
 public class Aventurier extends ObjetIdentifie {
+
     private String nom;
     private Pion capacite;
     private ArrayList<CarteTirage> main;
@@ -21,7 +21,6 @@ public class Aventurier extends ObjetIdentifie {
     private ArrayList<Tuile> tuilesPossibleAssechement;
     private Tuile positionCourante;
     private Controleur controleur;
-    
 
     public Aventurier(String nom, Pion capacite, Tuile positionCourante, Controleur controleur) {
         super();
@@ -33,46 +32,43 @@ public class Aventurier extends ObjetIdentifie {
         tuilesPossibleAssechement = new ArrayList();
         this.positionCourante = positionCourante;
         this.controleur = controleur;
-        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    ///////////////////////METHODES/////////////////////////////////////////////
+    ///////////////////////METHODES AJOUT&SUPPRESSION///////////////////////////
     ////////////////////////////////////////////////////////////////////////////
-    
-    public void addTuilesPossibles(Tuile t){
+    public void addTuilesPossibles(Tuile t) {                                    // Ajoute le déplacement possible de tuile adjacentes
         getTuilesPossibles().add(t);
     }
-    
-    public void addTresor(Tresor t){
-        getTresors().add(t);
-    }
-    
-    public void removeCarteMain(Carte c){
-        getMain().remove(c);
-    }
-    
-    public void addCarteMain(Carte c){
-        getMain().add((CarteTirage) c);
-    }
-    
-    public void remTuilesPossibles(Tuile t){
+
+    public void remTuilesPossibles(Tuile t) {                                    // Supprime le déplacement possible
         getTuilesPossibles().remove(t);
     }
-    
-    public void addTuilesPossiblesAssechement(Tuile t){
+
+    public void addTresor(Tresor t) {                                            // Ajoute un trésor à l'aventurier
+        getTresors().add(t);
+    }
+
+    public void addCarteMain(Carte c) {                                          // Ajoute à la main du joueur un carte tirage
+        getMain().add((CarteTirage) c);
+    }
+
+    public void removeCarteMain(Carte c) {                                       // Enlève à la main du joueur un carte tirage
+        getMain().remove(c);
+    }
+
+    public void addTuilesPossiblesAssechement(Tuile t) {                         // Ajoute l'assèchement possible de tuile adjacente
         getTuilesPossibleAssechement().add(t);
     }
-    
-    public void remTuilesPossiblesAssechement(Tuile t){
+
+    public void remTuilesPossiblesAssechement(Tuile t) {                         // Supprime l'assèchement possible
         getTuilesPossibleAssechement().remove(t);
     }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////GETTERS&SETTERS///////////////////////
-    ////////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////GETTERS&SETTERS//////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public String getNom() {
         return nom;
     }
@@ -144,10 +140,5 @@ public class Aventurier extends ObjetIdentifie {
     public void setId(Integer id) {
         this.id = id;
     }
-    
-    
-    
-    
-    
-    
+
 }

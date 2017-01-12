@@ -5,26 +5,31 @@ package model;
  * @author IUT2-Dept Info
  */
 public class ObjetIdentifie {
-    private static Integer lastId = 1 ;
-    protected Integer id ;
-    
+
+    private static Integer lastId = 1;
+    protected Integer id;
+
     public ObjetIdentifie() {
-       this.id = ObjetIdentifie.getNextId();
+        this.id = ObjetIdentifie.getNextId();
     }
-    
+
     public ObjetIdentifie(Integer id) {
         this.id = id;
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////GETTERS&SETTERS//////////////////////////
+    ////////////////////////////////////////////////////////////////////////////    
+    
     public Integer getId() {
-        return this.id ;
+        return this.id;
     }
 
     public static Integer getNextId() {
-        return lastId++ ;
+        return lastId++;
     }
 
     public void setId(Integer id) {
-        this.id = id ;
-    }    
+        this.id = id;
+    }
 }

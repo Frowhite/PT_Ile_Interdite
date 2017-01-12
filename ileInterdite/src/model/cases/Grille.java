@@ -26,14 +26,17 @@ public class Grille {
         remplirGrille(tuile);
     }
 
-    public void tuilesPossiblesDeplacement(Aventurier av) {
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////POSSIBILITEES DEPLACEMENT&ASSECHEMENT///////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    public void tuilesPossiblesDeplacement(Aventurier av) {                     // Permet de connaitre les tuiles où l'aventurier peut se déplacer
 
         ArrayList<Tuile> buffer = new ArrayList();
 
-        if (av.getCapacite() == Pion.BLEU && isCompetenceActiveBleu()) {
+        if (av.getCapacite() == Pion.BLEU && isCompetenceActiveBleu()) {        // Cas de Pilote
             for (int l = 0; l < 6; l++) {
                 for (int c = 0; c < 6; c++) {
-                    if ((l == 0 && (c == 2 || c == 3))
+                    if ((l == 0 && (c == 2 || c == 3)) // Vérification sur la totalitée de la grille
                             || (l == 1 && (c == 1 || c == 2 || c == 3 || c == 4))
                             || (l == 2 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))
                             || (l == 3 && (c == 0 || c == 1 || c == 2 || c == 3 || c == 4 || c == 5))
@@ -48,12 +51,12 @@ public class Grille {
             }
 
         } else {
-            if (av.getCapacite() == Pion.VIOLET) {
-                //Tuile positionRelative = new Tuile(500, "Position Relative", null);
-                ajoutTuileDepPlongeur(av.getPositionCourante(), buffer, 0); //ajoute les tuiles déplacement du plongeur
+            if (av.getCapacite() == Pion.VIOLET) {                              // Cas du plongeur
+                ajoutTuileDepPlongeur(av.getPositionCourante(), buffer, 0);     //ajoute les tuiles déplacement du plongeur
 
             }
 
+            // Déplacement basique sur les tuiles adjacentes
             if (estSurLePlateau(av.getPositionCourante().getLigne(), av.getPositionCourante().getColonnes() - 1) && !buffer.contains(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1])) {
                 buffer.add(tuiles[av.getPositionCourante().getLigne()][av.getPositionCourante().getColonnes() - 1]);
             }
@@ -70,7 +73,7 @@ public class Grille {
                 buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes()]);
             }
 
-            if (av.getCapacite() == Pion.VERT) {
+            if (av.getCapacite() == Pion.VERT) {                                // Cas eplorateur
 
                 if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes() - 1)) {
                     buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() - 1]);
@@ -97,7 +100,7 @@ public class Grille {
         }
     }
 
-    public void ajoutTuileDepPlongeur(Tuile t, ArrayList<Tuile> tDep, int i) {
+    public void ajoutTuileDepPlongeur(Tuile t, ArrayList<Tuile> tDep, int i) {  // Permet de vérifier tous les chemins possible du plongeur
 
         if (estSurLePlateau(t.getLigne(), t.getColonnes() - 1) && tuiles[t.getLigne()][t.getColonnes() - 1] != null) {
             if (tuiles[t.getLigne()][t.getColonnes() - 1].getEtat() != EtatTuile.ASSECHEE && !tDep.contains(tuiles[t.getLigne()][t.getColonnes() - 1])) {
@@ -125,7 +128,7 @@ public class Grille {
         }
     }
 
-    public ArrayList<Tuile> tuilesPossiblesDeplacementHelico() {
+    public ArrayList<Tuile> tuilesPossiblesDeplacementHelico() {                // PErmet de vérifier le déplacement possible quand on utilise carte Action Spécial Hélicoptère
         ArrayList<Tuile> buffer = new ArrayList();
         for (int l = 0; l < 6; l++) {
             for (int c = 0; c < 6; c++) {
@@ -145,7 +148,7 @@ public class Grille {
         return buffer;
     }
 
-    public void remplirGrille(Tuile[] tuile) {
+    public void remplirGrille(Tuile[] tuile) {                                  // Permet de remplir la grille avec les tuiles mélangée aléatoirement avant
         int i = 0;
         for (int l = 0; l < 6; l++) {
             for (int c = 0; c < 6; c++) {
@@ -164,7 +167,7 @@ public class Grille {
         }
     }
 
-    public boolean estSurLePlateau(int l, int c) {
+    public boolean estSurLePlateau(int l, int c) {                              // Permet de savoir si la tuile est sur le plateau
         if ((l == -1) || (l == 6) || (c == -1) || (c == 6)) {
             return false;
         } else {
@@ -172,7 +175,7 @@ public class Grille {
         }
     }
 
-    public void tuilesPossiblesAssechement(Aventurier av) {
+    public void tuilesPossiblesAssechement(Aventurier av) {                     // Permet de connaitre les tuiles qui peuvent être asséchée
 
         ArrayList<Tuile> buffer = new ArrayList();
 
@@ -194,7 +197,7 @@ public class Grille {
             buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes()]);
         }
 
-        if (av.getCapacite() == Pion.VERT) {
+        if (av.getCapacite() == Pion.VERT) {                                    //Cas de l'explorateur
 
             if (estSurLePlateau(av.getPositionCourante().getLigne() + 1, av.getPositionCourante().getColonnes() - 1)) {
                 buffer.add(tuiles[av.getPositionCourante().getLigne() + 1][av.getPositionCourante().getColonnes() - 1]);
@@ -218,7 +221,7 @@ public class Grille {
         }
     }
 
-    public ArrayList<Tuile> CasesInonder() {
+    public ArrayList<Tuile> CasesInonder() {                                    // Permet de savoir sur la grille qu'elles sont les tuiles inondées
         ArrayList<Tuile> casesInonde = new ArrayList();
 
         for (int l = 0; l < 6; l++) {
