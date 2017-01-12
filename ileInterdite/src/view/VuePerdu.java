@@ -53,29 +53,6 @@ public class VuePerdu {
         JOptionPane.showMessageDialog(window, "Vous avez perdu", "Nonnnnnnnn!!!!!!", JOptionPane.INFORMATION_MESSAGE);
         
         
-//        panel = new JPanel(new BorderLayout());
-//        panelSud = new JPanel(new GridLayout(1,3));
-//        message = new JLabel("Vous avez PERDU!!!!!!!!! #Atlantide");
-//        panelCentre = new JPanel();
-//        panelCentre.add(message);
-//        
-//        
-//        
-//        Fin.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.exit(0);
-//            }
-//        });
-//        for(int i = 0; i<3;i++){
-//            if(i == 2){
-//                panelSud.add(Fin);
-//            }else{
-//                panelSud.add(new JLabel(""));
-//            }
-//        }
-//       
-    
         
         window.setVisible(true);
         

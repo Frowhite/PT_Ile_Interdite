@@ -43,7 +43,7 @@ public class VueInfo extends Observable{
         panelGlobal = new JPanel(new BorderLayout());
         panelGlobal.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.BLACK)); //bords noir de la fenêtre
         // Définit la taille de la fenêtre en pixels
-        window.setSize(dim.width *3/24, dim.height / 4);
+        window.setSize(dim.width *4/24, dim.height / 4);
         window.setLocation(dim.width*45 / 100, dim.height*34 / 100);
         //titre
         nomPersonnage = new JLabel();
@@ -102,7 +102,9 @@ public class VueInfo extends Observable{
                 break;
         }
         nomPersonnage.setFont(new Font("Arial", 0, 30));
+        nomPersonnage.setHorizontalAlignment(JLabel.CENTER);
         infoPersonnage.setFont(new Font("Arial", 0, 20));
+        infoPersonnage.setHorizontalAlignment(JLabel.CENTER);
         
         panelGlobal.add(nomPersonnage, BorderLayout.NORTH);
         panelGlobal.add(infoPersonnage, BorderLayout.CENTER);
