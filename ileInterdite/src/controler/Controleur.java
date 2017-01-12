@@ -637,23 +637,23 @@ public class Controleur implements Observer {
         setActionDonnerCarte(false);
         Aventurier jReceveur = null;
         CarteTirage carteADonner = null;
-        for (Aventurier av : aventuriers) {
+        for (Aventurier av : aventuriers) {         //On recupere l'aventurier avec l'id donner
             if (av.getId() == idReceveur) {
                 jReceveur = av;
             }
         }
 
-        for (CarteTirage c : jDonneur.getMain()) {
+        for (CarteTirage c : jDonneur.getMain()) {  //On recupere la carte avec l'id donner
             if (c.getId() == idCarte) {
                 carteADonner = c;
             }
         }
 
-        jDonneur.removeCarteMain(carteADonner);
+        jDonneur.removeCarteMain(carteADonner);         //retire la carte de la main du jCourant
 
-        jReceveur.addCarteMain(carteADonner);
+        jReceveur.addCarteMain(carteADonner);           //Pour la donner au joueur selectionner
 
-        vuePlateau.getAventurier().get(jReceveur.getId() - 25).ajouterCarte(carteADonner.getId());
+        vuePlateau.getAventurier().get(jReceveur.getId() - 25).ajouterCarte(carteADonner.getId());  //Affichage
 
         finTour();
         debutTour();
@@ -661,14 +661,13 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////PIOCHER CARTE TIRAGE/////////////////////////
-    public void piocherCarteTresorDepart(Aventurier jCourant) {
+    public void piocherCarteTresorDepart(Aventurier jCourant) {     //Permet de piocher au debut de la Partie et de remetrre les cartes Montee des eaux dans la pioche
 
         CarteTirage cartePioche = getPiocheTirage().get(0);
         remPiocheTirage(cartePioche);
         if (!cartePioche.estMontee()) {
             jCourant.addCarteMain(cartePioche);
             vuePlateau.getAventurier().get(jCourant.getId() - 25).ajouterCarte(cartePioche.getId());
-            //vuePlateau.getAventurier(jCourant.getId()).ajouterCarte(cartePioche.getId());
         }
         if (cartePioche.estMontee()) {
             addPiocheTirage(cartePioche);
@@ -685,7 +684,7 @@ public class Controleur implements Observer {
             if (!cartePioche.estMontee()) {
                 av.addCarteMain(cartePioche);
                 vuePlateau.getAventurier().get(av.getId() - 25).ajouterCarte(cartePioche.getId());
-                //vuePlateau.getAventurier(av.getId()).ajouterCarte(cartePioche.getId());
+               
             }
             if (cartePioche.estMontee()) {
 
