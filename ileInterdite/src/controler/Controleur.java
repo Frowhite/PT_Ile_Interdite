@@ -678,15 +678,15 @@ public class Controleur implements Observer {
     }
 
     public void piocherCarteTresor(Aventurier av) {
-        if (!getPiocheTirage().isEmpty()) {
-            CarteTirage cartePioche = getPiocheTirage().get(0);
-            remPiocheTirage(cartePioche);
-            if (!cartePioche.estMontee()) {
-                av.addCarteMain(cartePioche);
-                vuePlateau.getAventurier().get(av.getId() - 25).ajouterCarte(cartePioche.getId());
+        if (!getPiocheTirage().isEmpty()) {//Si la pioche n'est pas vide 
+            CarteTirage cartePioche = getPiocheTirage().get(0); //On pioche la premiere carte du tas
+            remPiocheTirage(cartePioche);                       //On la suprime de la pioche
+            if (!cartePioche.estMontee()) {                     //Si ce n'est pas une carte Montee des eaux
+                av.addCarteMain(cartePioche);                   //On add la carte a la main 
+                vuePlateau.getAventurier().get(av.getId() - 25).ajouterCarte(cartePioche.getId()); //Affichage
                
             }
-            if (cartePioche.estMontee()) {
+            if (cartePioche.estMontee()) { //Si la cartes est une montee des eaux
 
                 if (!piocheCarteMonteEau) {//tout les 2 cartes monte des l'eaux augmente le niveau de l'eau de 1
                     setPiocheCarteMonteEau(true);
@@ -695,10 +695,10 @@ public class Controleur implements Observer {
                     setPiocheCarteMonteEau(false);
                 }
 
-                addDefausseTirage(cartePioche);
-                if (!getDefausseInondation().isEmpty()) {
-                    setDefausseInondation(melangerInondation(getDefausseInondation()));
-                    for (CarteInondation c : piocheInondation) {
+                addDefausseTirage(cartePioche);             //On la remet tous de suite dans la Défausse
+                if (!getDefausseInondation().isEmpty()) {   //Si la pioche Inondation n'est pas vide
+                    setDefausseInondation(melangerInondation(getDefausseInondation())); //On melange la défausse Inondation 
+                    for (CarteInondation c : piocheInondation) {                        //Et on la remet sur le dessus du tas
                         addDefausseInondation(c);
                     }
 
@@ -722,24 +722,24 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////PIOCHER CARTE INONDATION/////////////////////
-    public void piocherCarteInondation() {
-        if (!getPiocheInondation().isEmpty()) {
-            CarteInondation tuileInonde = getPiocheInondation().get(0);
+    public void piocherCarteInondation() {                  //Quand on veux piocher une Carte Inondation
+        if (!getPiocheInondation().isEmpty()) {             //Si la pioche n'est pas vide
+            CarteInondation tuileInonde = getPiocheInondation().get(0); //On pioche la premeire carte du TAs
 
-            remPiocheInondation(tuileInonde);
-            for (int i = 0; i < getTuile().length; i++) {
-
+            remPiocheInondation(tuileInonde);                           //On la supprie de la pioche
+            for (int i = 0; i < getTuile().length; i++) {               //On la compare au tuiles
+                                                                                    
                 if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
-                    tuile[i].setEtat(EtatTuile.INONDEE);
+                    tuile[i].setEtat(EtatTuile.INONDEE);    //Si elle etait assecher alors elle devient inonder
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
-                    addDefausseInondation(tuileInonde);
+                    addDefausseInondation(tuileInonde);     //On la met dans la Defausse
 
                 } else if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.INONDEE) {
-                    tuile[i].setEtat(EtatTuile.COULEE);
+                    tuile[i].setEtat(EtatTuile.COULEE);     //Si elle etait Inondee alors elle devient Couler
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.COULEE);
                 }
             }
-        } else {
+        } else { //Si la pioche est vide on remet la defausse sur la pioche en la melangeant
 
             setDefausseInondation(melangerInondation(getDefausseInondation()));
             for (CarteInondation c : getDefausseInondation()) {
@@ -751,7 +751,7 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////DEFAUSSER CARTE//////////////////////////////
-    public void choisirCarteADefausser(Aventurier jDefausseur) {
+    public void choisirCarteADefausser(Aventurier jDefausseur) { //On choisit la carte a Défausser
         for (CarteTirage c : jDefausseur.getMain()) {
             //Donner a la methode l'ide de la carte c
             setActionDefausser(true);
@@ -761,18 +761,18 @@ public class Controleur implements Observer {
     }
 
     public void defausser(Aventurier jDefausseur, int idCarte) {
-        setActionDefausser(false);
+        setActionDefausser(false);              //On recupere l'Id de la carte a defausser
         CarteTirage carteADefausser = null;
 
-        for (CarteTirage c : jDefausseur.getMain()) {
+        for (CarteTirage c : jDefausseur.getMain()) {   //On recupere la carte a partir de l'id
             if (c.getId() == idCarte) {
                 carteADefausser = c;
             }
         }
 
-        jDefausseur.removeCarteMain(carteADefausser);
-        addDefausseTirage(carteADefausser);
-        if (jCourant.getMain().size() > 5) {
+        jDefausseur.removeCarteMain(carteADefausser);   //On la suprime de la main du jCOurant
+        addDefausseTirage(carteADefausser);             //On l'ajoute a la défausse
+        if (jCourant.getMain().size() > 5) {            //Si il a toujours plus de 5 cartes alors on relance la démarche
             choisirCarteADefausser(jCourant);
         } else {
             vueAction.apparaitreDisparaitre(true);
@@ -780,7 +780,7 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////UTILISATION CARTE SPECIAL////////////////////
-    public void choisirCarteAUtiliser(Aventurier jUtilisateur) {
+    public void choisirCarteAUtiliser(Aventurier jUtilisateur) {//On verifie si on des cartes Actions speciales pour pouvoir Utiliser cette fonctionnaliter
         boolean t = true;
         if (!jUtilisateur.getMain().isEmpty()) {
 
@@ -808,13 +808,13 @@ public class Controleur implements Observer {
     public void utiliserCarte(Aventurier jUtilisateur, int idCarte) {
 
         for (CarteTirage c : jUtilisateur.getMain()) {
-            if (c.getId() == idCarte) {
+            if (c.getId() == idCarte) {                 //On recupere la carte a partir de l'Id
                 if (c.estSac()) {
 
-                    utiliserSac();
+                    utiliserSac();                      //Si c'est un sac de sable alors on uilise la methode associer
                 }
                 if (c.estHelico()) {
-                    utiliserHelico(jUtilisateur);
+                    utiliserHelico(jUtilisateur);       //Sinon c'est un hélicoptere
                 }
             }
         }
@@ -823,13 +823,13 @@ public class Controleur implements Observer {
     public void utiliserSac() {
         setActionUtiliserSac(false);
         ArrayList<Tuile> casesInondee = new ArrayList();
-        casesInondee = grille.CasesInonder();
-        if (!casesInondee.isEmpty()) {
-            actionRestante++;
+        casesInondee = grille.CasesInonder();           //On recupere toutes les cases Inonder du plateau
+        if (!casesInondee.isEmpty()) {                  //Si il y a des cases a secher
+            actionRestante++;                           //POur faire en sorte de ne pas utiliser d'action
             for (Tuile t : casesInondee) {
-                vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
+                vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());    //Envoit a la VueGrille l'id de la tuille qui doit etre assecher
             }
-        } else {
+        } else {                                        //Si pas de case alors on recommence le tour
 
             debutTour();
         }
@@ -837,7 +837,7 @@ public class Controleur implements Observer {
 
     public void utiliserHelico(Aventurier jUtilisateur) {
         setActionCarteHelico(false);
-        if (jUtilisateur.getId() == 0) {
+        if (jUtilisateur.getId() == 0) {            //Condition de Victoire
             ArrayList<Tresor> tresorPossedesParEquipe = new ArrayList();
             for (Aventurier av : aventuriers) {
                 if (av.getTresors().contains(Tresor.CALICE)) {
@@ -856,7 +856,7 @@ public class Controleur implements Observer {
             if (tresorPossedesParEquipe.contains(Tresor.CALICE)
                     && tresorPossedesParEquipe.contains(Tresor.ZEPHYR)
                     && tresorPossedesParEquipe.contains(Tresor.PIERRE)
-                    && tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == 4)) {
+                    && tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == 3)) {
 
                 //Faire Disparaitre le plateau de jeu
                 vueAction.apparaitreDisparaitre(false);
