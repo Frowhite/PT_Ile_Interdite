@@ -60,15 +60,15 @@ public class Controleur implements Observer {
         if (o == vueDemarrage) {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
-                    case COMMENCER_PARTIE:
-                        vueMontrerJoueur.fermerFenetre();
+                    case COMMENCER_PARTIE:                          //Quand on commence la partie
+                        vueMontrerJoueur.fermerFenetre();           //On quite la fenetre de demarrage
                         vueDemarrage.fermerFenetre();
-                        ouvrirPlateauDeJeu();
+                        ouvrirPlateauDeJeu();                       //Creer le plateau de jeu
                         break;
-                    case INSCRIRE_JOUEUR:
-                        vueMontrerJoueur.fermerFenetre();
+                    case INSCRIRE_JOUEUR:                           //Quand on veux inscrire un joueur
+                        vueMontrerJoueur.fermerFenetre();           //On ferme la fenetre de demarrage
                         vueDemarrage.fermerFenetre();
-                        ouvrirFenetreInscription();
+                        ouvrirFenetreInscription();                 //Ouvre la fenetre Inscription
                         break;
                     case QUITTER:
                         vueDemarrage.quitterJeu();//arrète le programme
@@ -79,55 +79,55 @@ public class Controleur implements Observer {
         if (o == vueInscription) {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
-                    case ANNULER:
-                        vueInscription.fermerFenetre();
+                    case ANNULER:                                   //Quand on veux annuler l'inscription des joueur
+                        vueInscription.fermerFenetre();             //On ferme la fenetre Inscription
                         vueNiveau.fermerFenetre();
-                        ouvrirFenetreDemarrage();
+                        ouvrirFenetreDemarrage();                   //On ouvre la fenetre Demarrage
                         break;
-                    case VALIDER_JOUEURS:
-                        vueInscription.fermerFenetre();
+                    case VALIDER_JOUEURS:                           //Quand on veux valider l'inscription des joueurs
+                        vueInscription.fermerFenetre();            //On ferme la fentre d'inscription     
                         vueNiveau.fermerFenetre();
-                        ajouteJoueur();
-                        ouvrirFenetreDemarrage();
+                        ajouteJoueur();                             //On ajoute les joueur a la vueMontreJOueur
+                        ouvrirFenetreDemarrage();                   //On ouvre la fenetre de demarrage
                         break;
                 }
 
             }
 
             if (arg instanceof Integer) {
-                setNiveauEau((Integer) arg);
+                setNiveauEau((Integer) arg);                        //Permet de set le niveau d'eau
                 vueNiveau.setNiveau(niveauEau);
             }
         }
         if (o == vuePlateau) {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
-                    case CHOISIR_TUILE_DEPLACEMENT:
-                        if (actionEndroitDeplaceHelico) {
+                    case CHOISIR_TUILE_DEPLACEMENT:                                                     //Quand on veux se deplacer
+                        if (actionEndroitDeplaceHelico) {                                               //Si on utilise un Hélico
                             setActionEndroitDeplaceHelico(false);
-                            setIdTuileDepartHelico(vuePlateau.getDerniereTuileAppuye());
-                            destinationHelico();
-                        } else if (actionDeplaceHelico) {
+                            setIdTuileDepartHelico(vuePlateau.getDerniereTuileAppuye());                //On recupere l'id de la tuile selectionner par le joueur
+                            destinationHelico();                                                        //On choisit la destination de l'helico    
+                        } else if (actionDeplaceHelico) {                                               //Quand on a choisit la destination de l'helicoptere
                             setActionDeplaceHelico(false);
-                            deplacerHelico(vuePlateau.getDerniereTuileAppuye());
+                            deplacerHelico(vuePlateau.getDerniereTuileAppuye());                        //On deplace es joueur vers la tuile selectionner par le joueur
                         } else {
-                            vuePlateau.getVueGrille().deplacePion((aventuriers.get(numJoueurQuiJoue))
+                            vuePlateau.getVueGrille().deplacePion((aventuriers.get(numJoueurQuiJoue)) //Un joueur veux se deplacer donc on deplace son pion sur le plateau
                                     .getCapacite(), vuePlateau.getDerniereTuileAppuye());
-                            avancer(aventuriers.get(numJoueurQuiJoue), vuePlateau.getDerniereTuileAppuye());
-                            debutTour();
+                            avancer(aventuriers.get(numJoueurQuiJoue), vuePlateau.getDerniereTuileAppuye());    //On deplace le joueur dans le model
+                            debutTour();                                                                        //On recommencer un tour de jeu
                         }
                         break;
-                    case CHOISIR_TUILE_ASSECHEMENT:
-                        vuePlateau.getVueGrille().etatTuile(vuePlateau.getDerniereTuileAppuye(), EtatTuile.ASSECHEE);
-                        assecher(vuePlateau.getDerniereTuileAppuye());
-                        if (!isCompetanceActitiveRouge()) {//le pion rouge va pouvoir assechee 2 fois
+                    case CHOISIR_TUILE_ASSECHEMENT:                                                                     //On veux assecher une tuile
+                        vuePlateau.getVueGrille().etatTuile(vuePlateau.getDerniereTuileAppuye(), EtatTuile.ASSECHEE);   //On change sur l'ihm l'etat de la tuile
+                        assecher(vuePlateau.getDerniereTuileAppuye());                                                  //On asseche une tuile dans le model
+                        if (!isCompetanceActitiveRouge()) {//le pion rouge va pouvoir assechee 2 fois                   
                             debutTour();
                         } else {
                             possiblesAssechement(getjCourant());
                         }
                         break;
-                    case CHOISIR_CARTE:
-                        for (CarteTirage c : jCourant.getMain()) {
+                    case CHOISIR_CARTE:                                                                                 //Quand on doit choisir une carte
+                        for (CarteTirage c : jCourant.getMain()) {                                                      //On regarde si la carte selectionner est une carte action special
                             if (c.getId() == vuePlateau.getDernierCarteAppuye()) {
                                 if (c.estHelico()) {
                                     setActionCarteHelico(true);
@@ -136,22 +136,22 @@ public class Controleur implements Observer {
                                 }
                             }
                         }
-                        if (actionDonnerCarte) {
+                        if (actionDonnerCarte) {                                                                        //Si l'action de depart est de donner une carte alors on selectionne l'aventurier a qui on veut la donner
                             peutDonnerAventurier(jCourant);
-                        } else if (actionDefausser) {
+                        } else if (actionDefausser) {                                                                   //Si on veux defausser une carte utilise la methode defausse
                             defausser(jCourant, vuePlateau.getDernierCarteAppuye());
-                        } else if (actionCarteHelico) {
+                        } else if (actionCarteHelico) {                                                                 //Si c'est un Hélico alors on utilise la methode pour declencher l'helicoptere
                             utiliserHelico(jCourant);
-                        } else if (actionUtiliserSac) {
+                        } else if (actionUtiliserSac) {                                                                 //Si c'est un Sac alors on asseche une tuile
                             utiliserSac();
                         }
                         //vuePlateau.getDernierCarteAppuye();
                         break;
-                    case CHOISIR_JOUEUR:
+                    case CHOISIR_JOUEUR:                                                                                //Quand on choisit un joueur c'est seulement pour donner une carte
                         donnerCarte(jCourant, vuePlateau.getDernierCarteAppuye(), vuePlateau.getDernierJoueurAppuye());
                         //vuePlateau.getDernierJoueurAppuye();
                         break;
-                    case INFO:
+                    case INFO:                                                                                          //Quand on veux avoir des info sur la classe du joueur    
                         vueInfo = new VueInfo(aventuriers.get(vuePlateau.getDernierBouttonInfoAppuye()).getCapacite());
                         vueInfo.addObserver(this);
                         break;
@@ -161,40 +161,40 @@ public class Controleur implements Observer {
         if (o == vueAction) {
             if (arg instanceof Commandes) {
                 switch ((Commandes) arg) {
-                    case BOUGER:
-                        vueAction.fermerFenetre();
-                        possiblesDeplacer(getjCourant());
+                    case BOUGER:                                                //Quand on veux bouger 
+                        vueAction.fermerFenetre();                              //On ferme la fenetre action
+                        possiblesDeplacer(getjCourant());                       //On enclenche le deplacement
 
                         break;
-                    case ASSECHER:
+                    case ASSECHER:                                              //Quand on veux assecher une tuile
                         vueAction.fermerFenetre();
                         possiblesAssechement(getjCourant());
 
                         break;
-                    case DONNER:
+                    case DONNER:                                                //Quand on veux donner une carte
                         vueAction.fermerFenetre();
                         peutDonnerCarte(getjCourant());
                         break;
-                    case CHOISIR_CARTE:
+                    case CHOISIR_CARTE:                                         //Quand on veux utiliser une carte action special
                         vueAction.fermerFenetre();
                         choisirCarteAUtiliser(jCourant);
                         break;
-                    case RECUPERER_TRESOR:
+                    case RECUPERER_TRESOR:                                      //Quand on veux recuperer un tresor
                         vueAction.fermerFenetre();
                         obtenirTresor(jCourant);
                         break;
-                    case PASSER_TOUR:
-                        vueAction.fermerFenetre();
-                        setActionRestante(1);
-                        finTour();
-                        debutTour();
+                    case PASSER_TOUR:                                           //Quand on veux passer sont tour
+                        vueAction.fermerFenetre();                              //ferme la vueAction
+                        setActionRestante(1);                                   //On supprime toute les actions possible
+                        finTour();                                              //On finit le tour
+                        debutTour();                                            //On en recommence un autre avec un autre joueur
                         break;
                 }
             }
         }
         if (o == vueInfo) {
             if (arg instanceof Commandes) {
-                if (arg == Commandes.OK_Info) {
+                if (arg == Commandes.OK_Info) {                                 //Quand on veux fermer une fenetre INFO
                     vueInfo.fermerFenetre();
                 }
             }
@@ -205,25 +205,24 @@ public class Controleur implements Observer {
 //////////////////////////////CREATION & MISE EN PLACE DE LA PARTIE ////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
-        //  vueNiveau = new VueNiveau(niveauEau);
-        setNiveauEau(getVueNiveau().getNiveau());
-        initialiserCartesTirages();
-        initialiserCartesInondation();
-        initialiserPositionJoueur();
-        for (int j = 0; j < 2; j++) {
+        setNiveauEau(getVueNiveau().getNiveau());                               //On initialise le niveau de l'eau avec la difficulter choisit precedement
+        initialiserCartesTirages();                                             //On creer les cartes Tirages et les mélanges
+        initialiserCartesInondation();                                          //On creer les cartes Inondations et les mélanges
+        initialiserPositionJoueur();                                            //On set la position des joueur de depart en fonction de le capacite
+        for (int j = 0; j < 2; j++) {                                           //Chaque joueur pioche 2 cartes tirages
             for (Aventurier jCourant : aventuriers) {
                 piocherCarteTresorDepart(jCourant);
             }
         }
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {                                           //On pioche et active les 6 cartes Inondations de début de jeu
             piocherCarteInondation();
         }
         //le Navigateur a 4 actions
         if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
-            actionRestante += 1;
+            actionRestante += 1;                                                //Si le premier JOueur est un Navigateur alors on lui rajoute 1 action comme specifier dans les regle modifier
         }
-        debutTour();
+        debutTour();                                                            //On commence un tour de jeu
     }
 
     ////////////////////////////////GRILLE//////////////////////////////////////
@@ -339,54 +338,46 @@ public class Controleur implements Observer {
     /////////////////////////////LANCEMENT//////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
     public void debutTour() {
-       
+        vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());                                 //Permet d'eclairer le jCourant pour le voir
 
-            vuePlateau.getVueGrille().allumerJCourant(aventuriers.get(numJoueurQuiJoue).getPositionCourante().getId());
+        vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());     //Affiche la VueAction        
+        vueAction.addObserver(this);
+        setjCourant(aventuriers.get(numJoueurQuiJoue));                                                                                             //Set Le jCourant
 
-            vueAction = new VueAction(aventuriers.get(numJoueurQuiJoue).getNom(), actionRestante, aventuriers.get(numJoueurQuiJoue).getCapacite());
-            vueAction.addObserver(this);
-            setjCourant(aventuriers.get(numJoueurQuiJoue));
+        if (jCourant.getMain().size() > 5) {                                                                                                        //Permet de Défausser si on a trop de carte en main
 
-            if (jCourant.getMain().size() > 5) {
-               
-                vueAction.apparaitreDisparaitre(false);
-                choisirCarteADefausser(jCourant);
+            vueAction.apparaitreDisparaitre(false);
+            choisirCarteADefausser(jCourant);
 
-            }
-        
-           
-        
+        }
 
     }
-private int i = 0;
-    
+
     public void finTour() {
-        vuePlateau.getVueGrille().eteindrePlateau();
-        actionRestante -= 1;
-        if (actionRestante == 0) {
+        vuePlateau.getVueGrille().eteindrePlateau();                                                //Tout les clairage du plateau s'eteignent
+        actionRestante -= 1;                                                                        //Soustrait le nb D'action qui rest
+        if (actionRestante == 0) {                                                                  //Si il ne peux plus jouer
             grille.setCompetenceActiveBleu(true);//le Navigateur regagne sa competance à la fin de son tour
+            piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));                                  //Il pioche 2 carte Tresor
             piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
-            piocherCarteTresor(aventuriers.get(numJoueurQuiJoue));
-            for (int i = 0; i < getNiveauEau(); i++) {
+            for (int i = 0; i < getNiveauEau(); i++) {                                              //Il pioche le nombre de carte Inondation correspondant au niveau de l'eau actuel
                 piocherCarteInondation();
             }
 
-            numJoueurQuiJoue += 1;
-            numJoueurQuiJoue %= aventuriers.size();
+            numJoueurQuiJoue += 1;                                                                  //Change le jCourant
+            numJoueurQuiJoue %= aventuriers.size();                                                 
             actionRestante = 3;
             //le Navigateur a 4 actions
             if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
                 actionRestante += 1;
             }
-            //vuePlateau.getVueGrille().allumerJCourant(jCourant.getPositionCourante().getId());
         }
-         if (perdu()) {
-               //Faire Disparaitre le Plateau de jeu
-                System.out.println("Erreur perdu");
-                vueAction.apparaitreDisparaitre(false);
-                vuePerdu = new VuePerdu();
-                
-         }
+        if (perdu()) {                                                                          //Verification en cas de défaaite
+            //Faire Disparaitre le Plateau de jeu
+            vueAction.apparaitreDisparaitre(false);
+            vuePerdu = new VuePerdu();
+
+        }
     }
 
     public boolean perdu() {
@@ -394,15 +385,17 @@ private int i = 0;
         for (int i = 0; i < tuile.length; i++) {
             if (tuile[i].getId() == 0 && tuile[i].getEtat() == EtatTuile.COULEE //Heliport couler
 
-                || (!TresorRecuperer(Tresor.PIERRE) && tuile[i].getId() == 18 && tuile[i].getEtat() == EtatTuile.COULEE &&  tuile[i+1].getEtat() == EtatTuile.COULEE)
-                || (!TresorRecuperer(Tresor.CRISTAL)&&tuile[i].getId() == 1 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i+1].getEtat() == EtatTuile.COULEE)
-                || (!TresorRecuperer(Tresor.CALICE) &&tuile[i].getId() == 14 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i+1].getEtat() == EtatTuile.COULEE)
-                || (!TresorRecuperer(Tresor.ZEPHYR) &&tuile[i].getId() == 10 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i+1].getEtat() == EtatTuile.COULEE))
+                    || (!TresorRecuperer(Tresor.PIERRE) && tuile[i].getId() == 18 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE)
+                    || (!TresorRecuperer(Tresor.CRISTAL) && tuile[i].getId() == 1 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE)
+                    || (!TresorRecuperer(Tresor.CALICE) && tuile[i].getId() == 14 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE)
+                    || (!TresorRecuperer(Tresor.ZEPHYR) && tuile[i].getId() == 10 && tuile[i].getEtat() == EtatTuile.COULEE && tuile[i + 1].getEtat() == EtatTuile.COULEE))
                 //On a pas recuper le tresor e les 2 tuile on couler)) {
-            b = true;
+            {
+                b = true;
+            }
         }
-        
-        return b ;
+
+        return b;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -410,49 +403,49 @@ private int i = 0;
     ////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////ASSECHEMENT////////////////////////////////
     public void possiblesAssechement(Aventurier av) {
-        grille.tuilesPossiblesAssechement(av);
-        if (!av.getTuilesPossibleAssechement().isEmpty()) {
+        grille.tuilesPossiblesAssechement(av);                                          //On recupere les Tuiles que l'on peux asseher dans la grille
+        if (!av.getTuilesPossibleAssechement().isEmpty()) {                             //Si on peut assecher
             if (av.getCapacite() == Pion.ROUGE && !isCompetanceActitiveRouge()) {//le pion rouge va pouvoir assechee 2 fois (voir update)
                 setCompetanceActitiveRouge(true);
             } else {
                 setCompetanceActitiveRouge(false);
             }
             for (Tuile t : av.getTuilesPossibleAssechement()) {
-                vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
+                vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());         //On recupere toutes les ID des tuiles que l'ont peux assecher
             }
-        } else if (av.getCapacite() == Pion.ROUGE && isCompetanceActitiveRouge()) {
+        } else if (av.getCapacite() == Pion.ROUGE && isCompetanceActitiveRouge()) {      //Si la competence est rouge on recommecne le tour pour en choisir une deuxieme
             setCompetanceActitiveRouge(false);
             finTour();
             debutTour();
         } else {
-            debutTour();
+            debutTour();                                                                //Si on ne peut pas assecher ne fait rien et reaffiche la VueAction
         }
     }
 
     public void assecher(int idTuileAssechee) {
         for (int i = 0; i < tuile.length; i++) {
-            if (idTuileAssechee == tuile[i].getId()) {
-                tuile[i].setEtat(EtatTuile.ASSECHEE);
+            if (idTuileAssechee == tuile[i].getId()) {                                  //Si la tuile correspond à l'Id que l'in a donner
+                tuile[i].setEtat(EtatTuile.ASSECHEE);                                   //Change l'etat de la tuile dans le domaine
             }
         }
-        jCourant.getTuilesPossibleAssechement().clear();
+        jCourant.getTuilesPossibleAssechement().clear();                                //clear la collection de tuiles possible a assecher
         if (!isCompetanceActitiveRouge()) {
-            finTour();
+            finTour();                                                                  //Si ce n'est pas un rouge alors on finit le tour
         }
     }
 
     //////////////////////////////////OBTENIR TRESOR////////////////////////////
     public void obtenirTresor(Aventurier av) {
-        if (av.getPositionCourante().getTresor() != null) {
-            if (peutPrendreTresor(av.getMain(), av.getPositionCourante())) {
+        if (av.getPositionCourante().getTresor() != null) {                             //Si il y a un tresor sur la posisiton du jCourant
+            if (peutPrendreTresor(av.getMain(), av.getPositionCourante())) {            //Si il a toute les cartes en main pour le recuperer
 
-                av.addTresor(av.getPositionCourante().getTresor());
-                vuePlateau.getVueGrille().donnerTresor(av.getPositionCourante().getTresor());
+                av.addTresor(av.getPositionCourante().getTresor());                         //add le tresor dans la liste tresor du jcOurant
+                vuePlateau.getVueGrille().donnerTresor(av.getPositionCourante().getTresor());   //La vue recupere la tuile du tresor
 
                 Tuile secondeTuile = rechercherTresor(av);
-                defausseCarteTresor(av, av.getPositionCourante().getTresor());
-                av.getPositionCourante().setTresor(null);
-                secondeTuile.setTresor(null);
+                defausseCarteTresor(av, av.getPositionCourante().getTresor());              //On defausse nos cartes tresors
+                av.getPositionCourante().setTresor(null);                                   //On ne peut plus recuperer le Tresor
+                secondeTuile.setTresor(null);                                               //Sur les 2 tuiles
             }
 
         }
@@ -485,7 +478,7 @@ private int i = 0;
                 if (main.get(i).getTresor() == Tresor.ZEPHYR) {
                     zephyr = zephyr + 1;
                 }
-
+                //Prmet de compter combrien on a de cartes de chaque pour savoir si on peut recuperer le tresor voulu
             }
         }
         return (tuile.getTresor() == Tresor.CALICE && calice >= 4)
@@ -495,7 +488,7 @@ private int i = 0;
 
     }
 
-    public Tuile rechercherTresor(Aventurier av) {
+    public Tuile rechercherTresor(Aventurier av) {                  //Recherche la deuxieme tuile contenant le tresor   
         Tuile t = null;
         for (int i = 0; i < 24; i++) {
             if (tuile[i].getTresor() == av.getPositionCourante().getTresor()) {
@@ -509,14 +502,14 @@ private int i = 0;
 
     public void defausseCarteTresor(Aventurier av, Tresor tresor) {
         ArrayList<CarteTresor> cartesTresor = new ArrayList();
-        for (int i = 0; i < av.getMain().size(); i++) {
+        for (int i = 0; i < av.getMain().size(); i++) {                     //On recupere toute les cartes tresor de la main
             if (av.getMain().get(i).estTresor()) {
                 cartesTresor.add((CarteTresor) av.getMain().get(i));
 
             }
         }
         for (int j = 0; j < cartesTresor.size(); j++) {
-            if (cartesTresor.get(j).getTresor() == tresor) {
+            if (cartesTresor.get(j).getTresor() == tresor) {               // Si la carte correspond au tresor voulu alors on la defausse
 
                 vuePlateau.getAventurier().get(av.getId() - 25).enleverCarte(cartesTresor.get(j).getId());
 
@@ -526,20 +519,20 @@ private int i = 0;
     }
 
     ///////////////////////////////////////DEPLACEMENT//////////////////////////
-    public void initialiserPositionJoueur() {
+    public void initialiserPositionJoueur() {              //ajoute a la tuile le joueur qui est dessus
         for (int i = 0; i < aventuriers.size(); i++) {
             aventuriers.get(i).getPositionCourante().getAventuriers().add(aventuriers.get(i));
         }
 
     }
 
-    public void possiblesDeplacer(Aventurier av) {
+    public void possiblesDeplacer(Aventurier av) {                  //On calcul le deplacement Possible en envoyant a la VuePlateau tous les Id des dep possibles
         grille.tuilesPossiblesDeplacement(av);
         if (!av.getTuilesPossibles().isEmpty()) {
             for (Tuile t : av.getTuilesPossibles()) {
                 vuePlateau.getVueGrille().idTuileDeplacementPossible(t.getId());
             }
-        } else {
+        } else {                                                    //Si aucun dep possible alos on retourne au debut du tour
             debutTour();
         }
     }
@@ -560,6 +553,7 @@ private int i = 0;
         finTour();
     }
 
+    //Si le joueur est bleau
     public void competenceBleu(Aventurier jCourant, int idNvTuile) {
         int l = jCourant.getPositionCourante().getLigne();
         int c = jCourant.getPositionCourante().getColonnes();
@@ -603,17 +597,17 @@ private int i = 0;
     }
 
     public void peutDonnerCarte(Aventurier jDonneur) {
-        if (mainNull(jDonneur.getMain())) {
+        if (mainNull(jDonneur.getMain())) { //Si la main n'est pas vide
             if ((jDonneur.getCapacite() == Pion.ORANGE) || (possibliteDonnerAAventurier(jDonneur))) {
                 for (CarteTirage c : jDonneur.getMain()) {
                     if (c.estTresor()) {
-                        //Donner a la methode l'ide de la carte c
+                        //Donner a la methode l'id de de la carte c
                         vuePlateau.getAventurier().get(jDonneur.getId() - 25).carteCliquable(c.getId());
                     }
                 }
                 setActionDonnerCarte(true);
             } else {
-                debutTour();
+                debutTour();            //Si main vide on retourne au debut du tour
             }
         } else {
             debutTour();
@@ -621,18 +615,17 @@ private int i = 0;
     }
 
     public void peutDonnerAventurier(Aventurier jDonneur) {
-        if (jDonneur.getCapacite() == Pion.ORANGE) {
+        if (jDonneur.getCapacite() == Pion.ORANGE) {                //Si le joueur est orange alors on donne la liste de tous les joueurs
             setJoueurPourDonnerCarte(aventuriers);
-        } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {
+        } else if (!jDonneur.getPositionCourante().getAventuriers().isEmpty()) {    //Sinon seulement ceux sur la meme case
             setJoueurPourDonnerCarte(jDonneur.getPositionCourante().getAventuriers());
         }
 
-        
         for (Aventurier a : getJoueurPourDonnerCarte()) {
             //donner l'id des aventuriers a la methode coresspondante
             if (a != jDonneur) {
                 //ne peut pas donner au joueur qui on 9 cartes
-                if(a.getMain().size() != 9 ) {
+                if (a.getMain().size() != 9) {
                     vuePlateau.getAventurier().get(a.getId() - 25).aventurierCliquable();
                 }
             }
@@ -818,7 +811,7 @@ private int i = 0;
         for (CarteTirage c : jUtilisateur.getMain()) {
             if (c.getId() == idCarte) {
                 if (c.estSac()) {
-                    
+
                     utiliserSac();
                 }
                 if (c.estHelico()) {
@@ -838,7 +831,7 @@ private int i = 0;
                 vuePlateau.getVueGrille().idTuileAssechementPossible(t.getId());
             }
         } else {
-           
+
             debutTour();
         }
     }
@@ -939,7 +932,6 @@ private int i = 0;
         for (int i = 0; i < aventuriers.size(); i++) {
             vuePlateau.getAventurier().get(i).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());
 
-           
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);//met les tuiles sur le plateau
 
