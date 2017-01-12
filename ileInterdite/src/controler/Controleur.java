@@ -226,7 +226,7 @@ public class Controleur implements Observer {
         if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
             actionRestante += 1;                                                //Si le premier JOueur est un Navigateur alors on lui rajoute 1 action comme specifier dans les regle modifier
         }
-        
+
         //////////
 //        aventuriers.get(0).addTresor(Tresor.PIERRE);
 //        aventuriers.get(0).addTresor(Tresor.CALICE);
@@ -693,7 +693,7 @@ public class Controleur implements Observer {
             if (!cartePioche.estMontee()) {                     //Si ce n'est pas une carte Montee des eaux
                 av.addCarteMain(cartePioche);                   //On add la carte a la main 
                 vuePlateau.getAventurier().get(av.getId() - 25).ajouterCarte(cartePioche.getId()); //Affichage
-               
+
             }
             if (cartePioche.estMontee()) { //Si la cartes est une montee des eaux
                 ;
@@ -738,7 +738,7 @@ public class Controleur implements Observer {
 
             remPiocheInondation(tuileInonde);                           //On la supprime de la pioche
             for (int i = 0; i < getTuile().length; i++) {               //On la compare au tuiles
-                                                                                    
+
                 if (tuileInonde.getNom().equals(tuile[i].getNomTuile()) && tuile[i].getEtat() == EtatTuile.ASSECHEE) {
                     tuile[i].setEtat(EtatTuile.INONDEE);    //Si elle etait assecher alors elle devient inonder
                     vuePlateau.getVueGrille().etatTuile(tuile[i].getId(), EtatTuile.INONDEE);
@@ -790,7 +790,7 @@ public class Controleur implements Observer {
     }
 
     ///////////////////////////////UTILISATION CARTE SPECIAL////////////////////
-    public void choisirCarteAUtiliser(Aventurier jUtilisateur) {//On verifie si on des cartes Actions speciales pour pouvoir Utiliser cette fonctionnaliter
+    public void choisirCarteAUtiliser(Aventurier jUtilisateur) {//On vérifie si on des cartes Actions speciales pour pouvoir Utiliser cette fonctionnaliter
         boolean t = true;
         if (!jUtilisateur.getMain().isEmpty()) {
 
@@ -873,14 +873,13 @@ public class Controleur implements Observer {
                 vueGagner = new VueGagner();
 
             }
-        } else {
-            for (int i = 0; i < tuile.length; i++) {
-                if (!tuile[i].getAventuriers().isEmpty()) {
-                    setActionEndroitDeplaceHelico(true);
-                    vuePlateau.getVueGrille().idTuileDeplacementPossible(tuile[i].getId());
-                }
-
+        }
+        for (int i = 0; i < tuile.length; i++) {
+            if (!tuile[i].getAventuriers().isEmpty()) {
+                setActionEndroitDeplaceHelico(true);
+                vuePlateau.getVueGrille().idTuileDeplacementPossible(tuile[i].getId());
             }
+
         }
 
     }
@@ -938,13 +937,12 @@ public class Controleur implements Observer {
         vuePlateau = new VuePlateau(aventuriers.size());                        //ouvre le plateau avec comme parametre le nombre d'aventurier
         vuePlateau.addObserver(this);
 
-        for (int i = 0; i < aventuriers.size(); i++) {                          
+        for (int i = 0; i < aventuriers.size(); i++) {
             vuePlateau.getAventurier().get(i).setNomJoueur(aventuriers.get(i).getNom(), aventuriers.get(i).getCapacite());  //met la couleur et les noms dans la vue VueAventurier
 
         }
         vuePlateau.getVueGrille().initialiserPlateau(tuile);                    //met les tuiles sur le plateau
 
-        
         for (int i = 0; i < aventuriers.size(); i++) {
             vuePlateau.getVueGrille().deplacePion(aventuriers.get(i).getCapacite(),//place les pions sur le plateau
                     aventuriers.get(i).getPositionCourante().getId());
@@ -979,11 +977,11 @@ public class Controleur implements Observer {
 
     }
 
-    public void ouvrirFenetreDemarrage() {                                      
+    public void ouvrirFenetreDemarrage() {
         vueMontrerJoueur = new VueMontrerJoueur();                              //ouvre la fenêtre  pour montrer les joueurs
-                                                                                //écrire les noms dans vueMontrerJoueur: va écrire tous les noms et après va
-                                                                                                                        //mettre du texte vide dans les JLabel restant    
-        int x = 0;                                                              
+        //écrire les noms dans vueMontrerJoueur: va écrire tous les noms et après va
+        //mettre du texte vide dans les JLabel restant    
+        int x = 0;
         for (int i = 0; i < aventuriers.size(); i++) {                          //parcoure tous les aventuriers
             vueMontrerJoueur.ecrireNom(i + 1, aventuriers.get(i).getNom());     //écrit les nom :ecrireNom(int numJoueur, String nom)
             x++;
@@ -999,9 +997,9 @@ public class Controleur implements Observer {
 
     public void ajouteJoueur() {
         aventuriers.clear();                                                                                //supprime tous joueurs pour remettres les nouveaux qui sont dans les JTextFild
-        Pion p;                                                                                             
+        Pion p;
         if (!"".equals(vueInscription.nomJoueur1()) && !"Nom joueur".equals(vueInscription.nomJoueur1())) { //si le JTextFild n'est pas vide ou n'a  plus "Nom joueur"(texte de base mis dans le JTextFild)
-            p = couleurPion();                                                                              
+            p = couleurPion();
             aventuriers.add(new Aventurier(vueInscription.nomJoueur1(), p, positionJoueurDebut(p), this));  //crée un nouveau joueur : Aventurier(String nom, Pion capacite, Tuile positionCourante, Controleur controleur)
         }
         if (!"".equals(vueInscription.nomJoueur2()) && !"Nom joueur".equals(vueInscription.nomJoueur2())) {
@@ -1035,7 +1033,7 @@ public class Controleur implements Observer {
         }
 
     }
-    
+
     public Pion couleurPion() {                                                 //met une couleur aléatoir au pion
         boolean personneNACePion;
         Pion p = Pion.BLEU;
@@ -1066,7 +1064,6 @@ public class Controleur implements Observer {
                     break;
             }
 
-            
             for (int i = 0; i < aventuriers.size(); i++) {                      //vérifie que personne n'a déjà ce pion
                 if (aventuriers.get(i).getCapacite() == p) {
                     personneNACePion = false;
@@ -1076,11 +1073,10 @@ public class Controleur implements Observer {
         return p;
     }
 
-
     public Tuile positionJoueurDebut(Pion pion) {                               //détermine la position de départ du pion en prenant id de la tuile
         Tuile t = tuile[0];
         int idTuile = 0;
-                                                                                //id de la case:
+        //id de la case:
         switch (pion) {
             case BLEU:
                 idTuile = 0;                                                    //0:Heliport
@@ -1109,7 +1105,6 @@ public class Controleur implements Observer {
         return t;
     }
 
-    
 ////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////ADD & REMOVE//////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////    

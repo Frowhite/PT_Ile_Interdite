@@ -40,7 +40,7 @@ public class VueAction extends Observable {
         window.setUndecorated(true);//enlève le cadre de ta fenêtre
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width*64/ 100, dim.height*82/100);
+        window.setLocation(dim.width*62/ 100, dim.height*82/100);
         panelGlobale = new JPanel(new BorderLayout());
         //***Haut***
         //text nb d'action 
@@ -105,7 +105,7 @@ public class VueAction extends Observable {
         actionListener(bUtiliseCarte, Commandes.CHOISIR_CARTE);
         panelCentre.add(bUtiliseCarte);
         //boutton recup le tresor
-        bPrendreTresor = new JButton("Recupérer le trésor");
+        bPrendreTresor = new JButton("Trésor");
         actionListener(bPrendreTresor, Commandes.RECUPERER_TRESOR);
         panelCentre.add(bPrendreTresor);
         //boutton passe tour       

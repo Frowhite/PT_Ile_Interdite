@@ -40,7 +40,7 @@ public class VuePerdu {
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width / 2-250, dim.height / 2-200 );
+        window.setLocation(dim.width / 2-230, dim.height / 2-180 );
        
         img = new ImageIcon(new ImageIcon(getClass().getResource("/images/perdu.jpg"))
                 .getImage().getScaledInstance(600, 600, Image.SCALE_SMOOTH));
