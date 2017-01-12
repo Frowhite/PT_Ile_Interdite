@@ -46,6 +46,7 @@ public class Controleur implements Observer {
     private VueAction vueAction;
     private VueInfo vueInfo;
     private VuePerdu vuePerdu;
+    VueGagner vueGagner;
 
     public Controleur() {
         ouvrirFenetreDemarrage();           //Creer l'ihm
@@ -160,6 +161,7 @@ public class Controleur implements Observer {
         }
         if (o == vueAction) {
             if (arg instanceof Commandes) {
+                vueNiveau.apparaitreDisparaitre(false);
                 switch ((Commandes) arg) {
                     case BOUGER:                                                //Quand on veux bouger 
                         vueAction.fermerFenetre();                              //On ferme la fenetre action
@@ -205,6 +207,8 @@ public class Controleur implements Observer {
 //////////////////////////////CREATION & MISE EN PLACE DE LA PARTIE ////////////
 ////////////////////////////////////////////////////////////////////////////////
     public void initialiserPartie() {
+        vueNiveau = new VueNiveau(getNiveauEau(), 1);
+        vueNiveau.apparaitreDisparaitre(false);
         setNiveauEau(getVueNiveau().getNiveau());                               //On initialise le niveau de l'eau avec la difficulter choisit precedement
         initialiserCartesTirages();                                             //On creer les cartes Tirages et les mélanges
         initialiserCartesInondation();                                          //On creer les cartes Inondations et les mélanges
@@ -222,6 +226,13 @@ public class Controleur implements Observer {
         if (aventuriers.get(numJoueurQuiJoue).getCapacite() == Pion.JAUNE) {
             actionRestante += 1;                                                //Si le premier JOueur est un Navigateur alors on lui rajoute 1 action comme specifier dans les regle modifier
         }
+        
+        //////////
+        aventuriers.get(0).addTresor(Tresor.PIERRE);
+        aventuriers.get(0).addTresor(Tresor.CALICE);
+        aventuriers.get(1).addTresor(Tresor.ZEPHYR);
+        aventuriers.get(1).addTresor(Tresor.CRISTAL);
+        ////////////
         debutTour();                                                            //On commence un tour de jeu
     }
 
@@ -686,14 +697,15 @@ public class Controleur implements Observer {
                
             }
             if (cartePioche.estMontee()) { //Si la cartes est une montee des eaux
-
+                ;
                 if (!piocheCarteMonteEau) {//tout les 2 cartes monte des l'eaux augmente le niveau de l'eau de 1
                     setPiocheCarteMonteEau(true);
                 } else {
                     setNiveauEau(getNiveauEau() + 1);
                     setPiocheCarteMonteEau(false);
+                    vueNiveau.setNiveau(niveauEau);
                 }
-
+                vueNiveau.apparaitreDisparaitre(true);
                 addDefausseTirage(cartePioche);             //On la remet tous de suite dans la Défausse
                 if (!getDefausseInondation().isEmpty()) {   //Si la pioche Inondation n'est pas vide
                     setDefausseInondation(melangerInondation(getDefausseInondation())); //On melange la défausse Inondation 
@@ -836,7 +848,7 @@ public class Controleur implements Observer {
 
     public void utiliserHelico(Aventurier jUtilisateur) {
         setActionCarteHelico(false);
-        if (jUtilisateur.getId() == 0) {            //Condition de Victoire
+        if (jUtilisateur.getPositionCourante().getId() == 0) {            //Condition de Victoire
             ArrayList<Tresor> tresorPossedesParEquipe = new ArrayList();
             for (Aventurier av : aventuriers) {
                 if (av.getTresors().contains(Tresor.CALICE)) {
@@ -855,11 +867,11 @@ public class Controleur implements Observer {
             if (tresorPossedesParEquipe.contains(Tresor.CALICE)
                     && tresorPossedesParEquipe.contains(Tresor.ZEPHYR)
                     && tresorPossedesParEquipe.contains(Tresor.PIERRE)
-                    && tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == 3)) {
+                    && tresorPossedesParEquipe.contains(Tresor.CRISTAL) && (jUtilisateur.getPositionCourante().getAventuriers().size() == aventuriers.size())) {
 
                 //Faire Disparaitre le plateau de jeu
                 vueAction.apparaitreDisparaitre(false);
-                VueGagner vueGagner = new VueGagner();
+                vueGagner = new VueGagner();
 
             }
         } else {
@@ -942,7 +954,7 @@ public class Controleur implements Observer {
     }
 
     public void ouvrirFenetreInscription() {
-        vueNiveau = new VueNiveau(niveauEau);                                   //ouvre la vue qui montre les niveaux
+        vueNiveau = new VueNiveau(niveauEau, 0);                                   //ouvre la vue qui montre les niveaux
         vueInscription = new VueInscription(niveauEau);                         //ouvre VueInscription: inscrire les joueurs et le niveaux
         vueInscription.addObserver(this);
         if (aventuriers != null) {                                              //met les noms des joueurs si ils sont déjà engistrer

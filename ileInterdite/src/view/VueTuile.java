@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import util.Utils.EtatTuile;
@@ -141,92 +140,92 @@ public class VueTuile extends JPanel {
     
     //donne l'image à la tuile
     public void assecheeInondeeOuCouleeTuile(int idTuile, EtatTuile etatTuile) {
-        String img = "/images/tuiles/";
+        String sImg = "/images/tuiles/";
         if (etatTuile == EtatTuile.COULEE) {
-            img += "Tuile_Coulee.jpg";
+            sImg += "Tuile_Coulee.jpg";
         } else {
             switch (idTuile) {
                 case 0:
-                    img += "Heliport";
+                    sImg += "Heliport";
                     break;
                 case 1:
-                    img += "LaCarverneDesOmbres";
+                    sImg += "LaCarverneDesOmbres";
                     break;
                 case 2:
-                    img += "LaCarverneDuBrasier";
+                    sImg += "LaCarverneDuBrasier";
                     break;
                 case 3:
-                    img += "LaForetPourpre";
+                    sImg += "LaForetPourpre";
                     break;
                 case 4:
-                    img += "LaPorteDeBronze";
+                    sImg += "LaPorteDeBronze";
                     break;
                 case 5:
-                    img += "LaPorteDeCuivre";
+                    sImg += "LaPorteDeCuivre";
                     break;
                 case 6:
-                    img += "LaPorteDeFer";
+                    sImg += "LaPorteDeFer";
                     break;
                 case 7:
-                    img += "LaPortedArgent";
+                    sImg += "LaPortedArgent";
                     break;
                 case 8:
-                    img += "LaPortedOr";
+                    sImg += "LaPortedOr";
                     break;
                 case 9:
-                    img += "LaTourDuGuet";
+                    sImg += "LaTourDuGuet";
                     break;
                 case 10:
-                    img += "LeJardinDesHurlements";
+                    sImg += "LeJardinDesHurlements";
                     break;
                 case 11:
-                    img += "LeJardinDesMurmures";
+                    sImg += "LeJardinDesMurmures";
                     break;
                 case 12:
-                    img += "LeLagonPerdu";
+                    sImg += "LeLagonPerdu";
                     break;
                 case 13:
-                    img += "LeMaraisBrumeux";
+                    sImg += "LeMaraisBrumeux";
                     break;
                 case 14:
-                    img += "LePalaisDeCorail";
+                    sImg += "LePalaisDeCorail";
                     break;
                 case 15:
-                    img += "LePalaisDesMarees";
+                    sImg += "LePalaisDesMarees";
                     break;
                 case 16:
-                    img += "LePontDesAbimes";
+                    sImg += "LePontDesAbimes";
                     break;
                 case 17:
-                    img += "LeRocherFantome";
+                    sImg += "LeRocherFantome";
                     break;
                 case 18:
-                    img += "LeTempleDeLaLune";
+                    sImg += "LeTempleDeLaLune";
                     break;
                 case 19:
-                    img += "LeTempleDuSoleil";
+                    sImg += "LeTempleDuSoleil";
                     break;
                 case 20:
-                    img += "LeValDuCrepuscule";
+                    sImg += "LeValDuCrepuscule";
                     break;
                 case 21:
-                    img += "LesDunesDeLIllusion";
+                    sImg += "LesDunesDeLIllusion";
                     break;
                 case 22:
-                    img += "LesFalaisesDeLOubli";
+                    sImg += "LesFalaisesDeLOubli";
                     break;
                 case 23:
-                    img += "Observatoire";
+                    sImg += "Observatoire";
                     break;
 
             }
             if (etatTuile == EtatTuile.INONDEE) {
-                img += "_Inonde";
+                sImg += "_Inonde";
             }
-            img += ".png";
+            sImg += ".png";
         }
 
-        imageTuile(img);
+        imageTuile(sImg);
     }
 
 //////////////////////////////////IMAGE FOND////////////////////////////////////

@@ -27,7 +27,7 @@ public class VueNiveau {
     Integer cellHeight = (Parameters.HAUTEUR_AUTRES_VUES - 25 - (Parameters.UNDECORATED ? 0 : Parameters.DECORATION_HEIGHT)) / 10 ;
     private final JPanel mainPanel;
         
-    public VueNiveau(Integer niveauInitial) {
+    public VueNiveau(Integer niveauInitial, int x) {//x va changer la position de la fenêtre
         this.niveau = niveauInitial;
         panelsGauches = new HashMap<>();
 
@@ -35,7 +35,11 @@ public class VueNiveau {
         window.setSize(cellWidth*2+Parameters.SWING_BORDERS_HEIGHT, Parameters.HAUTEUR_AUTRES_VUES);        
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension dim = kit.getScreenSize();
-        window.setLocation(dim.width*41 / 100 +390, dim.height*21 / 100 -55);
+        if (x == 0){
+            window.setLocation(dim.width*41 / 100 +430, dim.height*21 / 100 -55);
+        }else{
+            window.setLocation(dim.width*15 / 100, dim.height*21 / 100);
+        }
         window.setAlwaysOnTop(true);//met en premier plan
         //window.setLocation(30, Parameters.TOP_AUTRES_VUES);
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
@@ -181,7 +185,7 @@ public class VueNiveau {
     }
     
     public static void main(String[] args) {   
-        VueNiveau vueNiveau = new VueNiveau(1);
+        VueNiveau vueNiveau = new VueNiveau(1,1);
 
         Scanner scanner = new Scanner(System.in);
 
@@ -195,5 +199,16 @@ public class VueNiveau {
     }  
     public void fermerFenetre() {
         window.dispose();
+    }
+    
+    //rend la fenêtre visible et invisible
+    public void apparaitreDisparaitre(boolean b) {
+        if (b) {
+            window.setAlwaysOnTop(true);//met en premier plan
+        } else {
+            window.setAlwaysOnTop(false);//met en arrière plan (pour des souci de beug graphique)
+        }
+        window.setVisible(b);
+
     }
 }

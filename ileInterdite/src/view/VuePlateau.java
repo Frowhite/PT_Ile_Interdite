@@ -1,15 +1,9 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Observable;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import util.Utils.Commandes;
@@ -35,7 +29,7 @@ public class VuePlateau extends Observable {
     private GridLayout gl = new GridLayout(2, 1);
 
     public VuePlateau(int nbJoueur) {
-        window = new JFrame();
+        window = new JFrame("Plateau");
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
         panelGlobale = new JPanel(new BorderLayout());

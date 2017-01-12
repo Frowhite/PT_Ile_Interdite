@@ -18,7 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import util.Utils;
 import util.Utils.Commandes;
 import util.Utils.Pion;
 
