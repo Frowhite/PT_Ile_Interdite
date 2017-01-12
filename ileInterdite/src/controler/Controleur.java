@@ -228,10 +228,10 @@ public class Controleur implements Observer {
         }
         
         //////////
-        aventuriers.get(0).addTresor(Tresor.PIERRE);
-        aventuriers.get(0).addTresor(Tresor.CALICE);
-        aventuriers.get(1).addTresor(Tresor.ZEPHYR);
-        aventuriers.get(1).addTresor(Tresor.CRISTAL);
+//        aventuriers.get(0).addTresor(Tresor.PIERRE);
+//        aventuriers.get(0).addTresor(Tresor.CALICE);
+//        aventuriers.get(1).addTresor(Tresor.ZEPHYR);
+//        aventuriers.get(1).addTresor(Tresor.CRISTAL);
         ////////////
         debutTour();                                                            //On commence un tour de jeu
     }
